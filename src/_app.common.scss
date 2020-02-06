@@ -1,0 +1,86 @@
+@import '~nativescript-theme-core/scss/light';
+
+@import './theme/colors';
+
+$btn-color: #ffffff;
+
+@import '~nativescript-theme-core/scss/index';
+
+ActionBar {
+    background-color: $primary;
+    color: #ffffff;
+}
+
+.btn-primary {
+    background-color: $primary;
+    width: 80%;
+}
+
+.btn-flat{
+    border-width: 1;
+    border-color: transparent;
+    z-index: 0;
+    color: $primary;
+}
+
+.form {
+    .input-field{
+        width: 80%;
+
+        .input{
+            border-bottom-width: 2;
+            border-color: $primary;
+            border-bottom-color: $primary;
+            width: 100%;
+            color: black;
+        }
+
+        .input.ng-invalid.ng-touched{
+            border-bottom-color: red;
+            color: red;
+        }
+
+        .label{
+            color:$primary;
+            font-size: 16;
+            font-weight: bold;
+            font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+        }
+
+        .label.invalid{
+            color: red;
+        }
+    }
+
+    .list-field{
+        margin-top: 15;
+        .header{
+            color: $primary;
+            font-size: 24;
+            font-weight: bold;
+            font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+            text-align: left;
+        }
+
+        .list-item {
+            width: 95%;
+            height: 70;
+            margin-top: 5;
+            border-bottom-color: $secondary;
+            border-bottom-width: 1;
+            align-content: center;
+
+            .label{
+                color:$primary;
+                font-size: 20;
+                font-weight: bold;
+                font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+            }
+        }
+    }
+
+    .img-login-logo{
+        width: 50%;
+        margin-top: 5%;
+    }
+}
