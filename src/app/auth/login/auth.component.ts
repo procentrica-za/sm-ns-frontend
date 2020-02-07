@@ -109,6 +109,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
 
     onRegister() {
-        //this.router.navigate(['/register']);
+        this.router.navigate(['/register']);
     }
 }
