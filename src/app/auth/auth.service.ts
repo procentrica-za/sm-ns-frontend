@@ -17,11 +17,12 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://10.10.100.155:8888");
+        setString("sm-service-cred-manager-host", "http://10.0.0.240:8888");
     }
 
     validateCredentials(username: string, password: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/userlogin?username=" + username + "&password=" + password;
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -33,7 +34,7 @@ export class AuthService {
                 this._currentLogin.next(loginResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const loginResult = new LoginResult(200, result.message, new LoginUser(result.username, result.userexists, result.entitytype));
+                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.userloggedin));
                 this._currentLogin.next(loginResult);                
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
@@ -43,6 +44,11 @@ export class AuthService {
             // TODO : Handle error
             console.log(e);
         });
+    }
+
+    //This method clears all results
+    clearAllObjects(){
+        this._currentLogin = null;
     }
 
 }

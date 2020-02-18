@@ -5,7 +5,15 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
 import { LoginResult } from "../auth.model";
-import { alert } from "tns-core-modules/ui/dialogs";
+import { TNSFancyAlert } from "nativescript-fancyalert";
+
+//Import for config file
+import * as appSettings from "tns-core-modules/application-settings";
+
+//Below imports are for "remember me switch"
+import { Switch } from "tns-core-modules/ui/switch";
+import { EventData } from "tns-core-modules/data/observable";
+
 
 @Component({
     selector: 'ns-auth',
@@ -19,20 +27,25 @@ export class AuthComponent implements OnInit, OnDestroy {
     usernameControlIsValid = true;
     passwordControlIsValid = true;
 
+    isLoading = false;
+    rememberMe = false;
+    userid = "";
+
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
     @ViewChild('usernameEl', {static:false}) usernameEl: ElementRef<TextField>;
 
     loginResultSub: Subscription;
     login: LoginResult;
 
-    constructor(private router: RouterExtensions, private authServ: AuthService) {}
+    constructor(private router: RouterExtensions, private authServ: AuthService) {
+        //Check if remember me was enabled, if so, navigate to appropriate page
+        if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
+            this.router.navigate(['/advert/home'], {clearHistory: true});
+        } 
+    }
 
 
-    ngOnInit() { 
-        //check if remember == true?
-        //{
-        // navigate home
-        //} else {}
+    ngOnInit() {
         this.form = new FormGroup({
             username: new FormControl(
                 null,
@@ -66,20 +79,18 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.loginResultSub = this.authServ.currentLogin.subscribe(
             login => {                
                 if(login){
+                    this.isLoading = false;
                     this.login = login;
                     // TODO : Need to validate if this is a valid login
                     if(this.login.responseStatusCode === 200){
-                        alert(this.login.loginAttemptMessage);
-                        //set rememberme
-                        //set userid
-                        //set username
+                       //Save user details and rememberme info
+                       appSettings.setString("userid", this.login.loginUser.id);
+                       appSettings.setBoolean("rememberme", this.rememberMe);
+                       appSettings.setBoolean("loggedIn", true);
+                       this.authServ.clearAllObjects();
+                       this.router.navigate(['/advert/home'], {clearHistory: true});
                     } else {
-                        alert({
-                            title: "Login",
-                            message: this.login.loginAttemptMessage,
-                            okButtonText: "OK"
-                        }).then(() =>{
-                        });
+                        TNSFancyAlert.showError("Login Error", this.login.loginAttemptMessage, "Dismiss");
                     }
                 }
             }
@@ -104,11 +115,22 @@ export class AuthComponent implements OnInit, OnDestroy {
         const username = this.form.get('username').value;
         const password = this.form.get('password').value;
 
-        //Verify Login Credentials
-        this.authServ.validateCredentials(username, password);
+
+        this.isLoading = true;
+
+        //Timeout to give loading bar time to appear
+        setTimeout(() =>{
+            //Verify Login Credentials
+            this.authServ.validateCredentials(username, password);
+        },100);        
     }
 
     onRegister() {
         this.router.navigate(['/register']);
+    }
+
+    onRememberMeChanged(args: EventData) {
+        let mySwitch = args.object as Switch;
+        this.rememberMe = mySwitch.checked;
     }
 }

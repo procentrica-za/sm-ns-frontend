@@ -11,6 +11,9 @@ import { AuthComponent } from "./auth/login/auth.component";
 import { AuthService } from "./auth/auth.service";
 
 import { SharedModule } from "./shared/shared.module";
+import { RegisterComponent } from "./auth/register/register.component";
+
+import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 
 @NgModule({
     bootstrap: [
@@ -22,14 +25,16 @@ import { SharedModule } from "./shared/shared.module";
         ReactiveFormsModule,
         AppRoutingModule,
         HttpClientModule,
-        SharedModule
+        SharedModule,
+        NativeScriptUISideDrawerModule
     ],
     providers: [
         AuthService
     ],
     declarations: [
         AppComponent, 
-        AuthComponent
+        AuthComponent,
+        RegisterComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

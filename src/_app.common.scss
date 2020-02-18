@@ -84,3 +84,78 @@ ActionBar {
         margin-top: 5%;
     }
 }
+
+.flexbox-rememberme {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+//Side drawer styling
+.drawer-container {
+    background: linear-gradient(140deg, $primary, $primaryGradient);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1;
+}
+
+.btn-burger {
+    width: 15%;
+    height: 15%;
+    border-style: solid;
+    border-width: 1;
+    border-color: red;
+}
+
+.btn-sidedrawer-menu {
+    width: 100%;
+    height: 9%;
+    border-bottom-style: solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    z-index: 0;
+    border-bottom-width: 1;
+    border-bottom-color: white;
+    color: white;
+}
+
+.btn-sidedrawer-menu-top{
+    width: 100%;
+    height: 9%;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    z-index: 0;
+    border-top-width: 1;
+    border-bottom-width: 1;
+    border-top-color: white;
+    border-bottom-color: white;
+    color: white;
+}
+
+.sidedrawer-menu-list {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.btn-logout {
+    height: 60%;
+    background-color: white;
+    color: $primary;
+}
+
+.advert-tabs {
+    selected-tab-text-color: $primary;
+    android-selected-tab-highlight-color: $primary;
+}
+
+.tab-fa {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 400;
+    font-size: 35em;
+}

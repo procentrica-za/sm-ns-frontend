@@ -6,7 +6,11 @@ import { RegisterComponent } from "./auth/register/register.component";
 
 const routes: Routes = [
     { path: '', component: AuthComponent },
-    { path: 'register', component: RegisterComponent}
+    { path: 'register', component: RegisterComponent},
+    {
+        path: 'advert',
+        loadChildren: '~/app/advert/advert.module#AdvertModule'
+    }
 ];
 
 @NgModule({

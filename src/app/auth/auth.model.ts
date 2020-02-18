@@ -8,8 +8,8 @@ export class LoginResult {
 
 export class LoginUser {
     constructor (
+        public id: string,
         public username: string,
-        public userExists: string,
-        public entityType: string
+        public loggedIn: boolean,
     ){}
 }
