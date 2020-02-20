@@ -17,7 +17,7 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://10.0.0.240:8888");
+        setString("sm-service-cred-manager-host", "http://10.10.100.154:8888");
     }
 
     validateCredentials(username: string, password: string) {
