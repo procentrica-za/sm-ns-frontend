@@ -53,6 +53,7 @@
         (tap)="onSignIn()"
     ></Button>
     <Button class="btn-flat" text="Register" (tap)="onRegister()"></Button>
+    <Button class="btn-flat" text="Forgot Password" (tap)="onForgotpassword()"></Button>
 </StackLayout>
 <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>

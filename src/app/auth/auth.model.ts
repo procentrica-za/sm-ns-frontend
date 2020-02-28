@@ -13,3 +13,17 @@ export class LoginUser {
         public loggedIn: boolean,
     ){}
 }
+
+export class ForgotPasswordResult {
+    constructor (
+        public responseStatusCode: number,
+        public forgotpasswordAttemptMessage: string,
+        public forgotpasswordUser: ForgotPasswordUser
+    ){}
+}
+
+export class ForgotPasswordUser {
+    constructor (
+        public message: string
+    ){}
+}

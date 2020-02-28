@@ -128,6 +128,10 @@ export class AuthComponent implements OnInit, OnDestroy {
     onRegister() {
         this.router.navigate(['/register']);
     }
+    onForgotpassword() {
+        this.router.navigate(['/forgotpassword']);
+    }
+
 
     onRememberMeChanged(args: EventData) {
         let mySwitch = args.object as Switch;
