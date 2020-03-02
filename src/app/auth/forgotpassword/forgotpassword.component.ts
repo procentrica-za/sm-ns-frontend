@@ -25,6 +25,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
    
 
     @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
+    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
 
     forgotpasswordResultSub: Subscription;
     forgotpassword: ForgotPasswordResult;
@@ -77,15 +78,16 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
     }
 
     onForgotPassword() {
-
+        this.hiddenEl.nativeElement.focus();
+        this.emailEl.nativeElement.focus();
         this.emailEl.nativeElement.dismissSoftInput();
-
+        
         if(!this.form.valid){
             return;
         }
 
         const email = this.form.get('email').value;
-
+        console.log("Forgot Password: " + email);
 
         this.isLoading = true;
 
