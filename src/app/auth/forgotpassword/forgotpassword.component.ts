@@ -41,7 +41,6 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
             email: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
                     validators: [
                         Validators.required
                     ]
@@ -82,11 +81,12 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
         this.emailEl.nativeElement.focus();
         this.emailEl.nativeElement.dismissSoftInput();
         
-        if(!this.form.valid){
-            return;
-        }
+       if(!this.form.valid){
+           return;
+       }
 
         const email = this.form.get('email').value;
+        console.log(this.form.get('email').value);
         console.log("Forgot Password: " + email);
 
         this.isLoading = true;
