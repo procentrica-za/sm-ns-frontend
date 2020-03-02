@@ -27,7 +27,7 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://10.10.100.151:8888");
+        setString("sm-service-cred-manager-host", "http://192.168.1.190:8888");
     }
 
     validateCredentials(username: string, password: string) {
@@ -95,10 +95,12 @@ export class AuthService {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const RegisterResultErr = new RegisterResult(500, null, null, null, null);
+                this._currentRegister.next(RegisterResultErr);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
-                const forgotpasswordResult = new RegisterResult(200, result.UserCreated, result.Username, result.UserID, result.Message);
+                const RegistersuccessResult = new RegisterResult(200, result.UserCreated, result.Username, result.UserID, result.Message);
+                this._currentRegister.next(RegistersuccessResult);   
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
                 console.log("in the else");

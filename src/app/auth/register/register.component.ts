@@ -107,7 +107,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.register = registerresult;
                     // TODO : Need to validate if this is a valid register
-                    if(this.register.responseStatusCode === 200){
+                    if(this.register.responseStatusCode === 200 || this.register.UserID != '00000000-0000-0000-0000-000000000000'){
                        //Save user details and rememberme info
                        this.authServ.clearAllObjects();
                        this.router.navigate([''], {clearHistory: true});
