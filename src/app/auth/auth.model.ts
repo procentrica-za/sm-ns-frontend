@@ -27,3 +27,13 @@ export class ForgotPasswordUser {
         public msg: string
     ){}
 }
+
+export class RegisterResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserCreated: boolean, 
+        public Username:    string,
+        public UserID:      string, 
+        public Message:     string 
+    ){}
+}
