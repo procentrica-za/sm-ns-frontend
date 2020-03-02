@@ -26,12 +26,12 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
 
     @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
     @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
-
+//Subscribe from auth service
     forgotpasswordResultSub: Subscription;
     forgotpassword: ForgotPasswordResult;
 
     constructor(private router: RouterExtensions, private authServ: AuthService) {
-        //Check if remember me was enabled, if so, navigate to appropriate page
+       
        
     }
 
@@ -48,11 +48,13 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
             )
         });
 
+        //subscribe to status changes of form
         this.form.get('email').statusChanges.subscribe(status => {
             this.emailControlIsValid = status === 'VALID';
         });
 
 
+        //Subscribe to result in auth service
         this.forgotpasswordResultSub = this.authServ.currentForgotPassword.subscribe(
             forgotpasswordresult => {                
                 if(forgotpasswordresult){
@@ -61,7 +63,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
                     // TODO : Need to validate if this is a valid forgotpassword
                     if(this.forgotpassword.responseStatusCode === 200){
                        //Save user details and rememberme info
-                       this.router.navigate([''], {clearHistory: true});
+                       this.router.navigate(['/templogin'], {clearHistory: true});
                     } else {
                         TNSFancyAlert.showError("Forgot Password Error");
                     }
@@ -72,6 +74,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if(this.forgotpasswordResultSub){
+            //unsubscribe from Result of forgot password
             this.forgotpasswordResultSub.unsubscribe();
         }
     }
@@ -86,7 +89,6 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
        }
 
         const email = this.form.get('email').value;
-        console.log(this.form.get('email').value);
         console.log("Forgot Password: " + email);
 
         this.isLoading = true;
