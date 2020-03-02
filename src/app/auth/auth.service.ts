@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.190:8888");
+        setString("sm-service-cred-manager-host", "http://10.10.100.151:8888");
     }
 
     validateCredentials(username: string, password: string) {
@@ -61,11 +61,11 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const forgotpasswordResultErr = new ForgotPasswordResult(500, "TODO", null);
+                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", null);
                 this._currentForgotPassword.next(forgotpasswordResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const forgotpasswordResult = new ForgotPasswordResult(200, result.message, new ForgotPasswordUser(result.message));
+                const forgotpasswordResult = new ForgotPasswordResult(200, "Success", new ForgotPasswordUser(result.msg));
                 this._currentForgotPassword.next(forgotpasswordResult);                
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received

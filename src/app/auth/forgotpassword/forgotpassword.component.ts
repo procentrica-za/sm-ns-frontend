@@ -7,12 +7,7 @@ import { Subscription } from "rxjs";
 import { ForgotPasswordResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 
-//Import for config file
-import * as appSettings from "tns-core-modules/application-settings";
 
-//Below imports are for "remember me switch"
-import { Switch } from "tns-core-modules/ui/switch";
-import { EventData } from "tns-core-modules/data/observable";
 
 @Component({
     selector: 'ns-forgotpassword',
@@ -59,17 +54,16 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
 
 
         this.forgotpasswordResultSub = this.authServ.currentForgotPassword.subscribe(
-            forgotpassword => {                
-                if(forgotpassword){
+            forgotpasswordresult => {                
+                if(forgotpasswordresult){
                     this.isLoading = false;
-                    this.forgotpassword = forgotpassword;
+                    this.forgotpassword = forgotpasswordresult;
                     // TODO : Need to validate if this is a valid forgotpassword
                     if(this.forgotpassword.responseStatusCode === 200){
                        //Save user details and rememberme info
-                       this.authServ.clearAllObjects();
-                       this.router.navigate(['auth'], {clearHistory: true});
+                       this.router.navigate([''], {clearHistory: true});
                     } else {
-                        TNSFancyAlert.showError("Forgot Password Error", this.forgotpassword.forgotpasswordAttemptMessage, "Dismiss");
+                        TNSFancyAlert.showError("Forgot Password Error");
                     }
                 }
             }
@@ -98,7 +92,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
         //Timeout to give loading bar time to appear
         setTimeout(() =>{
             //Verify Login Credentials
-            this.authServ. ResetPassword(email);
+            this.authServ.ResetPassword(email);
         },100);        
     }
 }

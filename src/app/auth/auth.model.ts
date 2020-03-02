@@ -24,6 +24,6 @@ export class ForgotPasswordResult {
 
 export class ForgotPasswordUser {
     constructor (
-        public message: string
+        public msg: string
     ){}
 }
