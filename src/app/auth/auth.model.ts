@@ -5,7 +5,6 @@ export class LoginResult {
         public loginUser: LoginUser
     ){}
 }
-
 export class LoginUser {
     constructor (
         public id: string,
@@ -13,17 +12,10 @@ export class LoginUser {
         public loggedIn: boolean,
     ){}
 }
-
 export class ForgotPasswordResult {
     constructor (
         public responseStatusCode: number,
         public forgotpasswordAttemptMessage: string,
-        public forgotpasswordUser: ForgotPasswordUser
-    ){}
-}
-
-export class ForgotPasswordUser {
-    constructor (
         public msg: string
     ){}
 }
