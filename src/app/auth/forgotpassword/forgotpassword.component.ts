@@ -41,8 +41,10 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
             email: new FormControl(
                 null,
                 {
+                    updateOn: 'blur',
                     validators: [
-                        Validators.required
+                        Validators.required,
+                        Validators.email
                     ]
                 }
             )
@@ -61,11 +63,11 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.forgotpassword = forgotpasswordresult;
                     // TODO : Need to validate if this is a valid forgotpassword
-                    if(this.forgotpassword.responseStatusCode === 200){
+                    if(this.forgotpassword.responseStatusCode === 200 && this.forgotpassword.msg != "A new password cannot be granted at this time as an appropriate email address has not been provided"){
                        //Save user details and rememberme info
-                       this.router.navigate(['/templogin'], {clearHistory: true});
+                       this.router.navigate([''], {clearHistory: true});
                     } else {
-                        TNSFancyAlert.showError("Forgot Password Error");
+                        TNSFancyAlert.showError("Error resetting password", this.forgotpassword.msg, "Dismiss");
                     }
                 }
             }
@@ -83,7 +85,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
         this.hiddenEl.nativeElement.focus();
         this.emailEl.nativeElement.focus();
         this.emailEl.nativeElement.dismissSoftInput();
-        
+        console.log(this.form.valid)
        if(!this.form.valid){
            return;
        }

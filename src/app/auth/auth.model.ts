@@ -18,20 +18,16 @@ export class ForgotPasswordResult {
     constructor (
         public responseStatusCode: number,
         public forgotpasswordAttemptMessage: string,
-        public forgotpasswordUser: ForgotPasswordUser
-    ){}
-}
-
-export class ForgotPasswordUser {
-    constructor (
         public msg: string
     ){}
 }
 
+
+
 export class RegisterResult {
     constructor (
         public responseStatusCode: number,
-        public UserCreated: boolean, 
+        public UserCreated: string, 
         public Username:    string,
         public UserID:      string, 
         public Message:     string 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, ForgotPasswordUser, RegisterResult } from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult } from './auth.model';
 
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
@@ -27,7 +27,7 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.190:8888");
+        setString("sm-service-cred-manager-host", "http://10.10.100.151:8888");
     }
 
     validateCredentials(username: string, password: string) {
@@ -66,11 +66,11 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", null);
+                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured");
                 this._currentForgotPassword.next(forgotpasswordResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const forgotpasswordResult = new ForgotPasswordResult(200, "Success", new ForgotPasswordUser(result.msg));
+                const forgotpasswordResult = new ForgotPasswordResult(200, "Success", result.message);
                 this._currentForgotPassword.next(forgotpasswordResult);                
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
@@ -94,12 +94,12 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const RegisterResultErr = new RegisterResult(500, null, null, null, null);
+                const RegisterResultErr = new RegisterResult(500, "false", 'none', '00000000-0000-0000-0000-000000000000', 'none');
                 this._currentRegister.next(RegisterResultErr);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
-                const RegistersuccessResult = new RegisterResult(200, result.UserCreated, result.Username, result.UserID, result.Message);
+                const RegistersuccessResult = new RegisterResult(200, result.usercreated, result.username, result.id, result.message);
                 this._currentRegister.next(RegistersuccessResult);   
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received

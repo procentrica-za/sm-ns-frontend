@@ -107,12 +107,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     this.isLoading = false;
                     this.register = registerresult;
                     // TODO : Need to validate if this is a valid register
-                    if(this.register.responseStatusCode === 200 || this.register.UserID != '00000000-0000-0000-0000-000000000000'){
+ 
+                    if(this.register.responseStatusCode === 200 && this.register.UserCreated === "true"){
                        //Save user details and rememberme info
+
                        this.authServ.clearAllObjects();
                        this.router.navigate([''], {clearHistory: true});
                     } else {
-                        TNSFancyAlert.showError("register Error", this.register.Message, "Dismiss");
+                        TNSFancyAlert.showError("Register Error", this.register.Message, "Dismiss");
                     }
                 }
             }
