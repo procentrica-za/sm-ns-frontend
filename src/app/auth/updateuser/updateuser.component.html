@@ -1,19 +1,15 @@
 <ns-action-bar [actionBarTitle]="'Update information'"></ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
 <StackLayout class="input-field">
-    <Label
-        class="label"
-        text="ID"
-        [ngClass]="{ invalid: !idControlIsValid }"
-    ></Label>
     <TextField
-        class="input"
         required
         [autocorrect]="false"
         autocapitalizationType="none"
         formControlName="id"
         [text]="getuser.UserID" *ngIf="userFound"
         editable="false" textWrap="true"
+        colour="white"
+        background-color="white"
         #idEl
     ></TextField>
     <Label
