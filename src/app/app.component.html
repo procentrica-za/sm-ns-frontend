@@ -4,6 +4,7 @@
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu-top" text="Home" (tap)="advertHome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="My Adverts" (tap)="myAdsHome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Personal Details" (tap)="myPersonalDetails()"></Button>
+            <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Update Password" (tap)="PasswordUpdate()"></Button>
         </FlexboxLayout>
         <Button *ngIf="isLoggedIn" row="1" col="0" text="Logout" class="btn-logout" (tap)="logOut()"></Button>
     </GridLayout>
