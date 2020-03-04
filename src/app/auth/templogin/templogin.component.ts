@@ -16,13 +16,13 @@ import { EventData } from "tns-core-modules/data/observable";
 
 
 @Component({
-    selector: 'ns-auth',
-    templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.scss'],
+    selector: 'ns-templogin',
+    templateUrl: './templogin.component.html',
+    styleUrls: ['./templogin.component.scss'],
     moduleId: module.id
 })
 
-export class AuthComponent implements OnInit, OnDestroy {
+export class TemploginComponent implements OnInit, OnDestroy {
     form: FormGroup;
     usernameControlIsValid = true;
     passwordControlIsValid = true;
@@ -40,7 +40,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     constructor(private router: RouterExtensions, private authServ: AuthService) {
         //Check if remember me was enabled, if so, navigate to appropriate page
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
-            this.router.navigate(['/advert/home'], {clearHistory: true});
+            this.router.navigate(['/updateuser'], {clearHistory: true});
         } 
     }
 
