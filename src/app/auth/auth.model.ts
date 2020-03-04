@@ -19,3 +19,15 @@ export class ForgotPasswordResult {
         public msg: string
     ){}
 }
+
+
+
+export class RegisterResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserCreated: string, 
+        public Username:    string,
+        public UserID:      string, 
+        public Message:     string 
+    ){}
+}
