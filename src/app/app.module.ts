@@ -14,6 +14,7 @@ import { SharedModule } from "./shared/shared.module";
 import { RegisterComponent } from "./auth/register/register.component";
 import { ForgotpasswordComponent } from "./auth/forgotpassword/forgotpassword.component";
 import { UpdateuserComponent } from "./auth/updateuser/updateuser.component";
+import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 
@@ -38,7 +39,9 @@ import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angul
         AuthComponent,
         RegisterComponent,
         ForgotpasswordComponent,
-        UpdateuserComponent
+        UpdateuserComponent,
+        NewpasswordComponent
+    
     ],
     schemas: [
         NO_ERRORS_SCHEMA

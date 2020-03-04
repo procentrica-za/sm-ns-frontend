@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult} from './auth.model';
 
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
@@ -15,7 +15,7 @@ export class AuthService {
     private _currentRegister = new BehaviorSubject<RegisterResult>(null)
     private _currentGetUser = new BehaviorSubject<GetUserResult>(null)
     private _currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
-
+    private _currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -37,6 +37,9 @@ export class AuthService {
         return this._currentUpdateUser.asObservable();
     }
 
+    get currentUpdatePassword() {
+        return this._currentUpdatePassword.asObservable();
+    }
    
 
 
@@ -182,6 +185,35 @@ export class AuthService {
         return null;
     }
 
+    UpdatePassword(id: string, password: string ) {
+        const reqUrl = getString("sm-service-cred-manager-host") + "/userpassword" ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ id: id,  password: password }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const UpdateResultErr = new UpdatePasswordResult(500, false, 'An error has occured whilst trying to connect',);
+                this._currentUpdatePassword.next(UpdateResultErr);
+            } else if (responseCode === 200) {
+                // Make sure the response we receive is in JSON format.
+                const result = response.content.toJSON();
+                const UpdatesuccessResult = new UpdatePasswordResult(200, result.passwordupdated, result.message);
+                this._currentUpdatePassword.next(UpdatesuccessResult);
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
     
     //This method clears all results
     clearAllObjects(){

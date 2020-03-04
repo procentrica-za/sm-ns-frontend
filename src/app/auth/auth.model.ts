@@ -58,3 +58,12 @@ export class UpdateUserResult {
          
     ){}
 }
+
+export class UpdatePasswordResult {
+    constructor (
+        public responseStatusCode: number,
+        public PasswordUpdated:     boolean,
+        public Message:    string,
+         
+    ){}
+}
