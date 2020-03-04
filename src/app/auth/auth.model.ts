@@ -5,6 +5,7 @@ export class LoginResult {
         public loginUser: LoginUser
     ){}
 }
+
 export class LoginUser {
     constructor (
         public id: string,
@@ -12,6 +13,7 @@ export class LoginUser {
         public loggedIn: boolean,
     ){}
 }
+
 export class ForgotPasswordResult {
     constructor (
         public responseStatusCode: number,
@@ -29,5 +31,30 @@ export class RegisterResult {
         public Username:    string,
         public UserID:      string, 
         public Message:     string 
+    ){}
+}
+
+
+
+export class GetUserResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserID:      string,
+        public Username:    string,
+        public Name:        string,
+        public Surname:     string,
+        public Email:       string,
+        public Message:     string,
+        public GotUser:     boolean, 
+    ){}
+}
+
+
+export class UpdateUserResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserUpdated:     boolean,
+        public Message:    string,
+         
     ){}
 }
