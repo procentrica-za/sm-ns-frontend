@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, ForgotPasswordUser } from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult   } from './auth.model';
 
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.88.44:8888");
+        setString("sm-service-cred-manager-host", "http://10.10.100.151:8888");
     }
 
     validateCredentials(username: string, password: string) {
@@ -61,12 +61,12 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", null);
+                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured");
                 this._currentForgotPassword.next(forgotpasswordResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const forgotpasswordResult = new ForgotPasswordResult(200, "Success", new ForgotPasswordUser(result.msg));
-                this._currentForgotPassword.next(forgotpasswordResult);                
+                const forgotpasswordResult = new ForgotPasswordResult(200, "Success", result.message);
+                this._currentForgotPassword.next(forgotpasswordResult);
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
                 console.log("in the else");
@@ -76,7 +76,6 @@ export class AuthService {
             console.log(e);
         });
     }
-
     //This method clears all results
     clearAllObjects(){
         this._currentLogin = null;
