@@ -48,6 +48,11 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/advert/']);
     }
 
+    myPersonalDetails(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/updateuser']);
+    }
+
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
         appSettings.setString("personid", "");
