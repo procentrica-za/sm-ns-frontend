@@ -43,10 +43,18 @@
             text="Please enter a valid password."
         ></Label>
     </StackLayout>
+    <FlexboxLayout class="flexbox-rememberme">
+        <Switch checked="false" (checkedChange)="onRememberMeChanged($event)"></Switch>
+        <Label class="label-switch" text="Remember Me"></Label>
+    </FlexboxLayout>
     <Button
         class="btn btn-primary btn-rounded-lg"
         text="Login"
         (tap)="onSignIn()"
     ></Button>
     <Button class="btn-flat" text="Register" (tap)="onRegister()"></Button>
+    <Button class="btn-flat" text="Forgot Password" (tap)="onForgotpassword()"></Button>
 </StackLayout>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</FlexboxLayout>

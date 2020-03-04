@@ -8,8 +8,53 @@ export class LoginResult {
 
 export class LoginUser {
     constructor (
+        public id: string,
         public username: string,
-        public userExists: string,
-        public entityType: string
+        public loggedIn: boolean,
+    ){}
+}
+
+export class ForgotPasswordResult {
+    constructor (
+        public responseStatusCode: number,
+        public forgotpasswordAttemptMessage: string,
+        public msg: string
+    ){}
+}
+
+
+
+export class RegisterResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserCreated: string, 
+        public Username:    string,
+        public UserID:      string, 
+        public Message:     string 
+    ){}
+}
+
+
+
+export class GetUserResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserID:      string,
+        public Username:    string,
+        public Name:        string,
+        public Surname:     string,
+        public Email:       string,
+        public Message:     string,
+        public GotUser:     boolean, 
+    ){}
+}
+
+
+export class UpdateUserResult {
+    constructor (
+        public responseStatusCode: number,
+        public UserUpdated:     boolean,
+        public Message:    string,
+         
     ){}
 }
