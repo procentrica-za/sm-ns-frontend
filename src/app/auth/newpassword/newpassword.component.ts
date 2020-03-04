@@ -75,10 +75,9 @@ export class NewpasswordComponent implements OnInit {
                 if(updateresult){
                     this.isLoading = false;
                     this.update = updateresult;
-                    console.log(this.update.PasswordUpdated)
                     
                     if(this.update.responseStatusCode === 200 && this.update.PasswordUpdated === true){
-                       console.log("If statement hit")
+    
                        TNSFancyAlert.showError("Update Success", this.update.Message, "Dismiss")
                        this.authServ.clearAllObjects();
                     } else {
@@ -91,7 +90,7 @@ export class NewpasswordComponent implements OnInit {
         //find User from app settings
         this.userFound = false;
         const id = appSettings.getString("userid");
-        console.log(appSettings.getString("userid"));
+
 
 
         //subscribe to Get User result
