@@ -99,7 +99,6 @@ export class NewpasswordComponent implements OnInit {
             if(userResult) {
                 this.getuser = userResult
                 if(this.getuser.responseStatusCode === 200){
-                    console.log(this.getuser);
                     this.userFound = true;
                 } else {
                     TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
