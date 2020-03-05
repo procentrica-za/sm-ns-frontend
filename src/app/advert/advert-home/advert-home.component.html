@@ -1,15 +1,60 @@
+
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+
 <TabView class="advert-tabs" androidTabsPosition="bottom">
-    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa">
+  
     
+    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa">
+        <Label
+        class="label"
+        text="Textbooks: "></Label>
+
+        <RadListView height="1000" *ngIf="textbookResultList" [items]="textbookResultList.Textbooks">
+            <ng-template tkListItemTemplate let-textbook="item" >
+                <StackLayout orientation="vertical" class="list-group=item">
+                    <Label [text]="textbook.textbookname" class="list-group-item-heading"></Label>
+                    <Label [text]="textbook.price" textWrap="true" class="list-group-item-text"></Label>
+                    <Image [src]="textbook.imagebytes" class="thumb img-circle"></Image>
+                    <Label text="ree"></Label>
+                </StackLayout>
+            </ng-template>
+        </RadListView>
+        
+
+       
+        <!--<ListView rowHeight="300" *ngIf="textbookResultList" id="textbookListView" [items]="textbookResultList.Textbooks" class="list-group">
+            <ng-template let-textbook="item" let-i="index" let-odd="odd" let-even="even">
+                <GridLayout >
+                    <StackLayout>
+                        <Label text = "Module: "></Label>
+                        <Label [text]="textbook.modulecode" class="label"></Label>
+                        <Label text = "Name: "></Label>
+                        <Label [text]="textbook.name" class="label"></Label>
+                        <Label text = "Edition: "></Label>
+                        <Label [text]="textbook.edition" class="label"></Label>
+                        <Label text = "Quality: "></Label>
+                        <Label [text]="textbook.quality" class="label"></Label>
+                        <Label text = "Author: "></Label>
+                        <Label [text]="textbook.author" class="label"></Label>
+                    </StackLayout>    
+                </GridLayout>
+            </ng-template>
+        </ListView>-->
+
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Accomodation: "></Label>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Tutors: "></Label>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Notes: "></Label>
     </StackLayout>
 </TabView>
