@@ -46,12 +46,18 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
                 if(forgotpasswordresult){
                     this.isLoading = false;
                     this.forgotpassword = forgotpasswordresult;
-                    // TODO : Need to validate if this is a valid forgotpassword
+     
                     if(this.forgotpassword.responseStatusCode === 200 && this.forgotpassword.msg != "A new password cannot be granted at this time as an appropriate email address has not been provided"){
-                       //Save user details and rememberme info
+                        TNSFancyAlert.showSuccess("Success", this.forgotpassword.msg, "Dismiss");
                        this.router.navigate([''], {clearHistory: true});
-                    } else {
-                        TNSFancyAlert.showError("Error resetting password", this.forgotpassword.msg, "Dismiss");
+                    } else if(this.forgotpassword.responseStatusCode === 500) {
+                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
+                    }
+                    else if(this.forgotpassword.responseStatusCode === 400) {
+                        TNSFancyAlert.showError("Error", this.forgotpassword.msg, "Dismiss");
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error", this.forgotpassword.msg, "Dismiss");
                     }
                 }
             }
