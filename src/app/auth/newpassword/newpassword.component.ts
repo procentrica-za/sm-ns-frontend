@@ -29,10 +29,11 @@ export class NewpasswordComponent implements OnInit {
 
     //form
     form: FormGroup;
+    password1ControlIsValid = true;
     passwordControlIsValid = true;
     isLoading = false;
  
-    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
+    @ViewChild('password1El', {static:false}) password1El: ElementRef<TextField>;
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
 
 
@@ -42,6 +43,15 @@ export class NewpasswordComponent implements OnInit {
     ngOnInit() {
 //form controls
         this.form = new FormGroup({
+            password1: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
             password: new FormControl(
                 null,
                 {
@@ -51,6 +61,9 @@ export class NewpasswordComponent implements OnInit {
                     ]
                 }
             )
+        });
+        this.form.get('password1').statusChanges.subscribe(status => {
+            this.password1ControlIsValid = status === 'VALID';
         });
         this.form.get('password').statusChanges.subscribe(status => {
             this.passwordControlIsValid = status === 'VALID';
@@ -111,21 +124,30 @@ ngOnDestroy() {
     }
 
     onUpdatePassword() {
-        this.hiddenEl.nativeElement.focus();
+        this.password1El.nativeElement.focus();
         this.passwordEl.nativeElement.focus();
         this.passwordEl.nativeElement.dismissSoftInput();
+
+    
 
         if(!this.form.valid){
             return;
         }
         const id = appSettings.getString("userid");
+        const password1 = this.form.get('password1').value;
         const password = this.form.get('password').value;
 
+
+        if (this.form.get('password1').value != this.form.get('password').value ){
+            TNSFancyAlert.showError("Error", "Passwords do not match!", "Dismiss");
+        }
+         else{
         this.isLoading = true;
         //Timeout to give loading bar time to appear
         setTimeout(() =>{
             //Update Password
             this.authServ.UpdatePassword(id, password);
         },100);
+             }
     }
  }
