@@ -23,3 +23,22 @@ export class TextbookResultList {
         public Textbooks : TextbookResult[]
     ){}
 }
+
+export class UserAdvertisementResult {
+    constructor(
+        public responseStatusCode: number,
+        public advertisementid: string,
+        public isselling: boolean,
+        public advertisementtype: string,
+        public entityid: string,
+        public price: string,
+        public description: string,
+        public imagebytes: string){}
+}
+
+export class UserAdvertisementResultList {
+    constructor(
+        public responseStatusCode: number,
+        public Advertisements: UserAdvertisementResult[]
+    ){}
+}

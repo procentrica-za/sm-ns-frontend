@@ -18,7 +18,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     private textbookResultSub: Subscription;
     public textbookResult : TextbookResult;
 
-    constructor(private router: RouterExtensions, private advertServ: AdvertService,) { }
+    constructor(private router: RouterExtensions, private advertServ: AdvertService) { }
 
     ngOnInit() { 
         
