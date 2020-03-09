@@ -23,3 +23,19 @@ export class TextbookResultList {
         public Textbooks : TextbookResult[]
     ){}
 }
+
+//messaging service 
+export class ActivechatResult {
+    constructor (
+        public responseStatusCode : number,
+        public chatid : string,
+        public username : string,
+    ){}
+}
+
+export class ActivechatResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Activechats : ActivechatResult[]
+    ){}
+}
