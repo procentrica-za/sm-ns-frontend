@@ -48,6 +48,16 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/advert/']);
     }
 
+    myPersonalDetails(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/updateuser']);
+    }
+
+    PasswordUpdate(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/newpassword']);
+    }
+
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
         appSettings.setString("personid", "");
@@ -55,8 +65,4 @@ export class AppComponent implements OnInit{
         appSettings.setBoolean("loggedIn", false);
         this.router.navigate([''], {clearHistory: true});
     }
-
-    
-
-
 }

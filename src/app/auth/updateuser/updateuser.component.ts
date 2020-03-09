@@ -51,15 +51,6 @@ export class UpdateuserComponent implements OnInit {
     ngOnInit() {
 //form controls
         this.form = new FormGroup({
-            id: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
             username: new FormControl(
                 null,
                 {
@@ -97,9 +88,6 @@ export class UpdateuserComponent implements OnInit {
                 }
             )
         });
-        this.form.get('id').statusChanges.subscribe(status => {
-            this.idControlIsValid = status === 'VALID';
-        });
         this.form.get('username').statusChanges.subscribe(status => {
             this.usernameControlIsValid = status === 'VALID';
         });
@@ -118,14 +106,18 @@ export class UpdateuserComponent implements OnInit {
                 if(updateresult){
                     this.isLoading = false;
                     this.update = updateresult;
-                    // TODO : Need to validate if this is a valid register
  
                     if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
                        //Save user details and rememberme info
-                       TNSFancyAlert.showError("Update Success", this.update.Message, "Dismiss")
-                       this.authServ.clearAllObjects();
-                    } else {
-                        TNSFancyAlert.showError("Register Error", this.update.Message, "Dismiss");
+                       TNSFancyAlert.showSuccess("Update Success", this.update.Message, "Dismiss")
+                    } else if (this.update.responseStatusCode === 500 ){
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                    }
+                    else if (this.update.responseStatusCode === 400 ){
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
                     }
                 }
             }
@@ -134,7 +126,7 @@ export class UpdateuserComponent implements OnInit {
         //find User from app settings
         this.userFound = false;
         const id = appSettings.getString("userid");
-        console.log(appSettings.getString("userid"));
+
 
 
         //subscribe to Get User result
@@ -143,7 +135,6 @@ export class UpdateuserComponent implements OnInit {
             if(userResult) {
                 this.getuser = userResult
                 if(this.getuser.responseStatusCode === 200){
-                    console.log(this.getuser);
                     this.userFound = true;
                 } else {
                     TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
@@ -164,7 +155,6 @@ ngOnDestroy() {
     }
 
     onUpdateUser() {
-        this.idEl.nativeElement.focus();
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
@@ -174,7 +164,7 @@ ngOnDestroy() {
         if(!this.form.valid){
             return;
         }
-        const id = this.form.get('id').value;
+        const id = appSettings.getString("userid");
         const username = this.form.get('username').value;
         const name = this.form.get('name').value;
         const surname = this.form.get('surname').value;
