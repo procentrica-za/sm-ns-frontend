@@ -14,6 +14,9 @@ import { AuthService } from "./auth/auth.service";
 
 import { SharedModule } from "./shared/shared.module";
 import { RegisterComponent } from "./auth/register/register.component";
+import { ForgotpasswordComponent } from "./auth/forgotpassword/forgotpassword.component";
+import { UpdateuserComponent } from "./auth/updateuser/updateuser.component";
+import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
@@ -37,7 +40,11 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
     declarations: [
         AppComponent, 
         AuthComponent,
-        RegisterComponent
+        RegisterComponent,
+        RegisterComponent,
+        ForgotpasswordComponent,
+        UpdateuserComponent,
+        NewpasswordComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

@@ -44,7 +44,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.190:8888");
+        setString("sm-service-cred-manager-host", "http://10.10.100.147:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -83,19 +83,20 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured");
+                const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured.");
                 this._currentForgotPassword.next(forgotpasswordResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const forgotpasswordResult = new ForgotPasswordResult(200, "Success", result.message);
                 this._currentForgotPassword.next(forgotpasswordResult);                
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const forgotpasswordResult = new ForgotPasswordResult(responseCode, "Error", response.content.toString());
+                this._currentForgotPassword.next(forgotpasswordResult); 
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+
+            const forgotpasswordResult = new ForgotPasswordResult(400, "Error", "An Error has been recieved, please contact support.");
+                this._currentForgotPassword.next(forgotpasswordResult); 
         });
     }
 
@@ -111,20 +112,21 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const RegisterResultErr = new RegisterResult(500, "false", 'none', '00000000-0000-0000-0000-000000000000', 'none');
+                const RegisterResultErr = new RegisterResult(500, "false", 'none', '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentRegister.next(RegisterResultErr);
             } else if (responseCode === 200) {
-                // Make sure the response we receive is in JSON format.
+
                 const result = response.content.toJSON();
                 const RegistersuccessResult = new RegisterResult(200, result.usercreated, result.username, result.id, result.message);
                 this._currentRegister.next(RegistersuccessResult);   
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const RegistersuccessResult = new RegisterResult(responseCode, "false","none",  '00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentRegister.next(RegistersuccessResult); 
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+
+            const RegistersuccessResult = new RegisterResult(400, "false","none",  '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentRegister.next(RegistersuccessResult); 
         });
         return null;
     }  
@@ -139,19 +141,20 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const getuserResultErr = new GetUserResult(500, "00000000-0000-0000-0000-000000000000", "Unable to retrieve username","Unable to retrieve name", "Unable to retrieve surname", "Unable to retrieve email address", "Error whilst trying to recieve user details", false);
+                const getuserResultErr = new GetUserResult(500, "00000000-0000-0000-0000-000000000000", "Unable to retrieve username","Unable to retrieve name", "Unable to retrieve surname", "Unable to retrieve email address", "Error whilst trying to recieve user details.", false);
                 this._currentGetUser.next(getuserResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.message, result.gotuser);
                 this._currentGetUser.next(getuserResult);                
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const getuserResult = new GetUserResult(responseCode, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", response.content.toString(), false);
+                this._currentGetUser.next(getuserResult); 
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+
+            const getuserResult = new GetUserResult(400, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", "An Error has been recieved, please contact support.", false);
+            this._currentGetUser.next(getuserResult); 
         });
     }
 
@@ -167,20 +170,20 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const UpdateResultErr = new UpdateUserResult(500, false, 'An error has occured whilst trying to connect',);
+                const UpdateResultErr = new UpdateUserResult(500, false, 'An error has occured whilst trying to connect.',);
                 this._currentUpdateUser.next(UpdateResultErr);
             } else if (responseCode === 200) {
-                // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
                 const UpdatesuccessResult = new UpdateUserResult(200, result.userupdated, result.message);
                 this._currentUpdateUser.next(UpdatesuccessResult);
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const UpdatesuccessResult = new UpdateUserResult(responseCode, false, response.content.toString());
+                this._currentUpdateUser.next(UpdatesuccessResult); 
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+
+            const UpdatesuccessResult = new UpdateUserResult(400, false, "An Error has been recieved, please contact support.");
+            this._currentUpdateUser.next(UpdatesuccessResult);
         });
         return null;
     }
@@ -197,20 +200,19 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const UpdateResultErr = new UpdatePasswordResult(500, false, 'An error has occured whilst trying to connect',);
+                const UpdateResultErr = new UpdatePasswordResult(500, false, 'An error has occured whilst trying to connect.',);
                 this._currentUpdatePassword.next(UpdateResultErr);
             } else if (responseCode === 200) {
-                // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
                 const UpdatesuccessResult = new UpdatePasswordResult(200, result.passwordupdated, result.message);
                 this._currentUpdatePassword.next(UpdatesuccessResult);
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const UpdatesuccessResult = new UpdatePasswordResult(responseCode, false, response.content.toString());
+                this._currentUpdatePassword.next(UpdatesuccessResult); 
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+            const UpdatesuccessResult = new UpdatePasswordResult(400, false, "An Error has been recieved, please contact support.");
+            this._currentUpdatePassword.next(UpdatesuccessResult); 
         });
         return null;
     }
@@ -218,8 +220,7 @@ export class AuthService {
     //This method clears all results
     clearAllObjects(){
         this._currentLogin = null;
-        this._currentForgotPassword = null;
-        this._currentRegister = null;
+    
     }
 
 }
