@@ -18,7 +18,7 @@
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
-            text="Please enter a valid username."            
+            text="Please enter a valid username."
         ></Label>
     </StackLayout>
     <StackLayout class="input-field">
@@ -53,6 +53,7 @@
         (tap)="onSignIn()"
     ></Button>
     <Button class="btn-flat" text="Register" (tap)="onRegister()"></Button>
+    <Button class="btn-flat" text="Forgot Password" (tap)="onForgotpassword()"></Button>
 </StackLayout>
 <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>

@@ -1,5 +1,21 @@
 <ns-action-bar [actionBarTitle]="'Update information'"></ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
+<StackLayout class="input-field">
+    <TextField
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="id"
+        [text]="getuser.UserID" *ngIf="userFound"
+        editable="false" textWrap="true"
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;" 
+        #idEl
+    ></TextField>
+    <Label
+        *ngIf="!idControlIsValid"
+        text="Please enter a valid username."
+    ></Label>
+</StackLayout>
     <StackLayout class="input-field">
         <Label
             class="label"
