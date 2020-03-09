@@ -38,12 +38,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     login: LoginResult;
 
     constructor(private router: RouterExtensions, private authServ: AuthService) {
-
-        //TODO: REmove before committing
-        //appSettings.setString("userid", this.login.loginUser.id);
-        appSettings.setBoolean("rememberme", true);
-        appSettings.setBoolean("loggedIn", true);
-
         //Check if remember me was enabled, if so, navigate to appropriate page
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
             this.router.navigate(['/advert/home'], {clearHistory: true});
@@ -134,6 +128,10 @@ export class AuthComponent implements OnInit, OnDestroy {
     onRegister() {
         this.router.navigate(['/register']);
     }
+    onForgotpassword() {
+        this.router.navigate(['/forgotpassword']);
+    }
+
 
     onRememberMeChanged(args: EventData) {
         let mySwitch = args.object as Switch;

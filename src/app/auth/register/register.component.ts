@@ -1,4 +1,12 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { TextField } from 'tns-core-modules/ui/text-field';
+import { RouterExtensions } from "nativescript-angular/router";
+import { AuthService } from "../auth.service";
+import { Subscription } from "rxjs";
+import { RegisterResult } from "../auth.model";
+import { TNSFancyAlert } from "nativescript-fancyalert";
+
 
 @Component({
     selector: 'ns-register',
@@ -6,6 +14,15 @@ import { Component } from "@angular/core";
     styleUrls: ['./register.component.scss'],
     moduleId: module.id
 })
+export class RegisterComponent implements OnInit, OnDestroy {
+    form: FormGroup;
+    usernameControlIsValid = true;
+    passwordControlIsValid = true;
+    nameControlIsValid = true;
+    surnameControlIsValid = true;
+    emailControlIsValid = true;
+    isLoading = false;
+ 
 
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
     @ViewChild('usernameEl', {static:false}) usernameEl: ElementRef<TextField>;
@@ -89,21 +106,16 @@ import { Component } from "@angular/core";
                 if(registerresult){
                     this.isLoading = false;
                     this.register = registerresult;
+                    // TODO : Need to validate if this is a valid register
  
                     if(this.register.responseStatusCode === 200 && this.register.UserCreated === "true"){
+                       //Save user details and rememberme info
 
-                       TNSFancyAlert.showSuccess("Registration success", this.register.Message, "Dismiss");
+                       this.authServ.clearAllObjects();
                        this.router.navigate([''], {clearHistory: true});
-                    } else if (this.register.responseStatusCode === 500){
-                        TNSFancyAlert.showError("Connection error", this.register.Message, "Dismiss");
+                    } else {
+                        TNSFancyAlert.showError("Register Error", this.register.Message, "Dismiss");
                     }
-                    else if (this.register.responseStatusCode === 400){
-                        TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
-                    }
-                    else {
-                        TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
-                    }
-                    
                 }
             }
         );

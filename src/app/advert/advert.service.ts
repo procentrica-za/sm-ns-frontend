@@ -27,7 +27,7 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://10.10.100.144:9953");
+        setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
     }
 
     initializeTextbooks() {
