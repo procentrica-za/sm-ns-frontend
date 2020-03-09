@@ -1,0 +1,96 @@
+<ns-action-bar [actionBarTitle]="'Update information'"></ns-action-bar>
+<StackLayout class="form" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Username"
+            [ngClass]="{ invalid: !usernameControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="username"
+            [text]="getuser.Username" *ngIf="userFound"
+            #usernameEl
+        ></TextField>
+        <Label
+            *ngIf="!usernameControlIsValid"
+            text="Please enter a valid username."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Name"
+            [ngClass]="{ invalid: !nameControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="name"
+            [text]="getuser.Name" *ngIf="userFound"
+            #nameEl
+        ></TextField>
+        <Label
+            *ngIf="!usernameControlIsValid"
+            text="Please enter a valid username."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Surname"
+            [ngClass]="{ invalid: !surnameControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="surname"
+            [text]="getuser.Surname" *ngIf="userFound"
+            #surnameEl
+        ></TextField>
+        <Label
+            *ngIf="!surnameControlIsValid"
+            text="Please enter a valid surname."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Email"
+            [ngClass]="{ invalid: !emailControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="email"
+            [text]="getuser.Email" *ngIf="userFound"
+            #emailEl
+        ></TextField>
+        <Label
+            *ngIf="!emailControlIsValid"
+            text="Please enter a valid email address."
+        ></Label>
+    </StackLayout>
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Update Details"
+        (tap)="onUpdateUser()"
+    ></Button>
+</StackLayout>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</FlexboxLayout>
+
