@@ -1,15 +1,40 @@
+
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-<TabView class="advert-tabs" androidTabsPosition="bottom">
-    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa">
-    
+
+<TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="imagesLoaded">
+    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
+    <RadListView  *ngIf="imagesLoaded" [items]="textbookResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <ng-template tkListItemTemplate let-textbook="item" >
+            <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
+                <Label *ngIf="textbook" row="0" col="1" [text]="textbook.textbookname" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                <Label *ngIf="textbook" row="1" col="1" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout *ngIf="textbook" row="3" col="1" orientation="horizontal" >
+                    <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                    <Label  [text]="textbook.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                </StackLayout>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Accomodation: "></Label>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Tutors: "></Label>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-
+        <Label
+        class="label"
+        text="Notes: "></Label>
     </StackLayout>
+    
+    
 </TabView>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!imagesLoaded">
+    <ActivityIndicator [busy]="!imagesLoaded"></ActivityIndicator>
+</FlexboxLayout>
