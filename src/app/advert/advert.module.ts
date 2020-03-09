@@ -5,12 +5,16 @@ import { AdvertService } from "./advert.service";
 import { AdvertHomeComponent } from "./advert-home/advert-home.component";
 import { AdvertRoutingModule } from "./advert-routing.module";
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
-
+import { NgShadowModule} from "nativescript-ng-shadow";
+import { AdvertDetailsComponent } from "./advert-details/advert-details.component";
+import { MyAdvertComponent } from "./my-adverts/my-advert.component"
 @NgModule({
     declarations: [
-        AdvertHomeComponent
+        AdvertHomeComponent,
+        AdvertDetailsComponent,
+        MyAdvertComponent
     ],
-    imports: [NativeScriptCommonModule, SharedModule, AdvertRoutingModule, NativeScriptUIListViewModule],
+    imports: [NativeScriptCommonModule, SharedModule, AdvertRoutingModule, NativeScriptUIListViewModule, NgShadowModule],
     providers: [
         AdvertService
     ],

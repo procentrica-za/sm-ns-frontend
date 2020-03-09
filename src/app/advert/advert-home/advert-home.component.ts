@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { HttpClientModule } from '@angular/common/http';
 import { AdvertService } from "../advert.service";
-import {TextbookResult, TextbookResultList} from '../advert.model';
+import { TextbookResult, TextbookResultList} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { ImageSource } from "tns-core-modules/image-source";
+import { RadListView, ListViewEventData } from "nativescript-ui-listview";
+import { RouterExtensions } from "nativescript-angular/router";
 @Component({
     selector: 'ns-advert-home',
     templateUrl: './advert-home.component.html',
@@ -14,26 +15,28 @@ import { ImageSource } from "tns-core-modules/image-source";
 
 export class AdvertHomeComponent implements OnInit, OnDestroy {
 
-    textbookResultListSub: Subscription;
-    textbookResultList: TextbookResultList;
-    imgSource : ImageSource;
-    constructor(private advertServ: AdvertService) {
+    private textbookResultListSub: Subscription;
+    public textbookResultList: TextbookResultList;
+    public imagesLoaded : boolean;
+    
+    private imgSource : ImageSource;
+    constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.imgSource = new ImageSource();
+        
+        
     }
 
+   
+
     ngOnInit() {
-
-        this.advertServ.initializeTextbooks();
-
+        this.imagesLoaded = false;        
+        
         this.textbookResultListSub = this.advertServ.currentTextbookList.subscribe(
             textbookResult => {
                 if(textbookResult) {
                     this.textbookResultList = textbookResult
                     if(this.textbookResultList.responseStatusCode === 200){
-                        //console.log(this.textbookResultList);
-                        
-                        this.textbookResultList.Textbooks[0].imagebytes = "data:image/png;base64," + this.textbookResultList.Textbooks[0].imagebytes;
-                        console.log(this.textbookResultList.Textbooks[0].imagebytes)
+                        this.imagesLoaded = true;
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -42,11 +45,30 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             }
         );
 
-      
-        
+        this.advertServ.initializeTextbooks();
     }
 
+
     
+    
+    onItemSelected(args :ListViewEventData): void {
+        const tappedAdvertItem = args.view.bindingContext;
+        this.advertServ.setTextbook(tappedAdvertItem.advertisementid);
+        //console.log(tappedAdvertItem.advertisementid);
+        //this.router.navigate(['/advert/details'], { clearHistory: true });
+        this.router.navigate(['/advert/details'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+        //console.log(`The following ad was selected: ${args.index}`);
+    }
+
+
 
     ngOnDestroy() {
         if(this.textbookResultListSub){

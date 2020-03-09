@@ -7,18 +7,27 @@ import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
 
 import { getString, setString } from "tns-core-modules/application-settings";
+import { Subscription } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 
 export class AdvertService {
-    private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null)
+    private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
+    private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
+   //private _currentUserAdvertList = new BehaviorSubject
 
+    private test: Subscription;
+    public testList: TextbookResult[];
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
 
+    get currentTextbook() {
+        return this._currentTextbook.asObservable();
+    }
+
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://192.168.1.55:9000");
+        setString("sm-service-advert-manager-host", "http://10.10.100.144:9953");
     }
 
     initializeTextbooks() {
@@ -42,6 +51,7 @@ export class AdvertService {
                 // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
                 JSONTextbookList.forEach(element => {
                     element.responseStatusCode =200;
+                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
                     textbookList.push(element)
                 })
                 const textbookResult = new TextbookResultList(200, textbookList);
@@ -57,6 +67,19 @@ export class AdvertService {
         return null;
     }
 
+    setTextbook(advertisementID: string) {
+        this.currentTextbookList.forEach(element => {
+            element.Textbooks.forEach(innerElement => {
+                if(advertisementID == innerElement.advertisementid){
+                    this._currentTextbook.next(innerElement);
+                }
+            })
+        });
+    }
 
 }
+
+
+
+
 
