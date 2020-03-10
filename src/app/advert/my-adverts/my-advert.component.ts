@@ -5,7 +5,7 @@ import { UserAdvertisementResultList} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import * as appSettings from "tns-core-modules/application-settings";
-
+import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 @Component({
     selector: 'ns-my-adverts',
     templateUrl: './my-advert.component.html',
@@ -36,7 +36,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                     this.userAdvertResultList = userAdvertResult
                     if(this.userAdvertResultList.responseStatusCode === 200){
                         this.imagesLoaded = true;
-                        console.log(this.userAdvertResultList);
+                        //console.log(this.userAdvertResultList);
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -44,13 +44,31 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                 }
             }
         );
-        appSettings.getString("userid", this.UserID);
+        this.UserID = appSettings.getString("userid");
         this.advertServ.initializeUserAdvertisements(this.UserID);
     
     }
 
     ngOnDestroy(){  
+        if(this.userAdvertResultListSub){
+            this.userAdvertResultListSub.unsubscribe();
+        }
+    }
 
+
+    onItemSelected(args :ListViewEventData): void {
+        const tappedAdvertItem = args.view.bindingContext;
+        //console.log("Ad Type:  "+ tappedAdvertItem.advertisementtype +"\n ID:  "+ tappedAdvertItem.advertisementid)
+        this.advertServ.setAdvert(tappedAdvertItem.advertisementtype, tappedAdvertItem.advertisementid);
+        this.router.navigate(['/advert/details'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
     }
 
 }

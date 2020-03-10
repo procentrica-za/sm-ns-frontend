@@ -39,10 +39,10 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     constructor(private router: RouterExtensions, private authServ: AuthService) {
 
-        //TODO: REmove before committing
+       /* //TODO: REmove before committing
         //appSettings.setString("userid", this.login.loginUser.id);
         appSettings.setBoolean("rememberme", true);
-        appSettings.setBoolean("loggedIn", true);
+        appSettings.setBoolean("loggedIn", true);*/
 
         //Check if remember me was enabled, if so, navigate to appropriate page
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {

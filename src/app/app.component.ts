@@ -40,12 +40,12 @@ export class AppComponent implements OnInit{
 
     advertHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/advert/']);
+        this.router.navigate(['/advert']);
     }
 
     myAdsHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/advert/']);
+        this.router.navigate(['/advert/myadverts']);
     }
 
     logOut() {

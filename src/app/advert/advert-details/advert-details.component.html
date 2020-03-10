@@ -1,9 +1,9 @@
 <ns-action-bar [actionBarTitle]="'Advert Details'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
 
-<Gridlayout rows="40*,10*,5*,18*,5*,5*,5*,5*,5*,10*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" >
+<Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="textbookResult" >
     <Image *ngIf="textbookResult"  row="0" col="1" colspan="3" [src]="textbookResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="textbookResult" [text]="textbookResult.textbookname" class="GridLayoutLabelHeading"  ></Label>
+        <Label row="1" col="0" colspan="5" *ngIf="textbookResult" [text]="textbookResult.textbookname" class="GridLayoutLabelHeading" textwrap="true"></Label>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
@@ -33,6 +33,113 @@
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
-        <Label row="10" col="2"  text="Contact Seller"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
+<Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="accomodationResult" >
+    <Image *ngIf="accomodationResult"  row="0" col="1" colspan="3" [src]="accomodationResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
+    
+        <Label row="1" col="0" colspan="5" *ngIf="accomodationResult" [text]="accomodationResult.location" class="GridLayoutLabelHeading" textwrap="true"></Label>
+       
+        <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
+        <ScrollView row="3" col="0" colspan="5" >
+            <Label *ngIf="accomodationResult" [text]="accomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
+        </ScrollView>
+        
+
+        <!--<Label row="4" col="0" colspan = "2" text="Module Code: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0"  colspan = "2" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="7" col="0"  colspan = "2" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="7" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.author" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="8" col="0" text="Price:" textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="8" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="8" col="2" colspan="2" [text]="textbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
+        <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
+ 
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>-->
+</Gridlayout>
+
+<Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="tutorResult" >
+    <Image *ngIf="tutorResult"  row="0" col="1" colspan="3" [src]="tutorResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
+    
+        <Label row="1" col="0" colspan="5" *ngIf="tutorResult" [text]="tutorResult.subject" class="GridLayoutLabelHeading" textwrap="true"></Label>
+       
+        <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
+        <ScrollView row="3" col="0" colspan="5" >
+            <Label *ngIf="tutorResult" [text]="tutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
+        </ScrollView>
+        
+
+        <!--<Label row="4" col="0" colspan = "2" text="Module Code: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0"  colspan = "2" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="7" col="0"  colspan = "2" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="7" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.author" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="8" col="0" text="Price:" textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="8" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="8" col="2" colspan="2" [text]="textbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
+        <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
+ 
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>-->
+</Gridlayout>
+
+<Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="noteResult" >
+    <Image *ngIf="noteResult"  row="0" col="1" colspan="3" [src]="noteResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
+    
+        <Label row="1" col="0" colspan="5" *ngIf="noteResult" [text]="noteResult.modulecode" class="GridLayoutLabelHeading" textwrap="true"></Label>
+       
+        <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
+        <ScrollView row="3" col="0" colspan="5" >
+            <Label *ngIf="noteResult" [text]="noteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
+        </ScrollView>
+        
+
+        <!--<Label row="4" col="0" colspan = "2" text="Module Code: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="textbookResult" [text]="textbookResult.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0"  colspan = "2" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="7" col="0"  colspan = "2" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="7" col="2"  colspan = "3" *ngIf="textbookResult" [text]="textbookResult.author" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="8" col="0" text="Price:" textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="8" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="8" col="2" colspan="2" [text]="textbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
+        <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
+ 
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>-->
+</Gridlayout>

@@ -1,0 +1,19 @@
+<ns-action-bar [actionBarTitle]="'My Advertisements'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+
+<RadListView  *ngIf="imagesLoaded" [items]="userAdvertResultList.Advertisements" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+    <ng-template tkListItemTemplate let-userAdvert="item" >
+        <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+            <Image *ngIf="userAdvert"  row="0" col="0" rowspan="5" [src]="userAdvert.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+            <Label *ngIf="userAdvert" row="0" col="1" [text]="userAdvert.advertisementtype" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvert" row="1" col="1" [text]="userAdvert.description" textwrap="true" ></Label>
+            <StackLayout *ngIf="userAdvert" row="3" col="1" orientation="horizontal" >
+                <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                <Label  [text]="userAdvert.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+            </StackLayout>
+        </Gridlayout>
+    </ng-template>
+</RadListView>
+
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!imagesLoaded">
+    <ActivityIndicator [busy]="!imagesLoaded"></ActivityIndicator>
+</FlexboxLayout>

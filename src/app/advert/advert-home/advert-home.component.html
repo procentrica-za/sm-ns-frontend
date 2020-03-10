@@ -1,14 +1,19 @@
 
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
 
-<TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="imagesLoaded">
+<TabView class="advert-tabs" androidTabsPosition="bottom">
+
+    <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    <RadListView  *ngIf="imagesLoaded" [items]="textbookResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+    <RadListView  *ngIf="textbookImagesLoaded" [items]="textbookResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
-                <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
+                <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
                 <Label *ngIf="textbook" row="0" col="1" [text]="textbook.textbookname" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                <Label *ngIf="textbook" row="1" col="1" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                <!--<ScrollView row="1" col="1">
+                    <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                </ScrollView>-->
+               
                 <StackLayout *ngIf="textbook" row="3" col="1" orientation="horizontal" >
                     <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
                     <Label  [text]="textbook.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
@@ -17,24 +22,65 @@
         </ng-template>
     </RadListView>
     </StackLayout>
+
+    <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Accomodation: "></Label>
+        <RadListView  *ngIf="accomodationImagesLoaded" [items]="accomodationResultList.Accomodations" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-accomodation="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="accomodation" row="0" col="1" [text]="accomodation.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="accomodation" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="accomodation.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Tutors: "></Label>
+        <RadListView  *ngIf="tutorImagesLoaded" [items]="tutorResultList.Tutors" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-tutor="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="tutor" row="0" col="1" [text]="tutor.subject" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="tutor" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="tutor.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Notes: "></Label>
+        <RadListView  *ngIf="noteImagesLoaded" [items]="noteResultList.Notes" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-note="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="note" row="0" col="1" [text]="note.modulecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="note" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="note.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
     </StackLayout>
     
     
 </TabView>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!imagesLoaded">
-    <ActivityIndicator [busy]="!imagesLoaded"></ActivityIndicator>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!allImagesLoaded">
+    <ActivityIndicator [busy]="!allImagesLoaded"></ActivityIndicator>
 </FlexboxLayout>
