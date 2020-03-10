@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList} from './advert.model'
+import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 
 import { HttpClient } from '@angular/common/http';
@@ -8,14 +8,22 @@ import { request, getJSON } from "tns-core-modules/http";
 
 import { getString, setString } from "tns-core-modules/application-settings";
 import { Subscription } from "rxjs";
+//Used for chat styling 
+import * as appSettings from "tns-core-modules/application-settings";
 
 @Injectable({ providedIn: 'root' })
 
 export class AdvertService {
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
+    //Messaging, active chat service
     private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
     private _currentActivechat = new BehaviorSubject<ActivechatResult>(null);
+    //messaging messages service
+    private _currentMessageList = new BehaviorSubject<MessageResultList>(null);
+    private _currentMessage = new BehaviorSubject<MessageResult>(null);
+    //send message service
+    private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
    //private _currentUserAdvertList = new BehaviorSubject
 
     private test: Subscription;
@@ -27,7 +35,7 @@ export class AdvertService {
     get currentTextbook() {
         return this._currentTextbook.asObservable();
     }
-
+// Messaging active chat results
     get currentActivechatList() {
         return this._currentActivechatList.asObservable();
     }
@@ -35,11 +43,23 @@ export class AdvertService {
     get currentActivechat() {
         return this._currentActivechat.asObservable();
     }
+// Messaging message results
+    get currentMessageList() {
+        return this._currentMessageList.asObservable();
+    }
+
+    get currentMessage() {
+        return this._currentMessage.asObservable();
+    }
+    //Send message 
+    get currentSendMessage() {
+        return this._currentSendMessage.asObservable();
+    }
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
-        setString("sm-service-messages-host", "http://10.10.100.147:9956");
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
     }
 
     initializeTextbooks() {
@@ -99,7 +119,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const activechatResultErr = new ActivechatResult(500, null, null);
+                const activechatResultErr = new ActivechatResult(500, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -126,16 +146,87 @@ export class AdvertService {
         return null;
     }
 
-    setActivechat(chatID: string) {
-        this.currentActivechatList.forEach(element => {
-            element.Activechats.forEach(innerElement => {
-                if(chatID == innerElement.chatid){
-                    this._currentActivechat.next(innerElement);
-                }
-            })
+    setActivechat(chatid: string) {
+        const reqUrl = getString("sm-service-messages-host") + "/message?chatid=" + chatid;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const messageResultErr = new MessageResult(500, null, null, null, null);
+            } else if (responseCode === 200) {
+                // Make sure the response we receive is in JSON format.
+                const result = response.content.toJSON();
+                // Instansiate a textbook list object to read the response in to.
+                let messageList: MessageResult[] = [];
+                // get the textbooklist.
+                const JSONMessageList = result.messages;
+                const userchat = appSettings.getString("username");
+                console.log(userchat);
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                JSONMessageList.forEach(element => {
+                    element.responseStatusCode =200;
+                     //for message styling 
+                    element.userchat = userchat;
+                    messageList.push(element)
+                })
+                const messageResult = new MessageResultList(200, messageList);
+                this._currentMessageList.next(messageResult);
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
         });
+        return null;
     }
 
+    SendMessage(chatid: string, authorid: string, message: string) {
+        const reqUrl = getString("sm-service-messages-host") + "/message" ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ chatid: chatid, authorid: authorid, message: message }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const messageResultErr = new MessageResult(500, null, null, null, null);
+            } else if (responseCode === 200) {
+                // Make sure the response we receive is in JSON format.
+                const result = response.content.toJSON();
+                // Instansiate a textbook list object to read the response in to.
+                let messageList: MessageResult[] = [];
+                // get the textbooklist.
+                const JSONMessageList = result.messages;
+                const userchat = appSettings.getString("username");
+                console.log(userchat);
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                JSONMessageList.forEach(element => {
+                    element.responseStatusCode =200;
+                    //for message styling 
+                    element.userchat = userchat;
+                    messageList.push(element)
+                })
+                const messageResult = new MessageResultList(200, messageList);
+                this._currentMessageList.next(messageResult);
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
 }
 
 

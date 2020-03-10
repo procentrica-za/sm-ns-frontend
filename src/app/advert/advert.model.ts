@@ -30,6 +30,8 @@ export class ActivechatResult {
         public responseStatusCode : number,
         public chatid : string,
         public username : string,
+        public message : string,
+        public messagedate : string,
     ){}
 }
 
@@ -37,5 +39,23 @@ export class ActivechatResultList {
     constructor (
         public responseStatusCode : number,
         public Activechats : ActivechatResult[]
+    ){}
+}
+
+
+export class MessageResult {
+    constructor (
+        public responseStatusCode : number,
+        public messageid : string,
+        public username : string,
+        public message : string,
+        public messagedate : string,
+    ){}
+}
+
+export class MessageResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Messages : MessageResult[]
     ){}
 }

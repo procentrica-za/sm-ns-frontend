@@ -1,0 +1,109 @@
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { TextField } from 'tns-core-modules/ui/text-field';
+import { AdvertService } from "../advert.service";
+import { MessageResult, MessageResultList} from '../advert.model';
+import { Subscription } from "rxjs";
+import { TNSFancyAlert } from "nativescript-fancyalert";
+import { RadListView, ListViewEventData } from "nativescript-ui-listview";
+import { RouterExtensions } from "nativescript-angular/router";
+//import for app settings
+import * as appSettings from "tns-core-modules/application-settings";
+@Component({
+    selector: 'ns-messaging-details',
+    templateUrl: './messaging-details.component.html',
+    styleUrls: ['./messaging-details.component.scss'],
+    moduleId: module.id
+})
+
+export class MessagingDetailsComponent implements OnInit, OnDestroy {
+    form: FormGroup;
+   
+    messageControlIsValid = true;
+ 
+    @ViewChild('messageEl', {static:false}) messageEl: ElementRef<TextField>;
+    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
+
+    private messageResultListSub: Subscription;
+    public messageResultList: MessageResultList;
+    public messagesLoaded : boolean;
+    
+   
+    constructor(private advertServ: AdvertService, private router: RouterExtensions) {
+    
+        
+        
+    }
+
+   
+
+    ngOnInit() {
+        this.messagesLoaded = false;        
+        
+        this.messageResultListSub = this.advertServ.currentMessageList.subscribe(
+            messageResult => {
+                if(messageResult) {
+                    this.messageResultList = messageResult
+                    if(this.messageResultList.responseStatusCode === 200){
+                        console.log(this.messageResultList);
+                        this.messagesLoaded = true;
+                    } else {
+                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                    }
+                    
+                }
+            }
+        );
+
+        this.form = new FormGroup({
+            message: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            )
+        });
+        this.form.get('message').statusChanges.subscribe(status => {
+            this.messageControlIsValid = status === 'VALID';
+        });
+
+
+    }
+
+
+    
+    
+   
+
+
+
+    ngOnDestroy() {
+        if(this.messageResultListSub){
+            this.messageResultListSub.unsubscribe();
+        }
+    }
+//Send message function
+    onSendMessage() {
+        this.hiddenEl.nativeElement.focus();
+        this.messageEl.nativeElement.focus();
+        this.messageEl.nativeElement.dismissSoftInput();
+    
+
+
+        if(!this.form.valid){
+            return;
+        }
+        const chatid = appSettings.getString("chatid");
+        const authorid = appSettings.getString("userid");
+        const message = this.form.get('message').value;
+         
+         //Timeout to give loading bar time to appear
+         setTimeout(() =>{
+             //Verify Login Credentials
+             this.advertServ.SendMessage(chatid,authorid, message);
+         },100);
+     }
+}

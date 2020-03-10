@@ -269,3 +269,42 @@ ActionBar {
     margin-left: 5;
     margin-right: 5;
 }
+
+
+
+.messageinput {
+    border-radius: 25px;
+}
+
+.SendMessageLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 100;
+    font-size: 36em;
+}
+.SendMessagebox {
+    border-bottom-width: 2;
+    border-color: $primary;
+    border-bottom-color: $primary;
+    width: 100%;
+    color: black;
+}
+
+.GridLayoutMessages {
+    margin-top: 50;
+    margin-left: 15;
+    margin-right: 15;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #ffffff;
+    border-color: #efeeee;
+    border-radius: 5;
+}
+
+.SentMessage {
+
+}
+
+.RecievedMessage {
+
+}

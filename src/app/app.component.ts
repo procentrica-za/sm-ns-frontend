@@ -58,6 +58,11 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/newpassword']);
     }
 
+    Messagehome(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/messaginghome']);
+    }
+
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
         appSettings.setString("personid", "");

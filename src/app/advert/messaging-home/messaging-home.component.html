@@ -1,31 +1,11 @@
 <ns-action-bar [actionBarTitle]="'Chats'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    <RadListView  *ngIf="chatsLoaded " [items]="textbookResultList.Activechats" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
-        <ng-template tkListItemTemplate let-textbook="item" >
-            <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
-                <Label *ngIf="activechat" row="0" col="1" [text]="activechat.chatid" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                <Label *ngIf="activechat" row="1" col="1" [text]="activechat.username" textWrap="true" class="GridLayoutLabels" ></Label>
-                <StackLayout *ngIf="activechat" row="3" col="1" orientation="horizontal" >
-                    <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
-                    <Label  [text]="activechat.username " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
-                </StackLayout>
+    <RadListView  *ngIf="chatsLoaded " [items]="activechatResultList.Activechats" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <ng-template tkListItemTemplate let-activechat="item" >
+            <Gridlayout rows="*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                <Label *ngIf="activechat" row="0" col="0" [text]="activechat.username" textWrap="true"  ></Label>
+                <Label *ngIf="activechat" row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
+                <Label *ngIf="activechat" row="2" col="2" [text]="activechat.messagedate" textWrap="true"  ></Label>
             </Gridlayout>
         </ng-template>
     </RadListView>
-    </StackLayout>
-    <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Accomodation: "></Label>
-    </StackLayout>
-    <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Tutors: "></Label>
-    </StackLayout>
-    <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-        <Label
-        class="label"
-        text="Notes: "></Label>
-    </StackLayout>
     

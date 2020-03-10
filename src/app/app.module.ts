@@ -10,6 +10,7 @@ import { AuthComponent } from "./auth/login/auth.component";
 
 
 import { AuthService } from "./auth/auth.service";
+import { AdvertService } from "./advert/advert.service";
 
 
 import { SharedModule } from "./shared/shared.module";
@@ -17,6 +18,9 @@ import { RegisterComponent } from "./auth/register/register.component";
 import { ForgotpasswordComponent } from "./auth/forgotpassword/forgotpassword.component";
 import { UpdateuserComponent } from "./auth/updateuser/updateuser.component";
 import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
+//Messaging components
+import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.component";
+import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
@@ -35,7 +39,8 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         NativeScriptUIListViewModule
     ],
     providers: [
-        AuthService
+        AuthService,
+        AdvertService
     ],
     declarations: [
         AppComponent, 
@@ -44,7 +49,9 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         RegisterComponent,
         ForgotpasswordComponent,
         UpdateuserComponent,
-        NewpasswordComponent
+        NewpasswordComponent,
+        MessagingHomeComponent,
+        MessagingDetailsComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
