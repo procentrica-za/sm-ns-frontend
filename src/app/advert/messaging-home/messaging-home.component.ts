@@ -13,61 +13,41 @@ import * as appSettings from "tns-core-modules/application-settings";
     styleUrls: ['./messaging-home.component.scss'],
     moduleId: module.id
 })
-
 export class MessagingHomeComponent implements OnInit, OnDestroy {
     userid = "";
     chatid = "";
-
     private activechatResultListSub: Subscription;
     public activechatResultList: ActivechatResultList;
     public chatsLoaded : boolean;
-    
-   
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
-    
-        
-        
     }
-
-    
-
     ngOnInit() {
-        this.chatsLoaded = false;        
-        
+        this.chatsLoaded = false;
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
                     this.activechatResultList = activechatResult
                     if(this.activechatResultList.responseStatusCode === 200){
                         this.chatsLoaded = true;
-                    } 
+                    }
                     } else if(this.activechatResultList.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
                     }
                     else if(this.activechatResultList.responseStatusCode === 400) {
-                        TNSFancyAlert.showError("Connection error", this.activechatresultlist.Message, "Dismiss");
+                        TNSFancyAlert.showError("Connection error", this.activechatResultList.message, "Dismiss");
                     }
                     else {
-                        TNSFancyAlert.showError("Connection error", this.activechatresultlist.Message, "Dismiss");
+                        TNSFancyAlert.showError("Connection error", this.activechatResultList.message, "Dismiss");
                     }
                 }
-            }
         );
-
         const userid = appSettings.getString("userid");
-
         this.advertServ.initializeActiveChats(userid);
     }
-
-
-    
-    
     onItemSelected(args :ListViewEventData): void {
         const tappedActivechatItem = args.view.bindingContext;
         this.advertServ.setActivechat(tappedActivechatItem.chatid);
         appSettings.setString("chatid", tappedActivechatItem.chatid);
-        //console.log(tappedAdvertItem.advertisementid);
-        //this.router.navigate(['/advert/details'], { clearHistory: true });
         this.router.navigate(['/messagingdetails'],
             {
                 animated: true,
@@ -77,11 +57,8 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                     curve: "ease"
                 }
             });
-        //console.log(`The following ad was selected: ${args.index}`);
+
     }
-
-
-
     ngOnDestroy() {
         if(this.activechatResultListSub){
             this.activechatResultListSub.unsubscribe();

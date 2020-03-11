@@ -16,15 +16,13 @@ export class TextbookResult {
         public imagebytes : string
     ){}
 }
-
 export class TextbookResultList {
     constructor (
         public responseStatusCode : number,
         public Textbooks : TextbookResult[]
     ){}
 }
-
-//messaging service 
+//messaging service
 export class ActivechatResult {
     constructor (
         public responseStatusCode : number,
@@ -34,7 +32,6 @@ export class ActivechatResult {
         public messagedate : string,
     ){}
 }
-
 export class ActivechatResultList {
     constructor (
         public responseStatusCode : number,
@@ -42,8 +39,6 @@ export class ActivechatResultList {
         public message : string,
     ){}
 }
-
-
 export class MessageResult {
     constructor (
         public responseStatusCode : number,
@@ -53,7 +48,6 @@ export class MessageResult {
         public messagedate : string,
     ){}
 }
-
 export class MessageResultList {
     constructor (
         public responseStatusCode : number,
@@ -61,3 +55,8 @@ export class MessageResultList {
         public message : string,
     ){}
 }
+
+
+
+
+

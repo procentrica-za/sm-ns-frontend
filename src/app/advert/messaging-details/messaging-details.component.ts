@@ -15,31 +15,18 @@ import * as appSettings from "tns-core-modules/application-settings";
     styleUrls: ['./messaging-details.component.scss'],
     moduleId: module.id
 })
-
 export class MessagingDetailsComponent implements OnInit, OnDestroy {
     form: FormGroup;
-   
     messageControlIsValid = true;
- 
     @ViewChild('messageEl', {static:false}) messageEl: ElementRef<TextField>;
     @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
-
     private messageResultListSub: Subscription;
     public messageResultList: MessageResultList;
     public messagesLoaded : boolean;
-    
-   
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
-    
-        
-        
     }
-
-   
-
     ngOnInit() {
-        this.messagesLoaded = false;        
-        
+        this.messagesLoaded = false;
         this.messageResultListSub = this.advertServ.currentMessageList.subscribe(
             messageResult => {
                 if(messageResult) {
@@ -50,10 +37,10 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
                     }
                     else if(this.messageResultList.responseStatusCode === 400) {
-                        TNSFancyAlert.showError("Connection error", this.messageresultlist.Message, "Dismiss");
+                        TNSFancyAlert.showError("Connection error", this.messageResultList.message, "Dismiss");
                     }
                     else {
-                        TNSFancyAlert.showError("Connection error", this.messageresultlist.Message, "Dismiss");
+                        TNSFancyAlert.showError("Connection error", this.messageResultList.message, "Dismiss");
                     }
                 }
             }
@@ -72,17 +59,7 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
         this.form.get('message').statusChanges.subscribe(status => {
             this.messageControlIsValid = status === 'VALID';
         });
-
-
     }
-
-
-    
-    
-   
-
-
-
     ngOnDestroy() {
         if(this.messageResultListSub){
             this.messageResultListSub.unsubscribe();
@@ -93,16 +70,12 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
         this.hiddenEl.nativeElement.focus();
         this.messageEl.nativeElement.focus();
         this.messageEl.nativeElement.dismissSoftInput();
-    
-
-
         if(!this.form.valid){
             return;
         }
         const chatid = appSettings.getString("chatid");
         const authorid = appSettings.getString("userid");
         const message = this.form.get('message').value;
-         
          //Timeout to give loading bar time to appear
          setTimeout(() =>{
              //Verify Login Credentials

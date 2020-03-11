@@ -2,17 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
-
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
-
 import { getString, setString } from "tns-core-modules/application-settings";
 import { Subscription } from "rxjs";
-//Used for chat styling 
+//Used for chat styling
 import * as appSettings from "tns-core-modules/application-settings";
-
 @Injectable({ providedIn: 'root' })
-
 export class AdvertService {
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
@@ -25,13 +21,11 @@ export class AdvertService {
     //send message service
     private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
    //private _currentUserAdvertList = new BehaviorSubject
-
     private test: Subscription;
     public testList: TextbookResult[];
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
-
     get currentTextbook() {
         return this._currentTextbook.asObservable();
     }
@@ -39,7 +33,6 @@ export class AdvertService {
     get currentActivechatList() {
         return this._currentActivechatList.asObservable();
     }
-
     get currentActivechat() {
         return this._currentActivechat.asObservable();
     }
@@ -47,21 +40,17 @@ export class AdvertService {
     get currentMessageList() {
         return this._currentMessageList.asObservable();
     }
-
     get currentMessage() {
         return this._currentMessage.asObservable();
     }
-    //Send message 
+    //Send message
     get currentSendMessage() {
         return this._currentSendMessage.asObservable();
     }
-
-
     constructor(private http: HttpClient){
         setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
         setString("sm-service-messages-host", "http://192.168.1.174:9956");
     }
-
     initializeTextbooks() {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
         console.log(reqUrl);
@@ -80,7 +69,7 @@ export class AdvertService {
                 let textbookList: TextbookResult[] = [];
                 // get the textbooklist.
                 const JSONTextbookList = result.textbooks;
-                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONTextbookList.forEach(element => {
                     element.responseStatusCode =200;
                     element.imagebytes = "data:image/png;base64," + element.imagebytes;
@@ -98,7 +87,6 @@ export class AdvertService {
         });
         return null;
     }
-
     setTextbook(advertisementID: string) {
         this.currentTextbookList.forEach(element => {
             element.Textbooks.forEach(innerElement => {
@@ -108,7 +96,6 @@ export class AdvertService {
             })
         });
     }
-
     initializeActiveChats(userid) {
         const reqUrl = getString("sm-service-messages-host") + "/chats?userid=" + userid;
         console.log(reqUrl);
@@ -127,28 +114,24 @@ export class AdvertService {
                 let activechatList: ActivechatResult[] = [];
                 // get the activechatlist.
                 const JSONActivechatList = result.activechats;
-                // iterate through the activechatlist and read each textbook into a textbook object and push to the list variable 
+                // iterate through the activechatlist and read each textbook into a textbook object and push to the list variable
                 JSONActivechatList.forEach(element => {
                     element.responseStatusCode =200;
                     element.imagebytes = "data:image/png;base64," + element.imagebytes;
                     activechatList.push(element)
                 })
-                const activechatResult = new ActivechatResultList(200, activechatList);
+                const activechatResult = new ActivechatResultList(200, activechatList, "Successfully recieved chats");
                 this._currentActivechatList.next(activechatResult);
             } else {
-                const activechatResult = new ActivechatResult(responseCode, null, null, null, null);
-                this._currentActivechatList.next(activechatResult);
-                const activechatlistResult = new ActivechatResultList(responseCode, activechatList,response.content.toString()); 
+                const activechatlistResult = new ActivechatResultList(responseCode, null,response.content.toString());
                 this._currentActivechatList.next(activechatlistResult);
             }
         }, (e) => {
-
-            const activechatResult = new ActivechatResultList(400, "An Error has been recieved, please contact support.");
+            const activechatResult = new ActivechatResultList(400,null, "An Error has been recieved, please contact support.");
             this._currentActivechatList.next(activechatResult);
         });
         return null;
     }
-
     setActivechat(chatid: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message?chatid=" + chatid;
         console.log(reqUrl);
@@ -169,14 +152,14 @@ export class AdvertService {
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
                 console.log(userchat);
-                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;
-                     //for message styling 
+                     //for message styling
                     element.userchat = userchat;
                     messageList.push(element)
                 })
-                const messageResult = new MessageResultList(200, messageList);
+                const messageResult = new MessageResultList(200, messageList, "Messages successfully recieved");
                 this._currentMessageList.next(messageResult);
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
@@ -188,7 +171,6 @@ export class AdvertService {
         });
         return null;
     }
-
     SendMessage(chatid: string, authorid: string, message: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message" ;
         console.log(reqUrl);
@@ -211,14 +193,14 @@ export class AdvertService {
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
                 console.log(userchat);
-                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;
-                    //for message styling 
+                    //for message styling
                     element.userchat = userchat;
                     messageList.push(element)
                 })
-                const messageResult = new MessageResultList(200, messageList);
+                const messageResult = new MessageResultList(200, messageList, "Message successfully recieved");
                 this._currentMessageList.next(messageResult);
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
@@ -231,8 +213,3 @@ export class AdvertService {
         return null;
     }
 }
-
-
-
-
-
