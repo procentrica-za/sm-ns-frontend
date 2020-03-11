@@ -124,12 +124,12 @@ export class AdvertService {
             } else {
                 const activechatlistResult = new ActivechatResultList(responseCode, null,response.content.toString());
                 this._currentActivechatList.next(activechatlistResult);
+    
             }
         }, (e) => {
             const activechatResult = new ActivechatResultList(400,null, "An Error has been recieved, please contact support.");
             this._currentActivechatList.next(activechatResult);
         });
-        return null;
     }
     setActivechat(chatid: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message?chatid=" + chatid;
@@ -161,14 +161,14 @@ export class AdvertService {
                 const messageResult = new MessageResultList(200, messageList, "Messages successfully recieved");
                 this._currentMessageList.next(messageResult);
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const messagelistResult = new MessageResultList(responseCode, null,response.content.toString());
+                this._currentMessageList.next(messagelistResult);
+    
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+            const messageResult = new MessageResultList(400,null, "An Error has been recieved, please contact support.");
+            this._currentMessageList.next(messageResult);
         });
-        return null;
     }
     SendMessage(chatid: string, authorid: string, message: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message" ;
@@ -202,13 +202,13 @@ export class AdvertService {
                 const messageResult = new MessageResultList(200, messageList, "Message successfully recieved");
                 this._currentMessageList.next(messageResult);
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const messagelistResult = new MessageResultList(responseCode, null,response.content.toString());
+                this._currentMessageList.next(messagelistResult);
+    
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+            const messageResult = new MessageResultList(400,null, "An Error has been recieved, please contact support.");
+            this._currentMessageList.next(messageResult);
         });
-        return null;
     }
 }

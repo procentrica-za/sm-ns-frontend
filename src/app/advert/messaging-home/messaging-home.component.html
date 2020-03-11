@@ -4,7 +4,7 @@
             <Gridlayout rows="*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label *ngIf="activechat" row="0" col="0" [text]="activechat.username" textWrap="true"  ></Label>
                 <Label *ngIf="activechat" row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
-                <Label *ngIf="activechat" row="2" col="2" class="RecievedMessagedatechats" [text]="activechat.messagedate" textWrap="true"  ></Label>
+                <Label *ngIf="activechat" row="2" col="2" [text]="activechat.messagedate" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>
             </Gridlayout>
         </ng-template>
     </RadListView>

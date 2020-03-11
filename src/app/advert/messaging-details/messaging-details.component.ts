@@ -16,6 +16,7 @@ import * as appSettings from "tns-core-modules/application-settings";
     moduleId: module.id
 })
 export class MessagingDetailsComponent implements OnInit, OnDestroy {
+    
     form: FormGroup;
     messageControlIsValid = true;
     @ViewChild('messageEl', {static:false}) messageEl: ElementRef<TextField>;
@@ -76,10 +77,11 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
         const chatid = appSettings.getString("chatid");
         const authorid = appSettings.getString("userid");
         const message = this.form.get('message').value;
-         //Timeout to give loading bar time to appear
+
          setTimeout(() =>{
-             //Verify Login Credentials
+    //send message
              this.advertServ.SendMessage(chatid,authorid, message);
          },100);
+         this.form.reset();
      }
 }

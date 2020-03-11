@@ -29,18 +29,13 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                     this.activechatResultList = activechatResult
                     if(this.activechatResultList.responseStatusCode === 200){
                         this.chatsLoaded = true;
-                    }
-                    } else if(this.activechatResultList.responseStatusCode === 500) {
-                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
-                    }
-                    else if(this.activechatResultList.responseStatusCode === 400) {
-                        TNSFancyAlert.showError("Connection error", this.activechatResultList.message, "Dismiss");
-                    }
-                    else {
-                        TNSFancyAlert.showError("Connection error", this.activechatResultList.message, "Dismiss");
+                    } else {
+                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
                 }
+            }
         );
+
         const userid = appSettings.getString("userid");
         this.advertServ.initializeActiveChats(userid);
     }
