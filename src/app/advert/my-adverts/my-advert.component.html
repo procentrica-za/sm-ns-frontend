@@ -1,19 +1,93 @@
-<ns-action-bar [actionBarTitle]="'My Advertisements'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+<ns-action-bar [actionBarTitle]="'My Advertisemenets'" [hasMenu]=true [showBackButton]=false>
+    <ActionItem position="right" (tap)="addAdvertisementNavigate()" >
+        <Label text="Add" ></Label>
+    </ActionItem>
+</ns-action-bar>
+<TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
 
-<RadListView  *ngIf="imagesLoaded" [items]="userAdvertResultList.Advertisements" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
-    <ng-template tkListItemTemplate let-userAdvert="item" >
-        <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
-            <Image *ngIf="userAdvert"  row="0" col="0" rowspan="5" [src]="userAdvert.imagebytes" class="thumb-img-circle" shadow="2"></Image>
-            <Label *ngIf="userAdvert" row="0" col="1" [text]="userAdvert.advertisementtype" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-            <Label *ngIf="userAdvert" row="1" col="1" [text]="userAdvert.description" textwrap="true" ></Label>
-            <StackLayout *ngIf="userAdvert" row="3" col="1" orientation="horizontal" >
-                <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
-                <Label  [text]="userAdvert.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
-            </StackLayout>
-        </Gridlayout>
-    </ng-template>
-</RadListView>
+    <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
+    
+    <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
+    <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+    <RadListView  *ngIf="textbookImagesLoaded" [items]="userTextbookAdvertResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <ng-template tkListItemTemplate let-textbook="item" >
+            <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                <Label *ngIf="textbook" row="0" col="1" [text]="textbook.textbookname" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                <!--<ScrollView row="1" col="1">
+                    <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                </ScrollView>-->
+               
+                <StackLayout *ngIf="textbook" row="3" col="1" orientation="horizontal" >
+                    <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                    <Label  [text]="textbook.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                </StackLayout>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
+    </StackLayout>
 
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!imagesLoaded">
-    <ActivityIndicator [busy]="!imagesLoaded"></ActivityIndicator>
+    <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
+    <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
+        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+        <RadListView  *ngIf="accomodationImagesLoaded" [items]="userAccomodationAdvertResultList.Accomodations" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-accomodation="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="accomodation" row="0" col="1" [text]="accomodation.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="accomodation" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="accomodation.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
+    </StackLayout>
+    <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
+        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+        <RadListView  *ngIf="tutorImagesLoaded" [items]="userTutorAdvertResultList.Tutors" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-tutor="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="tutor" row="0" col="1" [text]="tutor.subject" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="tutor" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="tutor.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
+    </StackLayout>
+    <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
+        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+        <RadListView  *ngIf="noteImagesLoaded" [items]="userNoteAdvertResultList.Notes" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-note="item" >
+                <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>
+                    <Label *ngIf="note" row="0" col="1" [text]="note.modulecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <!--<ScrollView row="1" col="1">
+                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>-->
+                   
+                    <StackLayout *ngIf="note" row="3" col="1" orientation="horizontal" >
+                        <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
+                        <Label  [text]="note.price " textWrap="true" class="GridLayoutAdListPriceLabel"></Label >                           
+                    </StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
+    </StackLayout>
+    
+    
+</TabView>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!allImagesLoaded">
+    <ActivityIndicator [busy]="!allImagesLoaded"></ActivityIndicator>
 </FlexboxLayout>

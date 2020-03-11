@@ -98,21 +98,102 @@ export class NoteResultList {
         public Notes : NoteResult[]
     ){}
 }
-export class UserAdvertisementResult {
-    constructor(
-        public responseStatusCode: number,
-        public advertisementid: string,
-        public isselling: boolean,
-        public advertisementtype: string,
-        public entityid: string,
-        public price: string,
-        public description: string,
-        public imagebytes: string){}
+export class UserAdvertTextbookResult {
+    constructor (
+        public responseStatusCode : number,
+        public advertisementid : string,
+        public userid : string,
+        public isselling : boolean,
+        public advertisementtype : string,
+        public price : string,
+        public description : string,
+        public textbookid : string,
+        public modulecode : string,
+        public textbookname : string,
+        public edition : string,
+        public quality : string,
+        public author : string,
+        public imagebytes : string
+    ){}
 }
 
-export class UserAdvertisementResultList {
-    constructor(
-        public responseStatusCode: number,
-        public Advertisements: UserAdvertisementResult[]
+export class UserAdvertTextbookResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Textbooks : UserAdvertTextbookResult[]
+    ){}
+}
+
+export class UserAdvertAccomodationResult {
+    constructor (
+        public responseStatusCode : number,
+        public advertisementid : string,
+        public userid : string,
+        public isselling : boolean,
+        public advertisementtype : string,
+        public price : string,
+        public description : string,
+        public accomodationid : string,
+        public accomodationtypecode : string,
+        public location : string,
+        public distancetocampus : string,
+        public institutionname : string,
+        public imagebytes : string
+    ){}
+}
+
+export class UserAdvertAccomodationResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Accomodations : UserAdvertAccomodationResult[]
+    ){}
+}
+
+export class UserAdvertTutorResult {
+    constructor (
+        public responseStatusCode : number,
+        public advertisementid : string,
+        public userid : string,
+        public isselling : boolean,
+        public advertisementtype : string,
+        public price : string,
+        public description : string,
+        public tutorid : string,
+        public subject : string,
+        public yearcompleted : string,
+        public venue : string,
+        public notesincluded : string,
+        public terms: string,
+        public modulecode: string,
+        public imagebytes : string
+    ){}
+}
+
+export class UserAdvertTutorResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Tutors : UserAdvertTutorResult[]
+    ){}
+}
+
+export class UserAdvertNoteResult {
+    constructor (
+        public responseStatusCode : number,
+        public advertisementid : string,
+        public userid : string,
+        public isselling : boolean,
+        public advertisementtype : string,
+        public price : string,
+        public description : string,
+        public noteid : string,
+        public modulecode: string,
+        public imagebytes : string
+    ){}
+}
+
+export class UserAdvertNoteResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Notes : UserAdvertNoteResult[]
     ){}
 }

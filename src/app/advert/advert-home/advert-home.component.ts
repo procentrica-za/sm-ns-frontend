@@ -6,6 +6,9 @@ import { TNSFancyAlert } from "nativescript-fancyalert";
 import { ImageSource } from "tns-core-modules/image-source";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { EventData } from "tns-core-modules/ui/page/page";
+import { Switch } from "tns-core-modules/ui/switch/switch";
+import * as appSettings from "tns-core-modules/application-settings";
 @Component({
     selector: 'ns-advert-home',
     templateUrl: './advert-home.component.html',
@@ -23,20 +26,27 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     public tutorResultList: TutorResultList;
     private noteResultListSub: Subscription;
     public noteResultList: NoteResultList;
-    public allImagesLoaded; textbookImagesLoaded; accomodationImagesLoaded; tutorImagesLoaded; noteImagesLoaded : boolean;
-    
+    public allImagesLoaded; textbookImagesLoaded; accomodationImagesLoaded; tutorImagesLoaded; noteImagesLoaded; isSelling : boolean;
+
    
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
+        this.isSelling = appSettings.getBoolean("mainAdvertSelling");
+    }
 
+    onCheckedChange(args: EventData){
+        let sw = args.object as Switch;
+        appSettings.setBoolean("mainAdvertSelling", sw.checked);
+        this.isSelling = appSettings.getBoolean("mainAdvertSelling");
+        this.ngOnInit();
     }
 
     ngOnInit() {
-        //this.allImgesLoaded = false;
         this.textbookImagesLoaded = false;
         this.accomodationImagesLoaded = false;
         this.tutorImagesLoaded = false;
         this.noteImagesLoaded = false; 
-        this.allImagesLoaded = false;       
+        this.allImagesLoaded = false;  
+             
         
         this.textbookResultListSub = this.advertServ.currentTextbookList.subscribe(
             textbookResult => {
@@ -44,6 +54,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                     this.textbookResultList = textbookResult
                     if(this.textbookResultList.responseStatusCode === 200){
                         this.textbookImagesLoaded = true;
+                        if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                            this.allImagesLoaded = true;
+                        }
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -58,6 +71,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                     this.accomodationResultList = accomodationResult
                     if(this.accomodationResultList.responseStatusCode === 200){   
                         this.accomodationImagesLoaded = true;
+                        if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                            this.allImagesLoaded = true;
+                        }
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -72,6 +88,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                     this.tutorResultList = tutorResult
                     if(this.tutorResultList.responseStatusCode === 200){
                         this.tutorImagesLoaded = true;
+                        if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                            this.allImagesLoaded = true;
+                        }
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -86,6 +105,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                     this.noteResultList = noteResult
                     if(this.noteResultList.responseStatusCode === 200){
                         this.noteImagesLoaded = true;
+                        if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                            this.allImagesLoaded = true;
+                        }
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
@@ -94,14 +116,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             }
         );
         
-        this.advertServ.initializeTextbooks();
-        this.advertServ.initializeAccomodation();
-        this.advertServ.initializeTutors();
-        this.advertServ.initializeNotes();
+        this.advertServ.initializeAdvertisements(this.isSelling);
 
-        if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
-            this.allImagesLoaded = true;
-        }
+        
     }
     
     onItemSelected(args :ListViewEventData): void {
