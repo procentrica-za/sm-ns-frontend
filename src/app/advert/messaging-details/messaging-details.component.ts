@@ -45,16 +45,19 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
                 if(messageResult) {
                     this.messageResultList = messageResult
                     if(this.messageResultList.responseStatusCode === 200){
-                        console.log(this.messageResultList);
                         this.messagesLoaded = true;
-                    } else {
-                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                    } else if(this.messageResultList.responseStatusCode === 500) {
+                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
                     }
-                    
+                    else if(this.messageResultList.responseStatusCode === 400) {
+                        TNSFancyAlert.showError("Connection error", this.messageresultlist.Message, "Dismiss");
+                    }
+                    else {
+                        TNSFancyAlert.showError("Connection error", this.messageresultlist.Message, "Dismiss");
+                    }
                 }
             }
         );
-
         this.form = new FormGroup({
             message: new FormControl(
                 null,

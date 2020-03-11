@@ -125,9 +125,9 @@ export class AdvertService {
                 const result = response.content.toJSON();
                 // Instansiate a textbook list object to read the response in to.
                 let activechatList: ActivechatResult[] = [];
-                // get the textbooklist.
+                // get the activechatlist.
                 const JSONActivechatList = result.activechats;
-                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable 
+                // iterate through the activechatlist and read each textbook into a textbook object and push to the list variable 
                 JSONActivechatList.forEach(element => {
                     element.responseStatusCode =200;
                     element.imagebytes = "data:image/png;base64," + element.imagebytes;
@@ -136,12 +136,15 @@ export class AdvertService {
                 const activechatResult = new ActivechatResultList(200, activechatList);
                 this._currentActivechatList.next(activechatResult);
             } else {
-                // TODO : Handle if code other than 200 or 500 has been received
-                console.log("in the else");
+                const activechatResult = new ActivechatResult(responseCode, null, null, null, null);
+                this._currentActivechatList.next(activechatResult);
+                const activechatlistResult = new ActivechatResultList(responseCode, activechatList,response.content.toString()); 
+                this._currentActivechatList.next(activechatlistResult);
             }
         }, (e) => {
-            // TODO : Handle error
-            console.log(e);
+
+            const activechatResult = new ActivechatResultList(400, "An Error has been recieved, please contact support.");
+            this._currentActivechatList.next(activechatResult);
         });
         return null;
     }

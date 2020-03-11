@@ -1,10 +1,10 @@
 <ns-action-bar [actionBarTitle]="'Chats'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-    <RadListView  *ngIf="chatsLoaded " [items]="activechatResultList.Activechats" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+    <RadListView  *ngIf="chatsLoaded " [items]="activechatResultList.Activechats" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-activechat="item" >
-            <Gridlayout rows="*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+            <Gridlayout rows="*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label *ngIf="activechat" row="0" col="0" [text]="activechat.username" textWrap="true"  ></Label>
                 <Label *ngIf="activechat" row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
-                <Label *ngIf="activechat" row="2" col="2" [text]="activechat.messagedate" textWrap="true"  ></Label>
+                <Label *ngIf="activechat" row="2" col="2" class="RecievedMessagedatechats" [text]="activechat.messagedate" textWrap="true"  ></Label>
             </Gridlayout>
         </ng-template>
     </RadListView>

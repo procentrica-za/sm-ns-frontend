@@ -38,7 +38,8 @@ export class ActivechatResult {
 export class ActivechatResultList {
     constructor (
         public responseStatusCode : number,
-        public Activechats : ActivechatResult[]
+        public Activechats : ActivechatResult[],
+        public message : string,
     ){}
 }
 
@@ -56,6 +57,7 @@ export class MessageResult {
 export class MessageResultList {
     constructor (
         public responseStatusCode : number,
-        public Messages : MessageResult[]
+        public Messages : MessageResult[],
+        public message : string,
     ){}
 }
