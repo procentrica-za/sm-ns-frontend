@@ -117,7 +117,6 @@ export class AdvertService {
                 // iterate through the activechatlist and read each textbook into a textbook object and push to the list variable
                 JSONActivechatList.forEach(element => {
                     element.responseStatusCode =200;
-                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
                     activechatList.push(element)
                 })
                 const activechatResult = new ActivechatResultList(200, activechatList, "Successfully recieved chats");
