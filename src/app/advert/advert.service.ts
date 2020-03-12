@@ -48,8 +48,8 @@ export class AdvertService {
         return this._currentSendMessage.asObservable();
     }
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
-        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-advert-manager-host", "http://10.10.100.156:9953");
+        setString("sm-service-messages-host", "http://10.10.100.156:9956");
     }
     initializeTextbooks() {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";

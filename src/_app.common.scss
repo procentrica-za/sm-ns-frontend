@@ -275,8 +275,7 @@ ActionBar {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
     font-size: 36em;
-    margin-top: 11%;
-    color: $secondary
+    color: $secondary;
 }
 
 .GridLayoutMessages {
@@ -292,6 +291,8 @@ ActionBar {
 
 .SentMessage {
     color: black;
+    text-align: right;
+    padding-right: 5%;
     font-weight: 100;
     font-size: 16em;
     background-color: lightgreen;
@@ -299,7 +300,25 @@ ActionBar {
 
 .RecievedMessage {
     color: black;
+    padding-left: 5%;
     font-weight: 100;
+    font-size: 16em;
+    background-color: azure;
+}
+
+.SentMessageusername {
+    color: black;
+    font-weight: 900;
+    text-align: right;
+    padding-right:5%;
+    font-size: 16em;
+    background-color: lightgreen;
+}
+
+.RecievedMessageusername {
+    color: black;
+    padding-left:5%;
+    font-weight: 900;
     font-size: 16em;
     background-color: azure;
 }
@@ -326,9 +345,8 @@ ActionBar {
 }
 
 .messageinput {
-   margin-top: 83.7%;
    background-color: $primary;
-
+   
 }
 .messagetext {
     border-style: solid;
@@ -339,7 +357,7 @@ ActionBar {
 
 .messagegroup {
     width: 100%;
-     border-bottom-color: $primary;
+    border-bottom-color: $primary;
 
 }
 
@@ -371,6 +389,8 @@ ActionBar {
 .sendmessageicon {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
+    text-align: right;
+    padding-right:5%;
     font-size: 20em;
     color: black;
     background-color: lightgreen;
@@ -379,12 +399,14 @@ ActionBar {
 .recievemessageicon {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
+    padding-left:5%;
     font-size: 20em;
     color: black;
     background-color: azure;
 }
 
 .GridLayoutChatListStyle {
+    margin-bottom: 20;
     border-style: solid;
     border-width: 1px;
     background-color: #ffffff;
