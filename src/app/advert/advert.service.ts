@@ -106,7 +106,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const activechatResultErr = new ActivechatResult(500, null, null, null, null);
+                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();

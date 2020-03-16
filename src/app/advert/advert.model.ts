@@ -27,6 +27,8 @@ export class ActivechatResult {
     constructor (
         public responseStatusCode : number,
         public chatid : string,
+        public advertisementtype : string,
+        public advertisementid : string,
         public username : string,
         public message : string,
         public messagedate : string,
