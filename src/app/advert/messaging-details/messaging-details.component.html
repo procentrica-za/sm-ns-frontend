@@ -1,0 +1,48 @@
+<ns-action-bar  [actionBarTitle]="'Chat'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+<StackLayout [formGroup]="form" class="messageinput">
+    <RadListView left="0" top="0" dock="top"  *ngIf="messagesLoaded " [items]="messageResultList.Messages" class="messageRadList">
+        <ng-template tkListItemTemplate let-message="item" >
+            <Gridlayout rows="*,*,*,*" columns="15*,40*,12*" class="messageitem" class="GridLayoutMessageListStyle" shadow="6" >
+                <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="0" col="0" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" row="1" col="0"  textWrap="true" text="&#xf0a4;" class="recievemessageicon" ></Label>
+                <Label  *ngIf="message.username === message.userchat" row="1" col="0"  textWrap="true" text="" class="SentMessage" ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessageusername" row="0" col="0" [text]="message.username" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="0" col="1" text=""  textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="0" col="1" text=""  textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessagedate" row="2" col="2" [text]="message.messagedate" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessagedate"row="2" col="2" [text]="message.messagedate" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessageusername" row="0" col="2" text="You" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage" row="0" col="2" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="1" col="1" [text]="message.message" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage" row="1" col="1" [text]="message.message" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" row="1" col="2" text="&#xf0a5;" class="sendmessageicon" ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage" row="1" col="2" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="2" col="0" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="2" col="0" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="2" col="1" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="2" col="1" text="" textWrap="true"  ></Label>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
+
+    
+    <Gridlayout rows="45" columns="45*,5*" class="messagegroup" class="GridLayoutMessageinput" shadow="6" >
+        <TextView
+        class ="messagetext"
+        row="0" col="0"
+        height="auto" 
+        editable="true" 
+        hint="Type a message ..."
+        returnKeyType="done"
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="message"
+        #messageEl
+        ></TextView>
+        <Label row="0" col="1"(tap)="onSendMessage()" text="&#xf1d8;" class="SendMessageLabel" ></Label>
+    </Gridlayout>
+        <TextField 
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
+        #hiddenEl
+    ></TextField>
+    </StackLayout>

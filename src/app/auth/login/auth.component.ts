@@ -30,6 +30,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     isLoading = false;
     rememberMe = false;
     userid = "";
+    //set username variable for messaging 
+    username = "";
 
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
     @ViewChild('usernameEl', {static:false}) usernameEl: ElementRef<TextField>;
@@ -79,12 +81,14 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.loginResultSub = this.authServ.currentLogin.subscribe(
             login => {                
                 if(login){
-                    this.isLoading = false;
+                    this.isLoading = false; 
                     this.login = login;
                     // TODO : Need to validate if this is a valid login
                     if(this.login.responseStatusCode === 200){
                        //Save user details and rememberme info
                        appSettings.setString("userid", this.login.loginUser.id);
+                       //Save username for messaging purposes
+                       appSettings.setString("username", this.login.loginUser.username);
                        appSettings.setBoolean("rememberme", this.rememberMe);
                        appSettings.setBoolean("loggedIn", true);
                        this.authServ.clearAllObjects();

@@ -16,26 +16,49 @@ export class TextbookResult {
         public imagebytes : string
     ){}
 }
-
 export class TextbookResultList {
     constructor (
         public responseStatusCode : number,
         public Textbooks : TextbookResult[]
     ){}
 }
-
-//messaging service 
+//messaging service
 export class ActivechatResult {
     constructor (
         public responseStatusCode : number,
         public chatid : string,
+        public advertisementtype : string,
+        public advertisementid : string,
         public username : string,
+        public message : string,
+        public messagedate : string,
     ){}
 }
-
 export class ActivechatResultList {
     constructor (
         public responseStatusCode : number,
-        public Activechats : ActivechatResult[]
+        public Activechats : ActivechatResult[],
+        public message : string,
     ){}
 }
+export class MessageResult {
+    constructor (
+        public responseStatusCode : number,
+        public messageid : string,
+        public username : string,
+        public message : string,
+        public messagedate : string,
+    ){}
+}
+export class MessageResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Messages : MessageResult[],
+        public message : string,
+    ){}
+}
+
+
+
+
+

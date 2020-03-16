@@ -3,7 +3,6 @@ import { AdvertService } from "../advert.service";
 import { ActivechatResult, ActivechatResultList} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-import { ImageSource } from "tns-core-modules/image-source";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
 //import for app settings
@@ -14,26 +13,16 @@ import * as appSettings from "tns-core-modules/application-settings";
     styleUrls: ['./messaging-home.component.scss'],
     moduleId: module.id
 })
-
 export class MessagingHomeComponent implements OnInit, OnDestroy {
     userid = "";
-
+    chatid = "";
     private activechatResultListSub: Subscription;
     public activechatResultList: ActivechatResultList;
     public chatsLoaded : boolean;
-    
-   
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
-    
-        
-        
     }
-
-   
-
     ngOnInit() {
-        this.chatsLoaded = false;        
-        
+        this.chatsLoaded = false;
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
@@ -43,26 +32,18 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
-                    
                 }
             }
         );
 
-
         const userid = appSettings.getString("userid");
-
         this.advertServ.initializeActiveChats(userid);
     }
-
-
-    
-    
     onItemSelected(args :ListViewEventData): void {
-        const tappedMessageItem = args.view.bindingContext;
-        this.advertServ.setActivechat(tappedMessageItem.chatid);
-        //console.log(tappedAdvertItem.advertisementid);
-        //this.router.navigate(['/advert/details'], { clearHistory: true });
-        this.router.navigate(['/messagedetails'],
+        const tappedActivechatItem = args.view.bindingContext;
+        this.advertServ.setActivechat(tappedActivechatItem.chatid);
+        appSettings.setString("chatid", tappedActivechatItem.chatid);
+        this.router.navigate(['/messagingdetails'],
             {
                 animated: true,
                 transition: {
@@ -71,11 +52,8 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                     curve: "ease"
                 }
             });
-        //console.log(`The following ad was selected: ${args.index}`);
+
     }
-
-
-
     ngOnDestroy() {
         if(this.activechatResultListSub){
             this.activechatResultListSub.unsubscribe();
