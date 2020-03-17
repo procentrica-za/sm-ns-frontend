@@ -41,9 +41,9 @@ export class AuthComponent implements OnInit, OnDestroy {
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
 
-       /* //TODO: REmove before committing
+        //TODO: REmove before committing
         //appSettings.setString("userid", this.login.loginUser.id);
-        appSettings.setBoolean("rememberme", true);
+       /* appSettings.setBoolean("rememberme", true);
         appSettings.setBoolean("loggedIn", true);*/
 
         //Check if remember me was enabled, if so, navigate to appropriate page

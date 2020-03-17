@@ -1,3 +1,23 @@
+
+
+export class AddAccomodationResult {
+    constructor (
+        public responseStatusCode: number,
+        public accomodationadded: boolean,
+        public id: string,
+        public message: string
+   ){}
+}
+
+export class AddAdvertisementResult {
+    constructor(
+        public responseStatusCode: number,
+        public advertisementposted: boolean,
+        public id: string,
+        public message: string
+    ){}
+}
+
 export class TextbookResult {
     constructor (
         public responseStatusCode : number,

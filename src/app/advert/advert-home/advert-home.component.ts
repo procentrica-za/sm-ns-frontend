@@ -37,7 +37,13 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
         let sw = args.object as Switch;
         appSettings.setBoolean("mainAdvertSelling", sw.checked);
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
-        this.ngOnInit();
+        if(this.allImagesLoaded) {
+            this.allImagesLoaded = false;
+            setTimeout(() =>{
+                this.advertServ.clearSelectedAdvertisement();
+                this.advertServ.initializeAdvertisements(this.isSelling);
+            },100); 
+        }
     }
 
     ngOnInit() {
@@ -52,6 +58,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             textbookResult => {
                 if(textbookResult) {
                     this.textbookResultList = textbookResult
+                    console.log("inside textbook subscription");
                     if(this.textbookResultList.responseStatusCode === 200){
                         this.textbookImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){

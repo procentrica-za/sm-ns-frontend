@@ -55,10 +55,15 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
 
     onCheckedChange(args: EventData){
         let sw = args.object as Switch;
-        appSettings.setBoolean("myAdvertsSelling", sw.checked);
-        this.isSelling = appSettings.getBoolean("myAdvertsSelling");
-        this.allImagesLoaded = false;
-        this.ngOnInit();
+        appSettings.setBoolean("myAdvertSelling", sw.checked);
+        this.isSelling = appSettings.getBoolean("myAdvertSelling");
+        if(this.allImagesLoaded) {
+            this.allImagesLoaded = false;
+            setTimeout(() =>{
+                this.advertServ.clearSelectedUserAdvertisement();
+                this.advertServ.initializeUserAdvertisements(this.UserID, this.isSelling);
+            },100); 
+        }
     }
 
     ngOnInit() {

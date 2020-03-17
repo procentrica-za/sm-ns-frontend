@@ -1,0 +1,12 @@
+
+<StackLayout>
+    <StackLayout *ngIf="AccomodationType">
+        <ListPicker [items]="accomodationTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAcdTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onAcdTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+    <StackLayout *ngIf="InstitutionType">
+        <ListPicker [items]="institutionTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexInstTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onInstTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+</StackLayout>
+

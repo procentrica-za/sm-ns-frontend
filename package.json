@@ -21,14 +21,18 @@
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
     "nativescript-angular": "~8.2.0",
+    "nativescript-drop-down": "^5.0.4",
     "nativescript-fancyalert": "^3.0.9",
     "nativescript-ng-shadow": "^2.1.0",
     "nativescript-theme-core": "~1.0.6",
     "nativescript-ui-listview": "^8.0.1",
     "nativescript-ui-sidedrawer": "^8.0.0",
+    "nativescript-uuid": "0.0.1",
+    "node-uuid": "^1.4.8",
     "reflect-metadata": "~0.1.12",
     "rxjs": "^6.4.0",
     "tns-core-modules": "~6.0.0",
+    "uuid": "^7.0.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

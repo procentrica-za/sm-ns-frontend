@@ -9,18 +9,31 @@ import { NgShadowModule} from "nativescript-ng-shadow";
 import { AdvertDetailsComponent } from "./advert-details/advert-details.component";
 import { MyAdvertComponent } from "./my-adverts/my-advert.component"
 import { AddAdvertComponent } from "./add-advert/add-advert.component";
+import { DropDownModule } from "nativescript-drop-down/angular";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
+import { AdvertListPickerComponent } from "./advert-listpicker/advert-listpicker.component"
 @NgModule({
     declarations: [
         AdvertHomeComponent,
         AdvertDetailsComponent,
         MyAdvertComponent,
-        AddAdvertComponent
+        AddAdvertComponent,
+        AdvertListPickerComponent
     ],
-    imports: [NativeScriptCommonModule, SharedModule, AdvertRoutingModule, NativeScriptUIListViewModule, NgShadowModule],
+    imports: [NativeScriptCommonModule,
+              SharedModule,
+              AdvertRoutingModule,
+              NativeScriptUIListViewModule,
+              NgShadowModule,
+              DropDownModule,
+              NativeScriptFormsModule,
+              ReactiveFormsModule],
     providers: [
         AdvertService
     ],
-    schemas: [NO_ERRORS_SCHEMA]
+    schemas: [NO_ERRORS_SCHEMA],
+    entryComponents: [AdvertListPickerComponent]
 })
 
 export class AdvertModule {}
