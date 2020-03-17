@@ -1,0 +1,12 @@
+<ns-action-bar [actionBarTitle]="'Chats'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+    <RadListView  *ngIf="ratingsLoaded " [items]="outstandingratingResultList.Outstandingratings" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
+        <ng-template tkListItemTemplate let-outstandingrating="item" >
+            <Gridlayout rows="*,*,*,*,*" columns="*,2*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
+                <Label *ngIf="outstandingrating" row="0" col="0" class="SentMsessageusername" [text]="outstandingrating.username" textWrap="true"  ></Label>
+                <Label *ngIf="outstandingrating" row="1" col="1" [text]="outstandingrating.price"  textWrap="true"  ></Label>
+                <Label *ngIf="outstandingrating" row="2" col="1" [text]="outstandingrating.title" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>
+                <Label *ngIf="outstandingrating" row="2" col="2" [text]="outstandingrating.description" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
+    

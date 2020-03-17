@@ -9,6 +9,8 @@ import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
 //messaging imports 
 import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.component";
 import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
+//rating imports
+import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
 
 
 const routes: Routes = [
@@ -22,7 +24,8 @@ const routes: Routes = [
         loadChildren: '~/app/advert/advert.module#AdvertModule'
     },
     { path: 'messaginghome', component: MessagingHomeComponent },
-    { path: 'messagingdetails', component: MessagingDetailsComponent }
+    { path: 'messagingdetails', component: MessagingDetailsComponent },
+    { path: 'ratinghome', component: RatingHomeComponent },
 ];
 
 @NgModule({

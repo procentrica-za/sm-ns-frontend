@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
+import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList, OutstandingratingResult, OutstandingratingResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -23,6 +23,10 @@ export class AdvertService {
    //private _currentUserAdvertList = new BehaviorSubject
     private test: Subscription;
     public testList: TextbookResult[];
+
+     //Rating,outstanding service
+     private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
+     private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -47,9 +51,18 @@ export class AdvertService {
     get currentSendMessage() {
         return this._currentSendMessage.asObservable();
     }
+
+    // Rating Outstanding results
+    get currentOutstandingratingList() {
+        return this._currentOutstandingratingList.asObservable();
+    }
+    get currentOutstandingrating() {
+        return this._currentOutstandingrating.asObservable();
+    }
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://10.10.100.156:9953");
-        setString("sm-service-messages-host", "http://10.10.100.156:9956");
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
     }
     initializeTextbooks() {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
@@ -211,4 +224,44 @@ export class AdvertService {
             this._currentMessageList.next(messageResult);
         });
     }
+
+   //Outstading ratings for Buyer to rate seller
+   initializeOutstandingratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const outstandingratingResultErr = new OutstandingratingResult(500, null, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let outstandingratingList: OutstandingratingResult[] = [];
+            // get the outstandingratinglist.
+            const JSONOutstandingratingList = result.outstandingratings;
+            // iterate through the outstandingratinglist and read each textbook into a textbook object and push to the list variable
+            JSONOutstandingratingList.forEach(element => {
+                element.responseStatusCode =200;
+                outstandingratingList.push(element)
+            })
+            const outstandingratingResult = new OutstandingratingResultList(200, outstandingratingList, "Successfully recieved outstanding ratings");
+            this._currentOutstandingratingList.next(outstandingratingResult);
+        } else {
+            const outstandingratinglistResult = new OutstandingratingResultList(responseCode, null,response.content.toString());
+            this._currentOutstandingratingList.next(outstandingratinglistResult);
+
+        }
+    }, (e) => {
+        const outstandingratingResult = new OutstandingratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentOutstandingratingList.next(outstandingratingResult);
+    });
+}
+
+
+
 }
