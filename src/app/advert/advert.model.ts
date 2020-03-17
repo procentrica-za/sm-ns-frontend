@@ -76,6 +76,13 @@ export class OutstandingratingResultList {
     ){}
 }
 
+export class RateSellerResult {
+    constructor (
+        public responseStatusCode : number,
+        public sellerrated : boolean,
+        public message : string,
+    ){}
+}
 
 
 

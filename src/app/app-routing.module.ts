@@ -11,6 +11,8 @@ import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.c
 import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
 //rating imports
 import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
+import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
+
 
 
 const routes: Routes = [
@@ -26,6 +28,7 @@ const routes: Routes = [
     { path: 'messaginghome', component: MessagingHomeComponent },
     { path: 'messagingdetails', component: MessagingDetailsComponent },
     { path: 'ratinghome', component: RatingHomeComponent },
+    { path: 'rateseller', component: RatesellerComponent },
 ];
 
 @NgModule({

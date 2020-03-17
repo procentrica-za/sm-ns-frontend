@@ -159,7 +159,7 @@ ngOnDestroy() {
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
         this.emailEl.nativeElement.focus();
-        this.emailEl.nativeElement.dismissSoftInput();
+        this.emailEl.nativeElement.dismissSoftInput(); 
 
         if(!this.form.valid){
             return;

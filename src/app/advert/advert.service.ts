@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList, OutstandingratingResult, OutstandingratingResultList} from './advert.model'
+import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList, OutstandingratingResult, OutstandingratingResultList, RateSellerResult} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -27,6 +27,10 @@ export class AdvertService {
      //Rating,outstanding service
      private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
      private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
+     //rate seller service
+     private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
+
+
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -59,6 +63,11 @@ export class AdvertService {
     get currentOutstandingrating() {
         return this._currentOutstandingrating.asObservable();
     }
+    //Rate seller
+    get currentRateSeller() {
+        return this._currentRateSeller.asObservable();
+    }
+
     constructor(private http: HttpClient){
         setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
         setString("sm-service-messages-host", "http://192.168.1.174:9956");
@@ -260,6 +269,36 @@ export class AdvertService {
         const outstandingratingResult = new OutstandingratingResultList(400,null, "An Error has been recieved, please contact support.");
         this._currentOutstandingratingList.next(outstandingratingResult);
     });
+}
+//Rare seller
+RateSeller(ratingid: string, sellerrating: string, sellercomments: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ ratingid: ratingid,  sellerrating: sellerrating, sellercomments: sellercomments}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
+            this._currentRateSeller.next(RateSellerResultErr);
+        } else if (responseCode === 200) {
+            const result = response.content.toJSON();
+            const RateSellersuccessResult = new RateSellerResult(200, true, result.message);
+            this._currentRateSeller.next(RateSellersuccessResult);
+        } else {
+            const RateSellersuccessResult = new RateSellerResult(responseCode, false, response.content.toString());
+            this._currentRateSeller.next(RateSellersuccessResult); 
+        }
+    }, (e) => {
+
+        const RateSellersuccessResult = new RateSellerResult(400, false, "An Error has been recieved, please contact support.");
+        this._currentRateSeller.next(RateSellersuccessResult);
+    });
+    return null;
 }
 
 

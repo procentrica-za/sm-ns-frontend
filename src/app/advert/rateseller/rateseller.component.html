@@ -1,0 +1,48 @@
+<ns-action-bar  [actionBarTitle]="'Seller Rating'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+<StackLayout class="form" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Rating"
+            [ngClass]="{ invalid: !sellerratingControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="sellerrating"
+            #sellerratingEl
+        ></TextField>
+        <Label
+            *ngIf="!sellerratingControlIsValid"
+            text="Please enter a valid seller rating."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Seller Comments"
+            [ngClass]="{ invalid: !sellercommentsControlIsValid }"
+        ></Label>
+        <TextField
+             class="input"
+             returnKeyType="next"
+             required
+             [autocorrect]="false"
+             autocapitalizationType="none"
+             formControlName="sellercomments"
+             #sellercommentsEl
+        ></TextField>
+        <Label
+            *ngIf="!sellercommentsControlIsValid"
+            text="Please enter a valid seller comment."
+        ></Label>
+    </StackLayout>
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Rate Seller"
+        (tap)="onRateSeller()"
+    ></Button>
+</StackLayout>

@@ -24,6 +24,7 @@ import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-
 
 //rating imports
 import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
+import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
@@ -55,7 +56,8 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         NewpasswordComponent,
         MessagingHomeComponent,
         MessagingDetailsComponent,
-        RatingHomeComponent
+        RatingHomeComponent,
+        RatesellerComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
