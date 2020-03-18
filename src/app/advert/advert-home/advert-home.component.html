@@ -2,13 +2,14 @@
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false>
     
 </ns-action-bar>
-
-
+<StackLayout style="background-color: #efeeee;" orientation="vertical">
+    <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+</StackLayout>
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
     
-    <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
+    <!-- TAB AND RADLIST USED FOR TEXTBOOK -->
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
+    
     <RadListView  *ngIf="textbookImagesLoaded" [items]="textbookResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -29,7 +30,6 @@
 
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
         <RadListView  *ngIf="accomodationImagesLoaded" [items]="accomodationResultList.Accomodations" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -48,7 +48,6 @@
         </RadListView>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
         <RadListView  *ngIf="tutorImagesLoaded" [items]="tutorResultList.Tutors" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -67,7 +66,6 @@
         </RadListView>
     </StackLayout>
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-        <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
         <RadListView  *ngIf="noteImagesLoaded" [items]="noteResultList.Notes" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >

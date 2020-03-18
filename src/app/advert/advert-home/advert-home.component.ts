@@ -31,13 +31,20 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
    
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
+        console.log("Logged in user: " + appSettings.getString("userid"));
     }
 
     onCheckedChange(args: EventData){
         let sw = args.object as Switch;
         appSettings.setBoolean("mainAdvertSelling", sw.checked);
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
-        this.ngOnInit();
+        if(this.allImagesLoaded) {
+            this.allImagesLoaded = false;
+            setTimeout(() =>{
+                this.advertServ.clearSelectedAdvertisement();
+                this.advertServ.initializeAdvertisements(this.isSelling);
+            },100); 
+        }
     }
 
     ngOnInit() {

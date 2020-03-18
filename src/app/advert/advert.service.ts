@@ -1,5 +1,23 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {    TextbookResult,
+            TextbookResultList,
+            AccomodationResultList,
+            AccomodationResult,
+            NoteResultList,
+            TutorResultList,
+            NoteResult,
+            TutorResult,
+            UserAdvertAccomodationResult,
+            UserAdvertTutorResultList,
+            UserAdvertTextbookResultList,
+            UserAdvertNoteResultList,
+            UserAdvertAccomodationResultList,
+            UserAdvertNoteResult,
+            UserAdvertTextbookResult,
+            UserAdvertTutorResult,
+            AddAdvertisementResult,
+            AddAccomodationResult } from './advert.model'
 import { TextbookResult, TextbookResultList, AccomodationResultList, AccomodationResult, NoteResultList, TutorResultList, NoteResult, TutorResult, UserAdvertAccomodationResult, UserAdvertTutorResultList, UserAdvertTextbookResultList, UserAdvertNoteResultList, UserAdvertAccomodationResultList, UserAdvertNoteResult, UserAdvertTextbookResult, UserAdvertTutorResult } from './advert.model'
 import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
@@ -49,7 +67,8 @@ export class AdvertService {
     private _currentUserAdvertNoteList = new BehaviorSubject<UserAdvertNoteResultList>(null);
     private _currentUserAdvertNote = new BehaviorSubject<UserAdvertNoteResult>(null);
 
-
+    private _currentAddAdvertisement = new BehaviorSubject<AddAdvertisementResult>(null);
+    private _currentAddAccomodation = new BehaviorSubject<AddAccomodationResult>(null);
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -130,6 +149,14 @@ export class AdvertService {
         return this._currentUserAdvertNote.asObservable();
     }
 
+    get currentAddAccomodation(){
+        return this._currentAddAccomodation.asObservable();
+    }
+
+    get currentAddAdvertisement(){
+        return this._currentAddAdvertisement.asObservable();
+    }
+
     constructor(private http: HttpClient){
         setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
         setString("sm-service-messages-host", "http://10.10.100.156:9956");
@@ -138,6 +165,77 @@ export class AdvertService {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
         console.log(reqUrl);
 
+   
+    AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/accomodation" ;
+        console.log(reqUrl);
+        var testString = JSON.stringify({ id: acdID, accomodationtypecode: acdType, institutionname: instName, location: location, distancetocampus: distancetocampus })
+        console.log(testString);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ id: acdID, accomodationtypecode: acdType, institutionname: instName, location: location, distancetocampus: distancetocampus }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const AddAccomodationResultErr = new AddAccomodationResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddAccomodation.next(AddAccomodationResultErr);
+            } else if (responseCode === 200) {
+
+                const result = response.content.toJSON();
+                const AddAccomodationSuccess = new AddAccomodationResult(200, result.accomodationadded, result.id, result.message);
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+                console.log(reqUrl);
+                testString = JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description })
+                console.log(testString);
+                request ({
+                    url: reqUrl,
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description }),
+                    timeout: 5000
+                }).then((response) => {
+                    const responseCode = response.statusCode;
+                    if(responseCode === 500) {
+                        const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                        this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+                    } else if (responseCode === 200) {
+        
+                        const result = response.content.toJSON();
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(200, result.advertisementadded, result.id, result.message);
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess);   
+                    } else {
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                    }
+                }, (e) => {
+        
+                    const AddAdvertisementSuccess = new AddAdvertisementResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                });
+
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                
+            } else {
+                const AddAccomodationSuccess = new AddAccomodationResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+            }
+        }, (e) => {
+
+            const AddAccomodationSuccess = new AddAccomodationResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+        });
+
+        return null;
+    }  
 
     initializeAdvertisements(isSelling: boolean){
         this.initializeTextbooks(isSelling);
@@ -267,7 +365,7 @@ export class AdvertService {
                 JSONNoteList.forEach(element => {
                     element.responseStatusCode =200;
                     element.imagebytes = "data:image/png;base64," + element.imagebytes;
-                    console.log(element.advertisementid);
+                    //console.log(element.advertisementid);
                     noteList.push(element)
                 })
                 const noteResult = new NoteResultList(200, noteList);
@@ -284,6 +382,7 @@ export class AdvertService {
     }
 
     initializeUserAdvertTextbooks(userID: string, isSelling: boolean) {
+        console.log(userID);
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=TXB&selling=" + isSelling;
         request ({
             url: reqUrl,
@@ -663,6 +762,10 @@ export class AdvertService {
         this._currentUserAdvertAccomodation.next(null);
         this._currentUserAdvertTutor.next(null);
         this._currentUserAdvertNote.next(null);
+    }
+
+    PostAdvertisement(){
+        
     }
 
 
