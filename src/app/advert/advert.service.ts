@@ -347,6 +347,7 @@ export class AdvertService {
     }
 
     initializeUserAdvertTextbooks(userID: string, isSelling: boolean) {
+        console.log(userID);
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=TXB&selling=" + isSelling;
         request ({
             url: reqUrl,

@@ -9,6 +9,14 @@ import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { AdvertListPickerComponent } from "../advert-listpicker/advert-listpicker.component";
 import { AdvertService } from "../advert.service";
 import * as appSettings from "tns-core-modules/application-settings";
+import * as camera from "nativescript-camera";
+import { Image } from "tns-core-modules/ui/image";
+import * as imagepicker from "nativescript-imagepicker";
+import { ImageSource } from "tns-core-modules/image-source/image-source";
+import { ImageAsset } from "tns-core-modules/image-asset/image-asset";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { TNSFancyAlert } from "nativescript-fancyalert";
+
 @Component({
     selector: 'ns-add-advert',
     templateUrl: './add-advert.component.html',
@@ -22,8 +30,10 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
     public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture: boolean;
-    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind: string;
+    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; myImg: string;
+
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService) {
+        this.myImg = "";
         this.acdTypeBind = "";
         this.instTypeBind = "";
         this.advertTypes = new Array<string>("Textbook", "Accomodation", "Tutor", "Note");
@@ -44,6 +54,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('instTypeEl', {static:false}) instTypeEl: ElementRef<TextField>;
    
     ngOnInit(){
+        
+        
+
         this.form = new FormGroup({
             description: new FormControl(
                 null,
@@ -126,6 +139,49 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
 
     }
 
+   
+    uploadPic(){
+        let context = imagepicker.create({
+            mode: "single" // use "multiple" for multiple selection
+        });
+        
+        context.authorize().then(function() {
+            return context.present();
+        }).then(selection => {
+            selection.forEach(selected => {
+                let source = new ImageSource();
+                source.fromAsset(selected).then((imgSource: ImageSource) => {
+                    this.myImg = imgSource.toBase64String("png");
+                    this.myImg = "data:image/png;base64," + this.myImg;
+                });
+            });  
+        }).catch(function (e) {
+            // process error
+        }); 
+    }
+
+    /*On Rest Till I can fogure out how to access this. inside source then
+    takePic(){
+       camera.requestPermissions().then(
+            function success() {
+                // permission request accepted or already granted 
+                camera.takePicture()
+                .then((imageAsset) => {
+                    let source = new ImageSource();
+                    source.fromAsset(imageAsset).then((imgSource: ImageSource) => {
+                        
+
+                    })
+                }).catch((err) => {
+                    console.log("Error -> " + err.message);
+                });
+            }, 
+            function failure() {
+                // permission request rejected
+                // ... tell the user ...
+            }
+        );
+    }*/
 
     generateUUIDv4() {
         var d = new Date().getTime();

@@ -4,6 +4,20 @@
 <StackLayout class="form" [formGroup]="form">
     <StackLayout class="input-field">
         <Label
+        class="label1"
+        text="Image"
+        ></Label>
+        <Image *ngIf="myImg" src="{{myImg}}" class="thumb-img-circle" shadow="4" style="height: 25%; width: 25%;"></Image>
+        <Label text="&#xf093;" class="UploadPictureLabel" (tap)="uploadPic()"></Label>
+        
+        <!--<Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Take Picture"
+        (tap)="takePic()"
+        ></Button>-->
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
             class="label"
             text="Description"
         ></Label>
@@ -56,12 +70,13 @@
                 row="0"
                 colSpan="2"></DropDown>
     </StackLayout>-->
-
+     
     <StackLayout class="input-field">
         <Label
-        class="label"
+        class="label1"
         text="Advertisement Type"
     ></Label>
+    <StackLayout class="StackLayoutDividers1"></StackLayout> 
        <!-- <TextField
         (tap)="onadvertTypeTap()"
         class="input"
@@ -72,9 +87,14 @@
         formControlName="advertType"
         #advertTypeEl
         ></TextField>-->
-
-    <ListPicker [items]="advertTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAdvertTypeChanged($event)"></ListPicker>
+    <StackLayout class="input-field">
+        <ListPicker [items]="advertTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAdvertTypeChanged($event)"></ListPicker>
     </StackLayout>
+   
+    <StackLayout class="StackLayoutDividers1"></StackLayout> 
+    </StackLayout>
+
+    
 
     <StackLayout *ngIf="textbookCapture" class="input-field">
         <Label class="label" text="Textbook"></Label>
@@ -96,6 +116,23 @@
         autocapitalizationType="none"
         formControlName="location"
         #locationEl
+    ></TextField>
+
+    <Label
+    class="label"
+    text="Accomodation Type"
+    (tap)="onAccomodationTypeTap()"
+    ></Label>
+    <TextField
+    [text]="acdTypeBind"
+    (tap)="onAccomodationTypeTap()"
+    class="input"
+    returnKeyType="next"()
+    required
+    [autocorrect]="false"
+    autocapitalizationType="none"
+    formControlName="acdType"
+    #acdTypeEl
     ></TextField>
 
     <Label
@@ -128,32 +165,28 @@
         formControlName="distance"
         #distanceEl
     ></TextField >
-
 <!-- <Label class="label" text="Accomodation Type"></Label>
     <ListPicker [items]="accomodationTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAcdTypeChanged($event)"></ListPicker>-->
-    <Label
-    class="label"
-    text="Accomodation Type"
-    (tap)="onAccomodationTypeTap()"
-    ></Label>
-    <TextField
-    [text]="acdTypeBind"
-    (tap)="onAccomodationTypeTap()"
-    class="input"
-    returnKeyType="next"()
-    required
-    [autocorrect]="false"
-    autocapitalizationType="none"
-    formControlName="acdType"
-    #acdTypeEl
-    ></TextField>
+   
     
+    
+    
+    <StackLayout class="StackLayoutDividers1"></StackLayout> 
 
-    <Button
-    class="btn btn-primary btn-rounded-lg"
-    text="Post"
-    (tap)="onPostTap()"
-    ></Button>
+    <StackLayout>
+        <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Post"
+        (tap)="onPostTap()"
+        ></Button>
+        
+    </StackLayout>
+   
+
+
+    
+   
+    
     </StackLayout>
 
     <StackLayout *ngIf="tutorCapture" class="input-field">

@@ -16,6 +16,14 @@ ActionBar {
     width: 80%;
 }
 
+.btn-primary1 {
+    background-color: $primary;
+    width: 15%;
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 700;
+    font-size: 10em;
+}
+
 .btn-flat{
     border-width: 1;
     border-color: transparent;
@@ -45,6 +53,14 @@ ActionBar {
             font-size: 16;
             font-weight: bold;
             font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+        }
+
+        .label1{
+            color:$primary;
+            font-size: 16;
+            font-weight: bold;
+            font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+            text-align: center;
         }
 
         .label.invalid{
@@ -181,6 +197,15 @@ ActionBar {
     color: $primary;
     font-weight: 700;
     font-size: 60em;
+    text-align: center;
+}
+
+.UploadPictureLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 700;
+    font-size: 40em;
+    text-align: center;
 }
 
 .GridLayoutAdvertListStyle {
@@ -272,6 +297,12 @@ ActionBar {
     margin-top: 4%;
     margin-left: 3%;
     margin-right: 3%;
+}
+
+.StackLayoutDividers1 {
+    background-color:  #c0c0c0;
+    height: 0.8;
+    margin-top: 4%;
 }
 
 .IsSellingSwitch{

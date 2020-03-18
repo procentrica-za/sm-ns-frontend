@@ -31,6 +31,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
    
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
+        console.log("Logged in user: " + appSettings.getString("userid"));
     }
 
     onCheckedChange(args: EventData){
@@ -58,7 +59,6 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             textbookResult => {
                 if(textbookResult) {
                     this.textbookResultList = textbookResult
-                    console.log("inside textbook subscription");
                     if(this.textbookResultList.responseStatusCode === 200){
                         this.textbookImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
