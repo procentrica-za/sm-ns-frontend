@@ -17,16 +17,16 @@ import {    TextbookResult,
             UserAdvertTextbookResult,
             UserAdvertTutorResult,
             AddAdvertisementResult,
-            AddAccomodationResult } from './advert.model'
-import { TextbookResult, TextbookResultList, AccomodationResultList, AccomodationResult, NoteResultList, TutorResultList, NoteResult, TutorResult, UserAdvertAccomodationResult, UserAdvertTutorResultList, UserAdvertTextbookResultList, UserAdvertNoteResultList, UserAdvertAccomodationResultList, UserAdvertNoteResult, UserAdvertTextbookResult, UserAdvertTutorResult } from './advert.model'
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
+            AddAccomodationResult,
+            ActivechatResult,
+            ActivechatResultList,
+            MessageResult,
+            MessageResultList } from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
 import { getString, setString } from "tns-core-modules/application-settings";
 import { isEnabled } from 'tns-core-modules/trace/trace';
-
-
 import { Subscription } from "rxjs";
 //Used for chat styling
 import * as appSettings from "tns-core-modules/application-settings";
@@ -161,11 +161,7 @@ export class AdvertService {
         setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
         setString("sm-service-messages-host", "http://10.10.100.156:9956");
     }
-    initializeTextbooks() {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
-        console.log(reqUrl);
 
-   
     AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/accomodation" ;
         console.log(reqUrl);
