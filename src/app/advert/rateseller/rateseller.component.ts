@@ -99,7 +99,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                 animated: true,
                 transition: {
                     name: "slide",
-                    duration: 200,
+                    duration: 2,
                     curve: "ease"
                 }
             });
