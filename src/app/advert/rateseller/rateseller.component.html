@@ -3,18 +3,22 @@
     <StackLayout class="input-field">
         <Label
             class="label"
-            text="Rating"
+            text="Please select a rating from 1-5"
             [ngClass]="{ invalid: !sellerratingControlIsValid }"
         ></Label>
         <TextField
-            class="input"
-            returnKeyType="next"
-            required
-            [autocorrect]="false"
-            autocapitalizationType="none"
-            formControlName="sellerrating"
-            #sellerratingEl
-        ></TextField>
+           editable="false" textWrap="true"
+           style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;" 
+           returnKeyType="next"
+           required
+           [autocorrect]="false"
+           autocapitalizationType="none"
+           formControlName="sellerrating"
+           #sellerratingEl
+       ></TextField>
+        <Slider value="1" minValue="1" maxValue="5"
+        (valueChange)="onSliderValueChange($event)">
+       </Slider>
         <Label
             *ngIf="!sellerratingControlIsValid"
             text="Please enter a valid seller rating."
@@ -26,7 +30,7 @@
             text="Seller Comments"
             [ngClass]="{ invalid: !sellercommentsControlIsValid }"
         ></Label>
-        <TextField
+        <TextView
              class="input"
              returnKeyType="next"
              required
@@ -34,7 +38,7 @@
              autocapitalizationType="none"
              formControlName="sellercomments"
              #sellercommentsEl
-        ></TextField>
+        ></TextView>
         <Label
             *ngIf="!sellercommentsControlIsValid"
             text="Please enter a valid seller comment."

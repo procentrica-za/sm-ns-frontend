@@ -9,6 +9,8 @@ import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
+import { ItemEventData } from "tns-core-modules/ui/list-view";
+import { Slider } from "tns-core-modules/ui/slider";
 @Component({
     selector: 'ns-rateseller',
     templateUrl: './rateseller.component.html',
@@ -16,7 +18,8 @@ import * as appSettings from "tns-core-modules/application-settings";
     moduleId: module.id
 })
 export class RatesellerComponent implements OnInit, OnDestroy {
-    
+
+
     form: FormGroup;
     sellerratingControlIsValid = true;
     sellercommentsControlIsValid = true;
@@ -27,14 +30,19 @@ export class RatesellerComponent implements OnInit, OnDestroy {
     rate: RateSellerResult;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
+    onSliderValueChange(args) {
+        let slider = <Slider>args.object;
+        this.form.controls['sellerrating'].setValue((args.value).toString());
+    }
     ngOnInit() {
+        //populate rating options
         this.form = new FormGroup({
             sellerrating: new FormControl(
                 null,
                 {
                     updateOn: 'blur',
                     validators: [
-                        Validators.required
+                        Validators.required,
                     ]
                 }
             ),
@@ -56,7 +64,9 @@ export class RatesellerComponent implements OnInit, OnDestroy {
         });
 
 
+
     }
+
     ngOnDestroy() {
         if(this.rateResultSub){
             this.rateResultSub.unsubscribe();
