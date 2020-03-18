@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList, OutstandingratingResult, OutstandingratingResultList, RateSellerResult} from './advert.model'
 import {    TextbookResult,
             TextbookResultList,
             AccomodationResultList,
@@ -18,9 +17,14 @@ import {    TextbookResult,
             UserAdvertTextbookResult,
             UserAdvertTutorResult,
             AddAdvertisementResult,
-            AddAccomodationResult } from './advert.model'
-import { TextbookResult, TextbookResultList, AccomodationResultList, AccomodationResult, NoteResultList, TutorResultList, NoteResult, TutorResult, UserAdvertAccomodationResult, UserAdvertTutorResultList, UserAdvertTextbookResultList, UserAdvertNoteResultList, UserAdvertAccomodationResultList, UserAdvertNoteResult, UserAdvertTextbookResult, UserAdvertTutorResult } from './advert.model'
-import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList} from './advert.model'
+            AddAccomodationResult,
+            OutstandingratingResult,
+            OutstandingratingResultList,
+            RateSellerResult,
+            ActivechatResult,
+            ActivechatResultList,
+            MessageResult,
+            MessageResultList } from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -35,6 +39,34 @@ import * as appSettings from "tns-core-modules/application-settings";
 export class AdvertService {
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
+
+    private _currentAccomodationList = new BehaviorSubject<AccomodationResultList>(null);
+    private _currentAccomodation = new BehaviorSubject<AccomodationResult>(null);
+    
+    private _currentTutorList = new BehaviorSubject<TutorResultList>(null);
+    private _currentTutor = new BehaviorSubject<TutorResult>(null);
+
+    private _currentNoteList = new BehaviorSubject<NoteResultList>(null);
+    private _currentNote = new BehaviorSubject<NoteResult>(null);
+
+    private _currentUserAdvertTextbookList = new BehaviorSubject<UserAdvertTextbookResultList>(null);
+    private _currentUserAdvertTextbook = new BehaviorSubject<UserAdvertTextbookResult>(null);
+
+    private _currentUserAdvertAccomodationList = new BehaviorSubject<UserAdvertAccomodationResultList>(null);
+    private _currentUserAdvertAccomodation = new BehaviorSubject<UserAdvertAccomodationResult>(null);
+
+    private _currentUserAdvertTutorList = new BehaviorSubject<UserAdvertTutorResultList>(null);
+    private _currentUserAdvertTutor = new BehaviorSubject<UserAdvertTutorResult>(null);
+
+    private _currentUserAdvertNoteList = new BehaviorSubject<UserAdvertNoteResultList>(null);
+    private _currentUserAdvertNote = new BehaviorSubject<UserAdvertNoteResult>(null);
+
+    private _currentAddAdvertisement = new BehaviorSubject<AddAdvertisementResult>(null);
+
+    private _currentAddAccomodation = new BehaviorSubject<AddAccomodationResult>(null);
+
+
+
     //Messaging, active chat service
     private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
     private _currentActivechat = new BehaviorSubject<ActivechatResult>(null);
@@ -157,9 +189,7 @@ export class AdvertService {
     constructor(private http: HttpClient){
         setString("sm-service-ratings-host", "http://192.168.1.174:9957");
     }
-    initializeTextbooks() {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
-        console.log(reqUrl);
+    
 
    
     AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
@@ -711,6 +741,7 @@ export class AdvertService {
         const outstandingratingResult = new OutstandingratingResultList(400,null, "An Error has been recieved, please contact support.");
         this._currentOutstandingratingList.next(outstandingratingResult);
     });
+}
 
     setAccomodation(advertisementID: string){
         this.currentAccomodationList.forEach(element => {
@@ -800,39 +831,39 @@ export class AdvertService {
         
     }
 
+    RateSeller(ratingid: string, sellerrating: string, sellercomments: string) {
+        const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ ratingid: ratingid,  sellerrating: sellerrating, sellercomments: sellercomments}),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
+                this._currentRateSeller.next(RateSellerResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const RateSellersuccessResult = new RateSellerResult(200, true, result.message);
+                this._currentRateSeller.next(RateSellersuccessResult);
+            } else {
+                const RateSellersuccessResult = new RateSellerResult(responseCode, false, response.content.toString());
+                this._currentRateSeller.next(RateSellersuccessResult); 
+            }
+        }, (e) => {
+    
+            const RateSellersuccessResult = new RateSellerResult(400, false, "An Error has been recieved, please contact support.");
+            this._currentRateSeller.next(RateSellersuccessResult);
+        });
+        return null;
+    }
+    
+    
 
 }
 //Rare seller
-RateSeller(ratingid: string, sellerrating: string, sellercomments: string) {
-    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
-    console.log(reqUrl);
-    request ({
-        url: reqUrl,
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        content: JSON.stringify({ ratingid: ratingid,  sellerrating: sellerrating, sellercomments: sellercomments}),
-        timeout: 5000
-    }).then((response) => {
-        const responseCode = response.statusCode;
-        if(responseCode === 500) {
-            const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
-            this._currentRateSeller.next(RateSellerResultErr);
-        } else if (responseCode === 200) {
-            const result = response.content.toJSON();
-            const RateSellersuccessResult = new RateSellerResult(200, true, result.message);
-            this._currentRateSeller.next(RateSellersuccessResult);
-        } else {
-            const RateSellersuccessResult = new RateSellerResult(responseCode, false, response.content.toString());
-            this._currentRateSeller.next(RateSellersuccessResult); 
-        }
-    }, (e) => {
-
-        const RateSellersuccessResult = new RateSellerResult(400, false, "An Error has been recieved, please contact support.");
-        this._currentRateSeller.next(RateSellersuccessResult);
-    });
-    return null;
-}
 
 
-
-}
