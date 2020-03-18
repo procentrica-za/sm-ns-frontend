@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {TextbookResult, TextbookResultList, ActivechatResult, ActivechatResultList, MessageResult, MessageResultList, OutstandingratingResult, OutstandingratingResultList, RateSellerResult} from './advert.model'
 import {    TextbookResult,
             TextbookResultList,
             AccomodationResultList,
@@ -46,29 +47,12 @@ export class AdvertService {
     private test: Subscription;
     public testList: TextbookResult[];
 
-    private _currentAccomodationList = new BehaviorSubject<AccomodationResultList>(null);
-    private _currentAccomodation = new BehaviorSubject<AccomodationResult>(null);
+     //Rating,outstanding service
+     private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
+     private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
+     //rate seller service
+     private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
 
-    private _currentNoteList = new BehaviorSubject<NoteResultList>(null);
-    private _currentNote = new BehaviorSubject<NoteResult>(null);
-
-    private _currentTutorList = new BehaviorSubject<TutorResultList>(null);
-    private _currentTutor = new BehaviorSubject<TutorResult>(null);
-
-    private _currentUserAdvertTextbookList = new BehaviorSubject<UserAdvertTextbookResultList>(null);
-    private _currentUserAdvertTextbook = new BehaviorSubject<UserAdvertTextbookResult>(null);
-
-    private _currentUserAdvertAccomodationList = new BehaviorSubject<UserAdvertAccomodationResultList>(null);
-    private _currentUserAdvertAccomodation = new BehaviorSubject<UserAdvertAccomodationResult>(null);
-
-    private _currentUserAdvertTutorList = new BehaviorSubject<UserAdvertTutorResultList>(null);
-    private _currentUserAdvertTutor = new BehaviorSubject<UserAdvertTutorResult>(null);
-
-    private _currentUserAdvertNoteList = new BehaviorSubject<UserAdvertNoteResultList>(null);
-    private _currentUserAdvertNote = new BehaviorSubject<UserAdvertNoteResult>(null);
-
-    private _currentAddAdvertisement = new BehaviorSubject<AddAdvertisementResult>(null);
-    private _currentAddAccomodation = new BehaviorSubject<AddAccomodationResult>(null);
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -94,6 +78,19 @@ export class AdvertService {
     get currentSendMessage() {
         return this._currentSendMessage.asObservable();
     }
+
+    // Rating Outstanding results
+    get currentOutstandingratingList() {
+        return this._currentOutstandingratingList.asObservable();
+    }
+    get currentOutstandingrating() {
+        return this._currentOutstandingrating.asObservable();
+    }
+    //Rate seller
+    get currentRateSeller() {
+        return this._currentRateSeller.asObservable();
+    }
+
 
     get currentAccomodationList() {
         return this._currentAccomodationList.asObservable();
@@ -158,8 +155,7 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
-        setString("sm-service-messages-host", "http://10.10.100.156:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
     }
     initializeTextbooks() {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB";
@@ -680,6 +676,42 @@ export class AdvertService {
         });
     }
 
+   //Outstading ratings for Buyer to rate seller
+   initializeOutstandingratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const outstandingratingResultErr = new OutstandingratingResult(500, null, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let outstandingratingList: OutstandingratingResult[] = [];
+            // get the outstandingratinglist.
+            const JSONOutstandingratingList = result.outstandingratings;
+            // iterate through the outstandingratinglist and read each textbook into a textbook object and push to the list variable
+            JSONOutstandingratingList.forEach(element => {
+                element.responseStatusCode =200;
+                outstandingratingList.push(element)
+            })
+            const outstandingratingResult = new OutstandingratingResultList(200, outstandingratingList, "Successfully recieved outstanding ratings");
+            this._currentOutstandingratingList.next(outstandingratingResult);
+        } else {
+            const outstandingratinglistResult = new OutstandingratingResultList(responseCode, null,response.content.toString());
+            this._currentOutstandingratingList.next(outstandingratinglistResult);
+
+        }
+    }, (e) => {
+        const outstandingratingResult = new OutstandingratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentOutstandingratingList.next(outstandingratingResult);
+    });
+
     setAccomodation(advertisementID: string){
         this.currentAccomodationList.forEach(element => {
             element.Accomodations.forEach(innerElement => {
@@ -767,6 +799,40 @@ export class AdvertService {
     PostAdvertisement(){
         
     }
+
+
+}
+//Rare seller
+RateSeller(ratingid: string, sellerrating: string, sellercomments: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ ratingid: ratingid,  sellerrating: sellerrating, sellercomments: sellercomments}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
+            this._currentRateSeller.next(RateSellerResultErr);
+        } else if (responseCode === 200) {
+            const result = response.content.toJSON();
+            const RateSellersuccessResult = new RateSellerResult(200, true, result.message);
+            this._currentRateSeller.next(RateSellersuccessResult);
+        } else {
+            const RateSellersuccessResult = new RateSellerResult(responseCode, false, response.content.toString());
+            this._currentRateSeller.next(RateSellersuccessResult); 
+        }
+    }, (e) => {
+
+        const RateSellersuccessResult = new RateSellerResult(400, false, "An Error has been recieved, please contact support.");
+        this._currentRateSeller.next(RateSellersuccessResult);
+    });
+    return null;
+}
+
 
 
 }

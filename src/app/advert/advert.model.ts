@@ -252,6 +252,31 @@ export class MessageResultList {
     ){}
 }
 
+export class OutstandingratingResult {
+    constructor (
+        public responseStatusCode : number,
+        public ratingid : string,
+        public username : string,
+        public price : string,
+        public title : string,
+        public description : string,
+    ){}
+}
+export class OutstandingratingResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Outstandingratings : OutstandingratingResult[],
+        public message : string,
+    ){}
+}
+
+export class RateSellerResult {
+    constructor (
+        public responseStatusCode : number,
+        public sellerrated : boolean,
+        public message : string,
+    ){}
+}
 
 
 

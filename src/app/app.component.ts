@@ -63,6 +63,11 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/messaginghome']);
     }
 
+    Ratinghome(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/ratinghome']);
+    }
+
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
         appSettings.setString("personid", "");
