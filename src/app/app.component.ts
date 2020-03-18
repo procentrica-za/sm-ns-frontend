@@ -68,6 +68,16 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/ratinghome']);
     }
 
+    Buyerhome(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/buyerrating']);
+    }
+    
+    Sellerhome(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/sellerrating']);
+    }
+
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
         appSettings.setString("personid", "");

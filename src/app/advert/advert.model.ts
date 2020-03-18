@@ -278,6 +278,23 @@ export class RateSellerResult {
     ){}
 }
 
+export class PreviousratingResult {
+    constructor (
+        public responseStatusCode : number,
+        public ratingid : string,
+        public username : string,
+        public rating : string,
+        public comment : string,
+    ){}
+}
+export class PreviousratingResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Previousratings : PreviousratingResult[],
+        public message : string,
+    ){}
+}
+
 
 
 

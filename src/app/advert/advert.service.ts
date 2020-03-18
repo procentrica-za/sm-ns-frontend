@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList } from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList } from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -82,6 +82,9 @@ export class AdvertService {
      //Rating,outstanding service
      private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
      private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
+     //Rating dashboards
+     private _currentPreviousratingList = new BehaviorSubject<PreviousratingResultList>(null);
+     private _currentPreviousrating = new BehaviorSubject<PreviousratingResult>(null);
      //rate seller service
      private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
 
@@ -186,7 +189,17 @@ export class AdvertService {
         return this._currentAddAdvertisement.asObservable();
     }
 
+     // Rating Dashboard results
+     get currentPreviousratingList() {
+        return this._currentPreviousratingList.asObservable();
+    }
+    get currentPreviousrating() {
+        return this._currentPreviousrating.asObservable();
+    }
+
     constructor(private http: HttpClient){
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
         setString("sm-service-ratings-host", "http://192.168.1.174:9957");
     }
     
@@ -863,7 +876,78 @@ export class AdvertService {
     
     
 
-}
-//Rare seller
+//seller dashboard
+Previoussellerratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/sellerrating?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let previousratingList: PreviousratingResult[] = [];
+            // get the previousratinglist.
+            const JSONPreviousratingList = result.previousratings;
+            // iterate through the previousratinglist and read each textbook into a textbook object and push to the list variable
+            JSONPreviousratingList.forEach(element => {
+                element.responseStatusCode =200;
+                previousratingList.push(element)
+            })
+            const previousratingResult = new PreviousratingResultList(200, previousratingList, "Successfully recieved previous ratings");
+            this._currentPreviousratingList.next(previousratingResult);
+        } else {
+            const previousratinglistResult = new PreviousratingResultList(responseCode, null,response.content.toString());
+            this._currentPreviousratingList.next(previousratinglistResult);
 
+        }
+    }, (e) => {
+        const previousratingResult = new PreviousratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentPreviousratingList.next(previousratingResult);
+    });
+}
+
+//buyer dashboard
+Previousbuyerratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/buyerrating?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let previousratingList: PreviousratingResult[] = [];
+            // get the previousratinglist.
+            const JSONPreviousratingList = result.previousratings;
+            // iterate through the previousratinglist and read each textbook into a textbook object and push to the list variable
+            JSONPreviousratingList.forEach(element => {
+                element.responseStatusCode =200;
+                previousratingList.push(element)
+            })
+            const previousratingResult = new PreviousratingResultList(200, previousratingList, "Successfully recieved previous ratings");
+            this._currentPreviousratingList.next(previousratingResult);
+        } else {
+            const previousratinglistResult = new PreviousratingResultList(responseCode, null,response.content.toString());
+            this._currentPreviousratingList.next(previousratinglistResult);
+
+        }
+    }, (e) => {
+        const previousratingResult = new PreviousratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentPreviousratingList.next(previousratingResult);
+    });
+}
+}
 
