@@ -295,6 +295,16 @@ export class PreviousratingResultList {
     ){}
 }
 
+export class StartChatResult {
+    constructor (
+        public responseStatusCode: number,
+        public chatposted: boolean, 
+        public chatID:      string, 
+        public message:     string 
+    ){}
+}
+
+
 
 
 

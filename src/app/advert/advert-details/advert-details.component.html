@@ -32,7 +32,7 @@
         <Label row="8" col="2" colspan="2" [text]="textbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel" selectionBehavior="Press" (tap)="onItemSelected($event)"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
@@ -86,7 +86,7 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="accomodationResult" [text]="accomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView> 
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel" selectionBehavior="Press" (tap)="onItemSelected($event)"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
@@ -112,7 +112,7 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="tutorResult" [text]="tutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel" selectionBehavior="Press" (tap)="onItemSelected($event)"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
@@ -139,7 +139,7 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="noteResult" [text]="noteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel" selectionBehavior="Press" (tap)="onItemSelected($event)"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 

@@ -27,7 +27,6 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     private noteResultListSub: Subscription;
     public noteResultList: NoteResultList;
     public allImagesLoaded; textbookImagesLoaded; accomodationImagesLoaded; tutorImagesLoaded; noteImagesLoaded; isSelling : boolean;
-
    
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
@@ -131,6 +130,8 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
         this.advertServ.setAdvert(tappedAdvertItem.advertisementtype, tappedAdvertItem.advertisementid);
+        appSettings.setString("buyerid", tappedAdvertItem.advertisementid);
+        appSettings.setString("advertisementid", tappedAdvertItem.advertisementid);
         this.router.navigate(['/advert/details'],
             {
                 animated: true,

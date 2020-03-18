@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList, PreviousratingResult, PreviousratingResultList } from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -67,6 +67,7 @@ export class AdvertService {
 
 
 
+
     //Messaging, active chat service
     private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
     private _currentActivechat = new BehaviorSubject<ActivechatResult>(null);
@@ -75,6 +76,8 @@ export class AdvertService {
     private _currentMessage = new BehaviorSubject<MessageResult>(null);
     //send message service
     private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
+    //start a new chat
+    private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
    //private _currentUserAdvertList = new BehaviorSubject
     private test: Subscription;
     public testList: TextbookResult[];
@@ -112,6 +115,10 @@ export class AdvertService {
     //Send message
     get currentSendMessage() {
         return this._currentSendMessage.asObservable();
+    }
+    //start chat
+    get currentStartChat() {
+        return this._currentStartChat.asObservable();
     }
 
     // Rating Outstanding results
@@ -949,5 +956,36 @@ Previousbuyerratings(userid) {
         this._currentPreviousratingList.next(previousratingResult);
     });
 }
+
+StartNewChat(sellerid: string, buyerid: string, advertisementid: string) {
+    const reqUrl = getString("sm-service-messages-host") + "/chat";
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ sellerid: sellerid, buyerid: buyerid, advertisementid: advertisementid}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const StartChatResultErr = new StartChatResult(500, false,'00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+            this._currentStartChat.next(StartChatResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const StartChatsuccessResult = new StartChatResult(200, result.chatposted, result.chatid,result.message);
+            this._currentStartChat.next(StartChatsuccessResult);   
+        } else {
+            const StartChatsuccessResult = new StartChatResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+            this._currentStartChat.next(StartChatsuccessResult); 
+        }
+    }, (e) => {
+
+        const StartChatsuccessResult = new StartChatResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+            this._currentStartChat.next(StartChatsuccessResult); 
+    });
+    return null;
+} 
 }
 
