@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult} from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult, InterestedResult, InterestedResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -91,6 +91,10 @@ export class AdvertService {
      //rate seller service
      private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
 
+
+    //Rating, interested buyers
+    private _currentInterestedList = new BehaviorSubject<InterestedResultList>(null);
+    private _currentInterested = new BehaviorSubject<InterestedResult>(null);
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -202,6 +206,14 @@ export class AdvertService {
     }
     get currentPreviousrating() {
         return this._currentPreviousrating.asObservable();
+    }
+
+    // Rating interested parties result
+    get currentInterestedList() {
+        return this._currentInterestedList.asObservable();
+    }
+    get currentInterested() {
+        return this._currentInterested.asObservable();
     }
 
     constructor(private http: HttpClient){
@@ -664,7 +676,6 @@ export class AdvertService {
                 // get the textbooklist.
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
-                console.log(userchat);
                 // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;
@@ -761,6 +772,11 @@ export class AdvertService {
         const outstandingratingResult = new OutstandingratingResultList(400,null, "An Error has been recieved, please contact support.");
         this._currentOutstandingratingList.next(outstandingratingResult);
     });
+}
+
+clearSelectedOutstandingrating() {
+    this._currentOutstandingrating.next(null);
+    this._currentOutstandingratingList.next(null);
 }
 
     setAccomodation(advertisementID: string){
@@ -988,5 +1004,44 @@ StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, adver
     });
     return null;
 } 
+
+InterestedBuyers(userid: string, advertisementid: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/interest" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ userid: userid, advertisementid: advertisementid}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const interestedResultErr = new InterestedResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let interestedList: InterestedResult[] = [];
+            // get the textbooklist.
+            const JSONInterestedList = result.interesteds;
+            // iterate through the interestedlist and read each buyer into a buyer object and push to the list variable
+            JSONInterestedList.forEach(element => {
+                element.responseStatusCode =200;
+                //for interested styling
+                interestedList.push(element)
+            })
+            const interestedResult = new InterestedResultList(200, interestedList, "List successfully recieved");
+            this._currentInterestedList.next(interestedResult);
+        } else {
+            const interestedlistResult = new InterestedResultList(responseCode, null,response.content.toString());
+            this._currentInterestedList.next(interestedlistResult);
+
+        }
+    }, (e) => {
+        const interestedResult = new InterestedResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentInterestedList.next(interestedResult);
+    });
+}
 }
 

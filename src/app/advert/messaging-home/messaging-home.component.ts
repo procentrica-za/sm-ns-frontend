@@ -43,6 +43,8 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         const tappedActivechatItem = args.view.bindingContext;
         this.advertServ.setActivechat(tappedActivechatItem.chatid);
         appSettings.setString("chatid", tappedActivechatItem.chatid);
+        appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
+        appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);
         this.router.navigate(['/messagingdetails'],
             {
                 animated: true,
@@ -54,6 +56,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             });
 
     }
+
     ngOnDestroy() {
         if(this.activechatResultListSub){
             this.activechatResultListSub.unsubscribe();

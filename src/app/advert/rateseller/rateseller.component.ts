@@ -71,6 +71,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
         if(this.rateResultSub){
             this.rateResultSub.unsubscribe();
         }
+        this.advertServ.clearSelectedOutstandingrating();
     }
 
     

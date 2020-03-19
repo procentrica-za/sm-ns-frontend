@@ -304,6 +304,23 @@ export class StartChatResult {
     ){}
 }
 
+export class InterestedResult {
+    constructor (
+        public responseStatusCode : number,
+        public username : string,
+        public advertisementid : string,
+        public sellerid : string,
+        public buyerid : string,
+    ){}
+}
+export class InterestedResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Interesteds : InterestedResult[],
+        public message : string,
+    ){}
+}
+
 
 
 

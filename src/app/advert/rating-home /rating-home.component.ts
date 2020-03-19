@@ -57,5 +57,6 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
         if(this.outstandingratingResultListSub){
             this.outstandingratingResultListSub.unsubscribe();
         }
+        this.advertServ.clearSelectedOutstandingrating();
     }
 }

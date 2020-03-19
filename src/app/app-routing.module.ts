@@ -16,6 +16,8 @@ import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
 import { BuyerratingsComponent } from "./advert/buyerratings/buyerratings.component";
 import { SellerratingsComponent } from "./advert/sellerratings/sellerratings.component";
 
+import { RatebuyerHomeComponent } from "./advert/ratebuyer-home/ratebuyer-home.component";
+
 
 
 const routes: Routes = [
@@ -34,6 +36,7 @@ const routes: Routes = [
     { path: 'rateseller', component: RatesellerComponent },
     { path: 'buyerrating', component: BuyerratingsComponent },
     { path: 'sellerrating', component: SellerratingsComponent },
+    { path: 'ratebuyerhome', component: RatebuyerHomeComponent },
 ];
 
 @NgModule({
