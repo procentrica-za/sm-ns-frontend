@@ -179,9 +179,10 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                     this.startchat = startchatresult;
  
                     if(this.startchat.responseStatusCode === 200 && this.startchat.chatposted === true){
-
+                        //send chatID to chats service
+                       this.advertServ.setActivechat(this.startchat.chatID);
                        TNSFancyAlert.showSuccess("Chat Success", this.startchat.message, "Dismiss");
-                       this.router.navigate(['/messaginghome'],
+                       this.router.navigate(['/messagingdetails'],
                        {
                            animated: true,
                            transition: {
@@ -193,8 +194,18 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                     } else if (this.startchat.responseStatusCode === 500){
                         TNSFancyAlert.showError("Connection error", this.startchat.message, "Dismiss");
                     }
-                    else if (this.startchat.responseStatusCode === 400){
-                        TNSFancyAlert.showError("Error", this.startchat.message, "Dismiss");
+                    else if (this.startchat.responseStatusCode === 200 && this.startchat.chatposted === false){
+                        TNSFancyAlert.showSuccess("This chat is already active", "You will be redirected to the chat.", "Dismiss");
+                        this.advertServ.setActivechat(this.startchat.chatID);
+                        this.router.navigate(['/messagingdetails'],
+                        {
+                            animated: true,
+                            transition: {
+                                name: "slide",
+                                duration: 200,
+                                curve: "ease"
+                            }
+                        });
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.startchat.message, "Dismiss");
@@ -209,8 +220,9 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         //get buyerid
         const sellerid = appSettings.getString("sellerid");
         const buyerid = appSettings.getString("userid");
+        const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid");
-        this.advertServ.StartNewChat(sellerid, buyerid,advertisementid);
+        this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
 
     }
 
@@ -241,6 +253,9 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         }
         if(this.userAdvertNoteResultSub){
             this.userAdvertNoteResultSub.unsubscribe();
+        }
+        if(this.startchatResultSub){
+            this.startchatResultSub.unsubscribe();
         }
         this.advertServ.clearSelectedAdvertisement();
         this.advertServ.clearSelectedUserAdvertisement();

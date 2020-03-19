@@ -838,6 +838,7 @@ export class AdvertService {
         this._currentAccomodation.next(null);
         this._currentTutor.next(null);
         this._currentNote.next(null);
+        this._currentStartChat.next(null);
     }
 
     clearSelectedUserAdvertisement() {
@@ -957,14 +958,14 @@ Previousbuyerratings(userid) {
     });
 }
 
-StartNewChat(sellerid: string, buyerid: string, advertisementid: string) {
+StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, advertisementid: string) {
     const reqUrl = getString("sm-service-messages-host") + "/chat";
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        content: JSON.stringify({ sellerid: sellerid, buyerid: buyerid, advertisementid: advertisementid}),
+        content: JSON.stringify({ sellerid: sellerid, buyerid: buyerid, advertisementtype: advertisementtype, advertisementid: advertisementid}),
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
