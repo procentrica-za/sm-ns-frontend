@@ -41,6 +41,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     //start chat
     startchatResultSub: Subscription;
     startchat: StartChatResult;
+    
     buyerid = "";
 
     constructor(private router: RouterExtensions, private advertServ: AdvertService) { }
@@ -214,6 +215,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         );
+
+        
     }
 
     onItemSelected(args :ListViewEventData) {
@@ -224,6 +227,20 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         const advertisementid = appSettings.getString("advertisementid");
         this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
 
+    }
+
+    onViewInterest(args :ListViewEventData) {
+        //get buyerid
+        this.router.navigate(['/ratebuyerhome'],
+        {
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
+    
     }
 
 

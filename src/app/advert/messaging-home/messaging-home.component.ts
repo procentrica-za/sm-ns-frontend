@@ -25,8 +25,9 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         this.chatsLoaded = false;
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
+                console.log("Message hit");
                 if(activechatResult) {
-                    this.activechatResultList = activechatResult
+                    this.activechatResultList = activechatResult 
                     if(this.activechatResultList.responseStatusCode === 200){
                         this.chatsLoaded = true;
                     } else {

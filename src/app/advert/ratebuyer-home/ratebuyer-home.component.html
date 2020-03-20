@@ -1,5 +1,5 @@
 <ns-action-bar [actionBarTitle]="'Interested buyers'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-    <RadListView  *ngIf="interestLoaded " [items]="interestedResultList.Interesteds" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
+    <RadListView  *ngIf="interestLoaded " [items]="interestedbuyerResultList.Interestedbuyers" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-interested="item" >
             <Gridlayout rows="*,*,*,*,*" columns="*,2*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label *ngIf="interested" row="0" col="0" class="SentMsessageusername" [text]="interested.username" textWrap="true"  ></Label>

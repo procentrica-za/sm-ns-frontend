@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult, InterestedResult, InterestedResultList} from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult , InterestedbuyerResult, InterestedbuyerResultList} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -93,9 +93,8 @@ export class AdvertService {
 
 
     //Rating, interested buyers
-    private _currentInterestedList = new BehaviorSubject<InterestedResultList>(null);
-    private _currentInterested = new BehaviorSubject<InterestedResult>(null);
-
+    private _currentInterestedbuyerList = new BehaviorSubject<InterestedbuyerResultList>(null);
+    private _currentInterestedbuyer = new BehaviorSubject<InterestedbuyerResult>(null);
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -209,11 +208,11 @@ export class AdvertService {
     }
 
     // Rating interested parties result
-    get currentInterestedList() {
-        return this._currentInterestedList.asObservable();
+    get currentInterestedbuyerList() {
+        return this._currentInterestedbuyerList.asObservable();
     }
-    get currentInterested() {
-        return this._currentInterested.asObservable();
+    get currentInterestedbuyer() {
+        return this._currentInterestedbuyer.asObservable();
     }
 
     constructor(private http: HttpClient){
@@ -1017,30 +1016,32 @@ InterestedBuyers(userid: string, advertisementid: string) {
     }).then((response) => {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
-            const interestedResultErr = new InterestedResult(500, null, null, null, null);
+            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null);
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();
             // Instansiate a textbook list object to read the response in to.
-            let interestedList: InterestedResult[] = [];
+            let interestedbuyerList: InterestedbuyerResult[] = [];
             // get the textbooklist.
-            const JSONInterestedList = result.interesteds;
-            // iterate through the interestedlist and read each buyer into a buyer object and push to the list variable
-            JSONInterestedList.forEach(element => {
+            const JSONInterestedbuyerList = result.interestedbuyers;
+            const userchat = appSettings.getString("username");
+            // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
+            JSONInterestedbuyerList.forEach(element => {
                 element.responseStatusCode =200;
-                //for interested styling
-                interestedList.push(element)
+                //for interestedbuyer styling
+                element.userchat = userchat;
+                interestedbuyerList.push(element)
             })
-            const interestedResult = new InterestedResultList(200, interestedList, "List successfully recieved");
-            this._currentInterestedList.next(interestedResult);
+            const interestedbuyerResult = new InterestedbuyerResultList(200, interestedbuyerList, "Message successfully recieved");
+            this._currentInterestedbuyerList.next(interestedbuyerResult);
         } else {
-            const interestedlistResult = new InterestedResultList(responseCode, null,response.content.toString());
-            this._currentInterestedList.next(interestedlistResult);
+            const interestedbuyerlistResult = new InterestedbuyerResultList(responseCode, null,response.content.toString());
+            this._currentInterestedbuyerList.next(interestedbuyerlistResult);
 
         }
     }, (e) => {
-        const interestedResult = new InterestedResultList(400,null, "An Error has been recieved, please contact support.");
-        this._currentInterestedList.next(interestedResult);
+        const interestedbuyerResult = new InterestedbuyerResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentInterestedbuyerList.next(interestedbuyerResult);
     });
 }
 }

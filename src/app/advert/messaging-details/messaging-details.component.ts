@@ -86,7 +86,6 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
      }
 
      onAdvertRequested() {
-        this.advertServ.initializeAdvertisements();
         const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid");
         this.advertServ.setAdvert(advertisementtype, advertisementid);

@@ -32,7 +32,7 @@
         <Label row="8" col="2" colspan="2" [text]="textbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
+        <Label row="9" col="2" text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
@@ -70,7 +70,9 @@
         <Label row="8" col="2" colspan="2" [text]="userAdvertTextbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
-        <Label row="10" col="2" colspan="2" text="Edit Advertisement"></Label>
+        <Label row="10" col="0" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
+        <Label row="10" col="1"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
+        <Label row="10" col="3" colspan="2" text="Edit Advertisement"></Label>
 </Gridlayout>
 
 

@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AdvertService } from "../advert.service";
-import { InterestedResult, InterestedResultList} from '../advert.model';
+import { InterestedbuyerResult, InterestedbuyerResultList} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
-//import for app settings
+//import for app settings 
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
     selector: 'ns-ratebuyer-home',
@@ -14,29 +14,36 @@ import * as appSettings from "tns-core-modules/application-settings";
     moduleId: module.id
 })
 export class RatebuyerHomeComponent implements OnInit, OnDestroy {
-    private interestedResultListSub: Subscription;
-    public interestedResultList: InterestedResultList;
     public interestLoaded : boolean;
+    private interestedbuyerResultListSub: Subscription;
+    public interestedbuyerResultList: InterestedbuyerResultList;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
         this.interestLoaded = false;
-        this.interestedResultListSub = this.advertServ.currentInterestedList.subscribe(
-            interestedResult => {
-                if(interestedResult) {
-                    this.interestedResultList = interestedResult
-                    if(this.interestedResultList.responseStatusCode === 200){
+        this.interestedbuyerResultListSub = this.advertServ.currentInterestedbuyerList.subscribe(
+            interestedbuyerResult => {
+                if(interestedbuyerResult) {
+                    console.log("Hit");
+                    this.interestedbuyerResultList = interestedbuyerResult
+                    if(this.interestedbuyerResultList.responseStatusCode === 200){
                         this.interestLoaded = true;
-                    } else {
-                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                    } else if(this.interestedbuyerResultList.responseStatusCode === 500) {
+                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
+                    }
+                    else if(this.interestedbuyerResultList.responseStatusCode === 400) {
+                        TNSFancyAlert.showError("Connection error", this.interestedbuyerResultList.message, "Dismiss");
+                    }
+                    else {
+                        TNSFancyAlert.showError("Connection error", this.interestedbuyerResultList.message, "Dismiss");
                     }
                 }
             }
         );
-
         const userid = appSettings.getString("userid");
         const advertisementid = appSettings.getString("advertisementid");
-        this.advertServ.InterestedBuyers(userid, advertisementid);
+        this.advertServ.InterestedBuyers(userid,advertisementid);
+       
     }
     onItemSelected(args :ListViewEventData): void {
         const tappedInterestedItem = args.view.bindingContext;
@@ -56,8 +63,8 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.interestedResultListSub){
-            this.interestedResultListSub.unsubscribe();
+        if(this.interestedbuyerResultListSub){
+            this.interestedbuyerResultListSub.unsubscribe();
         }
     }
 }

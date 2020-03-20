@@ -304,7 +304,7 @@ export class StartChatResult {
     ){}
 }
 
-export class InterestedResult {
+export class InterestedbuyerResult {
     constructor (
         public responseStatusCode : number,
         public username : string,
@@ -313,10 +313,10 @@ export class InterestedResult {
         public buyerid : string,
     ){}
 }
-export class InterestedResultList {
+export class InterestedbuyerResultList {
     constructor (
         public responseStatusCode : number,
-        public Interesteds : InterestedResult[],
+        public Interestedbuyers : InterestedbuyerResult[],
         public message : string,
     ){}
 }
