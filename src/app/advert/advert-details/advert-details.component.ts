@@ -38,6 +38,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     
     public advertFound: boolean;
 
+    public notrated: boolean;
+
     //start chat
     startchatResultSub: Subscription;
     startchat: StartChatResult;
@@ -215,7 +217,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         );
-
+ this.notrated = true;
         
     }
 
@@ -226,7 +228,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid");
         this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
-
+        this.notrated = false;
     }
 
     onViewInterest(args :ListViewEventData) {

@@ -24,7 +24,6 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         this.interestedbuyerResultListSub = this.advertServ.currentInterestedbuyerList.subscribe(
             interestedbuyerResult => {
                 if(interestedbuyerResult) {
-                    console.log("Hit");
                     this.interestedbuyerResultList = interestedbuyerResult
                     if(this.interestedbuyerResultList.responseStatusCode === 200){
                         this.interestLoaded = true;
