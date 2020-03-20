@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult , InterestedbuyerResult, InterestedbuyerResultList} from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult , InterestedbuyerResult, InterestedbuyerResultList, RateBuyerResult} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -90,6 +90,8 @@ export class AdvertService {
      private _currentPreviousrating = new BehaviorSubject<PreviousratingResult>(null);
      //rate seller service
      private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
+     //rate buyer
+     private _currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
 
 
     //Rating, interested buyers
@@ -134,6 +136,10 @@ export class AdvertService {
     //Rate seller
     get currentRateSeller() {
         return this._currentRateSeller.asObservable();
+    }
+    //Rate buyer
+    get currentRateBuyer() {
+        return this._currentRateBuyer.asObservable();
     }
 
 
@@ -1043,6 +1049,36 @@ InterestedBuyers(userid: string, advertisementid: string) {
         const interestedbuyerResult = new InterestedbuyerResultList(400,null, "An Error has been recieved, please contact support.");
         this._currentInterestedbuyerList.next(interestedbuyerResult);
     });
+}
+
+RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerrating: string, buyercomments: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ advertisementid: advertisementid,  sellerid: sellerid, buyerid: buyerid, buyerrating: buyerrating, buyercomments: buyercomments }),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const RateBuyerResultErr = new RateBuyerResult(500, false, '00000000-0000-0000-0000-000000000000','An error has occured whilst trying to connect.',);
+            this._currentRateBuyer.next(RateBuyerResultErr);
+        } else if (responseCode === 200) {
+            const result = response.content.toJSON();
+            const RateBuyersuccessResult = new RateBuyerResult(200, result.buyerrated, result.ratingid, result.message);
+            this._currentRateBuyer.next(RateBuyersuccessResult);
+        } else {
+            const RateBuyersuccessResult = new RateBuyerResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+            this._currentRateBuyer.next(RateBuyersuccessResult); 
+        }
+    }, (e) => {
+
+        const RateBuyersuccessResult = new RateBuyerResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+        this._currentRateBuyer.next(RateBuyersuccessResult);
+    });
+    return null;
 }
 }
 

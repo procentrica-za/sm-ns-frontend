@@ -1,10 +1,10 @@
-<ns-action-bar  [actionBarTitle]="'Seller Rating'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+<ns-action-bar  [actionBarTitle]="'Buyer rating'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
     <StackLayout class="input-field">
         <Label
             class="label"
             text="Please select a rating from 1-5"
-            [ngClass]="{ invalid: !sellerratingControlIsValid }"
+            [ngClass]="{ invalid: !buyerratingControlIsValid }"
         ></Label>
         <TextField
            editable="false" textWrap="true"
@@ -13,22 +13,22 @@
            required
            [autocorrect]="false"
            autocapitalizationType="none"
-           formControlName="sellerrating"
-           #sellerratingEl
+           formControlName="buyerrating"
+           #buyerratingEl
        ></TextField>
         <Slider value="1" minValue="1" maxValue="5"
         (valueChange)="onSliderValueChange($event)">
        </Slider>
         <Label
-            *ngIf="!sellerratingControlIsValid"
-            text="Please enter a valid seller rating."
+            *ngIf="!buyerratingControlIsValid"
+            text="Please enter a valid buyer rating."
         ></Label>
     </StackLayout>
     <StackLayout class="input-field">
         <Label
             class="label"
-            text="Seller Comments"
-            [ngClass]="{ invalid: !sellercommentsControlIsValid }"
+            text="Buyer Comments"
+            [ngClass]="{ invalid: !buyercommentsControlIsValid }"
         ></Label>
         <TextView
              class="input"
@@ -36,17 +36,17 @@
              required
              [autocorrect]="false"
              autocapitalizationType="none"
-             formControlName="sellercomments"
-             #sellercommentsEl
+             formControlName="buyercomments"
+             #buyercommentsEl
         ></TextView>
         <Label
-            *ngIf="!sellercommentsControlIsValid"
-            text="Please enter a valid seller comment."
+            *ngIf="!buyercommentsControlIsValid"
+            text="Please enter a valid buyer comment."
         ></Label>
     </StackLayout>
     <Button
         class="btn btn-primary btn-rounded-lg"
-        text="Rate Seller"
-        (tap)="onRateSeller()"
+        text="Rate Buyer"
+        (tap)="onRateBuyer()"
     ></Button>
 </StackLayout>

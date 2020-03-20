@@ -321,6 +321,15 @@ export class InterestedbuyerResultList {
     ){}
 }
 
+export class RateBuyerResult {
+    constructor (
+        public responseStatusCode : number,
+        public buyerrated : boolean,
+        public ratingid : string,
+        public message : string,
+    ){}
+}
+
 
 
 

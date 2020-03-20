@@ -50,7 +50,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         appSettings.setString("advertisementid", tappedInterestedItem.advertisementid);
         appSettings.setString("sellerid", tappedInterestedItem.sellerid);
         appSettings.setString("buyerid", tappedInterestedItem.buyerid);
-        this.router.navigate(['/messagingdetails'],
+        this.router.navigate(['/ratebuyer'],
             {
                 animated: true,
                 transition: {

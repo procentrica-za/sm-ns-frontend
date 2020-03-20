@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { AdvertService } from "../advert.service";
-import { RateSellerResult} from '../advert.model';
+import { RateBuyerResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
@@ -21,23 +21,23 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
 
 
     form: FormGroup;
-    sellerratingControlIsValid = true;
-    sellercommentsControlIsValid = true;
-    @ViewChild('sellerratingEl', {static:false}) sellerratingEl: ElementRef<TextField>;
-    @ViewChild('sellercommentsEl', {static:false}) sellercommentsEl: ElementRef<TextField>;
+    buyerratingControlIsValid = true;
+    buyercommentsControlIsValid = true;
+    @ViewChild('buyerratingEl', {static:false}) buyerratingEl: ElementRef<TextField>;
+    @ViewChild('buyercommentsEl', {static:false}) buyercommentsEl: ElementRef<TextField>;
     //result of user rating
     rateResultSub: Subscription;
-    rate: RateSellerResult;
+    rate: RateBuyerResult;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     onSliderValueChange(args) {
         let slider = <Slider>args.object;
-        this.form.controls['sellerrating'].setValue((args.value).toString());
+        this.form.controls['buyerrating'].setValue((args.value).toString());
     }
     ngOnInit() {
         //populate rating options
         this.form = new FormGroup({
-            sellerrating: new FormControl(
+            buyerrating: new FormControl(
                 null,
                 {
                     updateOn: 'blur',
@@ -46,7 +46,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                     ]
                 }
             ),
-            sellercomments: new FormControl(
+            buyercomments: new FormControl(
                 null,
                 {
                     updateOn: 'blur',
@@ -56,12 +56,52 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                 }
             )
         });
-        this.form.get('sellerrating').statusChanges.subscribe(status => {
-            this.sellerratingControlIsValid = status === 'VALID';
+        this.form.get('buyerrating').statusChanges.subscribe(status => {
+            this.buyerratingControlIsValid = status === 'VALID';
         });
-        this.form.get('sellercomments').statusChanges.subscribe(status => {
-            this.sellercommentsControlIsValid = status === 'VALID';
+        this.form.get('buyercomments').statusChanges.subscribe(status => {
+            this.buyercommentsControlIsValid = status === 'VALID';
         });
+        this.rateResultSub = this.advertServ.currentRateBuyer.subscribe( 
+            rateresult => {
+                if(rateresult){
+                    this.rate = rateresult;
+ 
+                    if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
+    
+                       this.router.navigate(['/advert/myadverts'],
+                  {
+                     animated: true,
+                     transition: {
+                     name: "slide",
+                     duration: 2,
+                     curve: "ease"
+                     }
+            });
+                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss")
+
+                    } else if (this.rate.responseStatusCode === 500 ){
+                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                    }
+                    else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
+                        TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss");
+                        this.router.navigate(['/advert/myadverts'],
+                  {
+                     animated: true,
+                     transition: {
+                     name: "slide",
+                     duration: 2,
+                     curve: "ease"
+                     }
+            });
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                        console.log(this.rate.buyerrated)
+                    }
+                }
+            }
+        );
 
 
 
@@ -76,53 +116,23 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
 
     
 //Send message function
-    onRateSeller() {
-        this.sellerratingEl.nativeElement.focus();
-        this.sellercommentsEl.nativeElement.focus();
-        this.sellercommentsEl.nativeElement.dismissSoftInput();
+    onRateBuyer(args :ListViewEventData): void {
+        this.buyerratingEl.nativeElement.focus();
+        this.buyercommentsEl.nativeElement.focus();
+        this.buyercommentsEl.nativeElement.dismissSoftInput();
         if(!this.form.valid){
             return;
         }
-        const ratingid = appSettings.getString("ratingid");
-        const sellerrating = this.form.get('sellerrating').value;
-        const sellercomments = this.form.get('sellercomments').value;
-        
-        this.rateResultSub = this.advertServ.currentRateSeller.subscribe( 
-            rateresult => {
-                if(rateresult){
-                    this.rate = rateresult;
- 
-                    if(this.rate.responseStatusCode === 200 && this.rate.sellerrated === true){
-
-                       //Save user details and rememberme info
-                       this.router.navigate(['/advert/home'],
-            {
-                animated: true,
-                transition: {
-                    name: "slide",
-                    duration: 2,
-                    curve: "ease"
-                }
-            });
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss")
-                    } else if (this.rate.responseStatusCode === 500 ){
-                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                    }
-                    else if (this.rate.responseStatusCode === 400 ){
-                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                    }
-                    else {
-                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        console.log(this.rate.sellerrated)
-                    }
-                }
-            }
-        );
+    
 
          setTimeout(() =>{
-    //send message
-             this.advertServ.RateSeller(ratingid,sellerrating, sellercomments);
-             this.form.reset();
+
+             const buyerrating = this.form.get('buyerrating').value;
+             const buyercomments = this.form.get('buyercomments').value;
+             const advertisementid = appSettings.getString("advertisementid"); 
+             const sellerid = appSettings.getString("sellerid"); 
+             const buyerid = appSettings.getString("buyerid"); 
+             this.advertServ.RateBuyer(advertisementid, sellerid, buyerid ,buyerrating, buyercomments);
          },100);
      }
 }
