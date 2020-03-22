@@ -226,6 +226,9 @@ export class ActivechatResult {
         public username : string,
         public message : string,
         public messagedate : string,
+        public price : string,
+        public title : string,
+        public description : string,
     ){}
 }
 export class ActivechatResultList {

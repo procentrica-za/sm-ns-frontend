@@ -455,7 +455,7 @@ ActionBar {
 }
 
 .chatsRadList {
-    margin-top: .05%;
+    margin-top: 3.5%;
     background-color: lightgray;
  
  
@@ -472,10 +472,17 @@ ActionBar {
  .ViewAdLabel {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
-    font-size: 15em;
+    font-size: 20em;
     color: $secondary;
-    background-color: azure;
+    background-color: lightgray;
 }
+
+ .AdLabel {
+    background-color: lightgray;
+    margin-left: 0;
+    margin-top: 0;
+}
+
 
 .InterestLabel {
     font-family: FontAwesome, fontawesome-webfont;
