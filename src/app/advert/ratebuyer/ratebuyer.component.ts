@@ -69,15 +69,8 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
  
                     if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
     
-                       this.router.navigate(['/advert/myadverts'],
-                  {
-                     animated: true,
-                     transition: {
-                     name: "slide",
-                     duration: 2,
-                     curve: "ease"
-                     }
-            });
+                       this.router.back();
+                       this.router.back();
                        TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss")
 
                     } else if (this.rate.responseStatusCode === 500 ){

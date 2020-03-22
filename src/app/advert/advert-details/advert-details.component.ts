@@ -228,7 +228,6 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid");
         this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
-        this.notrated = false;
     }
 
     onViewInterest(args :ListViewEventData) {
@@ -242,7 +241,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                 curve: "ease"
             }
         });
-    
+        this.notrated = false;
     }
 
 
