@@ -528,3 +528,21 @@ ActionBar {
     text-align: center;
 }
  
+
+.PasswordLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $secondary;
+    margin-left: 70%;
+    font-weight: 700;
+    font-size: 15em;
+    text-align: center;
+}
+
+.activechaticon {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $secondary;
+    margin-left: 25%;
+    font-weight: 700;
+    font-size: 18em;
+    text-align: center;
+}

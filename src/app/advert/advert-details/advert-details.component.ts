@@ -227,7 +227,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         const buyerid = appSettings.getString("userid");
         const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid");
-        this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
+        this.advertServ.StartNewChat(sellerid, buyerid, advertisementtype, advertisementid);
     }
 
     onViewInterest(args :ListViewEventData) {
