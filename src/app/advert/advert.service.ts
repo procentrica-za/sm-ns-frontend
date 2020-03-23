@@ -17,7 +17,7 @@ import {    TextbookResult,
             UserAdvertTextbookResult,
             UserAdvertTutorResult,
             AddAdvertisementResult,
-            DeleteAdvertisementResult } from './advert.model'
+            DeleteAdvertisementResult,  
             UploadImage,
             MessageResult,
             AddAccomodationResult,
@@ -26,7 +26,14 @@ import {    TextbookResult,
             RateSellerResult,
             ActivechatResultList,
             ActivechatResult,
-            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult , InterestedbuyerResult, InterestedbuyerResultList, RateBuyerResult} from './advert.model'
+            MessageResultList,
+            PreviousratingResult,
+            PreviousratingResultList ,
+            StartChatResult ,
+            InterestedbuyerResult,
+            InterestedbuyerResultList,
+            RateBuyerResult } from './advert.model'
+           
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -80,9 +87,8 @@ export class AdvertService {
     private _currentMessage = new BehaviorSubject<MessageResult>(null);
     //send message service
     private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
-   //private _currentUserAdvertList = new BehaviorSubject
-    private test: Subscription;
-    public testList: TextbookResult[];
+    //private _currentUserAdvertList = new BehaviorSubject
+    
 
      //Rating,outstanding service
      private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
@@ -90,32 +96,10 @@ export class AdvertService {
      //rate seller service
      private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
 
-
-
-
-
-    //Messaging, active chat service
-    private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
-    private _currentActivechat = new BehaviorSubject<ActivechatResult>(null);
-    //messaging messages service
-    private _currentMessageList = new BehaviorSubject<MessageResultList>(null);
-    private _currentMessage = new BehaviorSubject<MessageResult>(null);
-    //send message service
-    private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
-    //start a new chat
-    private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
-   //private _currentUserAdvertList = new BehaviorSubject
-    private test: Subscription;
-    public testList: TextbookResult[];
-
-     //Rating,outstanding service
-     private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
-     private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
      //Rating dashboards
      private _currentPreviousratingList = new BehaviorSubject<PreviousratingResultList>(null);
      private _currentPreviousrating = new BehaviorSubject<PreviousratingResult>(null);
-     //rate seller service
-     private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
+     
      //rate buyer
      private _currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
 
@@ -123,6 +107,9 @@ export class AdvertService {
     //Rating, interested buyers
     private _currentInterestedbuyerList = new BehaviorSubject<InterestedbuyerResultList>(null);
     private _currentInterestedbuyer = new BehaviorSubject<InterestedbuyerResult>(null);
+
+    private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
+
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -152,23 +139,11 @@ export class AdvertService {
         return this._currentStartChat.asObservable();
     }
 
-    // Rating Outstanding results
-    get currentOutstandingratingList() {
-        return this._currentOutstandingratingList.asObservable();
-    }
-    get currentOutstandingrating() {
-        return this._currentOutstandingrating.asObservable();
-    }
-    //Rate seller
-    get currentRateSeller() {
-        return this._currentRateSeller.asObservable();
-    }
     //Rate buyer
     get currentRateBuyer() {
         return this._currentRateBuyer.asObservable();
     }
 
-
     // Rating Outstanding results
     get currentOutstandingratingList() {
         return this._currentOutstandingratingList.asObservable();
@@ -180,7 +155,6 @@ export class AdvertService {
     get currentRateSeller() {
         return this._currentRateSeller.asObservable();
     }
-
 
     get currentAccomodationList() {
         return this._currentAccomodationList.asObservable();

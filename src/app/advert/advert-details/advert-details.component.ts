@@ -1,8 +1,16 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 import { AdvertService } from "../advert.service";
-import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult, StartChatResult} from '../advert.model';
-import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult, DeleteAdvertisementResult} from '../advert.model';
+import { TextbookResult,
+         AccomodationResult,
+         TutorResult,
+         NoteResult,
+         UserAdvertTextbookResult,
+         UserAdvertAccomodationResult,
+         UserAdvertTutorResult,
+         UserAdvertNoteResult,
+         StartChatResult,
+         DeleteAdvertisementResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
