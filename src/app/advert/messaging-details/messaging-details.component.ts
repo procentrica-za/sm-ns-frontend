@@ -84,4 +84,20 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
          },100);
          this.form.reset();
      }
+
+     onAdvertRequested() {
+        const advertisementtype = appSettings.getString("advertisementtype");
+        const advertisementid = appSettings.getString("advertisementid");
+        this.advertServ.setAdvert(advertisementtype, advertisementid);
+        console.log(advertisementtype, advertisementid);
+        this.router.navigate(['/advert/details'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+    }
 }

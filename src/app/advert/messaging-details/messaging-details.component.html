@@ -18,7 +18,7 @@
                 <Label  *ngIf="message.username === message.userchat" row="1" col="2" text="&#xf0a5;" class="sendmessageicon" ></Label>
                 <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage" row="1" col="2" text="" textWrap="true"  ></Label>
                 <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="2" col="0" text="" textWrap="true"  ></Label>
-                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="2" col="0" text="" textWrap="true"  ></Label>
+                <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="2" col="0" text="" ></Label>
                 <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="2" col="1" text="" textWrap="true"  ></Label>
                 <Label  *ngIf="message.username !== message.userchat" class="RecievedMessage"row="2" col="1" text="" textWrap="true"  ></Label>
             </Gridlayout>

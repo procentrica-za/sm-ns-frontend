@@ -7,6 +7,8 @@
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Update Password" (tap)="PasswordUpdate()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Messages" (tap)="Messagehome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Outstanding Ratings" (tap)="Ratinghome()"></Button>
+            <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Ratings From Purchasing" (tap)="Buyerhome()"></Button>
+            <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Ratings From Selling" (tap)="Sellerhome()"></Button>
         </FlexboxLayout>
         <Button *ngIf="isLoggedIn" row="1" col="0" text="Logout" class="btn-logout" (tap)="logOut()"></Button>
     </GridLayout>

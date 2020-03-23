@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 import { AdvertService } from "../advert.service";
-import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult} from '../advert.model';
+import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult, StartChatResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
+import { RadListView, ListViewEventData } from "nativescript-ui-listview";
+
+import * as appSettings from "tns-core-modules/application-settings";
 
 @Component({
     selector: 'ns-advert-details',
@@ -35,10 +38,18 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     
     public advertFound: boolean;
 
+    public notrated: boolean;
+
+    //start chat
+    startchatResultSub: Subscription;
+    startchat: StartChatResult;
+    
+    buyerid = "";
+
     constructor(private router: RouterExtensions, private advertServ: AdvertService) { }
 
     ngOnInit() { 
-        
+        //get userid from app settings
 
         this.textbookResultSub = this.advertServ.currentTextbook.subscribe(
             textbook => {
@@ -164,8 +175,74 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         )  */
+
+        this.startchatResultSub = this.advertServ.currentStartChat.subscribe(
+            startchatresult => {
+                if(startchatresult){
+                    this.startchat = startchatresult;
+ 
+                    if(this.startchat.responseStatusCode === 200 && this.startchat.chatposted === true){
+                        //send chatID to chats service
+                       this.advertServ.setActivechat(this.startchat.chatID);
+                       TNSFancyAlert.showSuccess("Chat Success", this.startchat.message, "Dismiss");
+                       this.router.navigate(['/messagingdetails'],
+                       {
+                           animated: true,
+                           transition: {
+                               name: "slide",
+                               duration: 200,
+                               curve: "ease"
+                           }
+                       });
+                    } else if (this.startchat.responseStatusCode === 500){
+                        TNSFancyAlert.showError("Connection error", this.startchat.message, "Dismiss");
+                    }
+                    else if (this.startchat.responseStatusCode === 200 && this.startchat.chatposted === false){
+                        TNSFancyAlert.showSuccess("This chat is already active", "You will be redirected to the chat.", "Dismiss");
+                        this.advertServ.setActivechat(this.startchat.chatID);
+                        this.router.navigate(['/messagingdetails'],
+                        {
+                            animated: true,
+                            transition: {
+                                name: "slide",
+                                duration: 200,
+                                curve: "ease"
+                            }
+                        });
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error", this.startchat.message, "Dismiss");
+                    }
+                    
+                }
+            }
+        );
+ this.notrated = true;
+        
     }
 
+    onItemSelected(args :ListViewEventData) {
+        //get buyerid
+        const sellerid = appSettings.getString("sellerid");
+        const buyerid = appSettings.getString("userid");
+        const advertisementtype = appSettings.getString("advertisementtype");
+        const advertisementid = appSettings.getString("advertisementid");
+        this.advertServ.StartNewChat(sellerid, buyerid,advertisementtype, advertisementid);
+    }
+
+    onViewInterest(args :ListViewEventData) {
+        //get buyerid
+        this.router.navigate(['/ratebuyerhome'],
+        {
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
+        this.notrated = false;
+    }
 
 
     
@@ -194,6 +271,9 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         }
         if(this.userAdvertNoteResultSub){
             this.userAdvertNoteResultSub.unsubscribe();
+        }
+        if(this.startchatResultSub){
+            this.startchatResultSub.unsubscribe();
         }
         this.advertServ.clearSelectedAdvertisement();
         this.advertServ.clearSelectedUserAdvertisement();

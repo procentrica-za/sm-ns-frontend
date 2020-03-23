@@ -13,6 +13,12 @@ import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-
 import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
 import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
 
+import { BuyerratingsComponent } from "./advert/buyerratings/buyerratings.component";
+import { SellerratingsComponent } from "./advert/sellerratings/sellerratings.component";
+
+import { RatebuyerHomeComponent } from "./advert/ratebuyer-home/ratebuyer-home.component";
+import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
+
 
 
 const routes: Routes = [
@@ -29,6 +35,11 @@ const routes: Routes = [
     { path: 'messagingdetails', component: MessagingDetailsComponent },
     { path: 'ratinghome', component: RatingHomeComponent },
     { path: 'rateseller', component: RatesellerComponent },
+    { path: 'buyerrating', component: BuyerratingsComponent },
+    { path: 'sellerrating', component: SellerratingsComponent },
+    { path: 'sellerrating', component: SellerratingsComponent },
+    { path: 'ratebuyerhome', component: RatebuyerHomeComponent },
+    { path: 'ratebuyer', component: RatebuyerComponent },
 ];
 
 @NgModule({

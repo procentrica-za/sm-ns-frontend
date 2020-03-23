@@ -1,0 +1,10 @@
+<ns-action-bar [actionBarTitle]="'Interested buyers'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+    <RadListView  *ngIf="interestLoaded " [items]="interestedbuyerResultList.Interestedbuyers" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
+        <ng-template tkListItemTemplate let-interested="item" >
+            <Gridlayout rows="*,*,*" columns="*,*,"  class="GridLayoutChatListStyle" shadow="6" >
+                <Label *ngIf="interested" row="0" col="0" class ="InterestedBuyers" [text]="interested.username" textWrap="true"  ></Label>
+                <Label *ngIf="interested" row="0" col="1" text="&#xf005;" class ="Ratebuyerlabel" textWrap="true"  ></Label>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
+    

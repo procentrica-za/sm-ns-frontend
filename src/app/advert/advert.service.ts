@@ -24,7 +24,7 @@ import {    TextbookResult,
             ActivechatResult,
             ActivechatResultList,
             MessageResult,
-            MessageResultList } from './advert.model'
+            MessageResultList, PreviousratingResult, PreviousratingResultList , StartChatResult , InterestedbuyerResult, InterestedbuyerResultList, RateBuyerResult} from './advert.model'
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
 import { request, getJSON } from "tns-core-modules/http";
@@ -67,6 +67,7 @@ export class AdvertService {
 
 
 
+
     //Messaging, active chat service
     private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
     private _currentActivechat = new BehaviorSubject<ActivechatResult>(null);
@@ -75,6 +76,8 @@ export class AdvertService {
     private _currentMessage = new BehaviorSubject<MessageResult>(null);
     //send message service
     private _currentSendMessage = new BehaviorSubject<MessageResult>(null)
+    //start a new chat
+    private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
    //private _currentUserAdvertList = new BehaviorSubject
     private test: Subscription;
     public testList: TextbookResult[];
@@ -82,10 +85,18 @@ export class AdvertService {
      //Rating,outstanding service
      private _currentOutstandingratingList = new BehaviorSubject<OutstandingratingResultList>(null);
      private _currentOutstandingrating = new BehaviorSubject<OutstandingratingResult>(null);
+     //Rating dashboards
+     private _currentPreviousratingList = new BehaviorSubject<PreviousratingResultList>(null);
+     private _currentPreviousrating = new BehaviorSubject<PreviousratingResult>(null);
      //rate seller service
      private _currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
+     //rate buyer
+     private _currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
 
 
+    //Rating, interested buyers
+    private _currentInterestedbuyerList = new BehaviorSubject<InterestedbuyerResultList>(null);
+    private _currentInterestedbuyer = new BehaviorSubject<InterestedbuyerResult>(null);
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -110,6 +121,10 @@ export class AdvertService {
     get currentSendMessage() {
         return this._currentSendMessage.asObservable();
     }
+    //start chat
+    get currentStartChat() {
+        return this._currentStartChat.asObservable();
+    }
 
     // Rating Outstanding results
     get currentOutstandingratingList() {
@@ -121,6 +136,10 @@ export class AdvertService {
     //Rate seller
     get currentRateSeller() {
         return this._currentRateSeller.asObservable();
+    }
+    //Rate buyer
+    get currentRateBuyer() {
+        return this._currentRateBuyer.asObservable();
     }
 
 
@@ -186,7 +205,25 @@ export class AdvertService {
         return this._currentAddAdvertisement.asObservable();
     }
 
+     // Rating Dashboard results
+     get currentPreviousratingList() {
+        return this._currentPreviousratingList.asObservable();
+    }
+    get currentPreviousrating() {
+        return this._currentPreviousrating.asObservable();
+    }
+
+    // Rating interested parties result
+    get currentInterestedbuyerList() {
+        return this._currentInterestedbuyerList.asObservable();
+    }
+    get currentInterestedbuyer() {
+        return this._currentInterestedbuyer.asObservable();
+    }
+
     constructor(private http: HttpClient){
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
         setString("sm-service-ratings-host", "http://192.168.1.174:9957");
     }
     
@@ -600,7 +637,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null);
+                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -644,7 +681,6 @@ export class AdvertService {
                 // get the textbooklist.
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
-                console.log(userchat);
                 // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;
@@ -743,6 +779,11 @@ export class AdvertService {
     });
 }
 
+clearSelectedOutstandingrating() {
+    this._currentOutstandingrating.next(null);
+    this._currentOutstandingratingList.next(null);
+}
+
     setAccomodation(advertisementID: string){
         this.currentAccomodationList.forEach(element => {
             element.Accomodations.forEach(innerElement => {
@@ -818,6 +859,7 @@ export class AdvertService {
         this._currentAccomodation.next(null);
         this._currentTutor.next(null);
         this._currentNote.next(null);
+        this._currentStartChat.next(null);
     }
 
     clearSelectedUserAdvertisement() {
@@ -863,7 +905,180 @@ export class AdvertService {
     
     
 
-}
-//Rare seller
+//seller dashboard
+Previoussellerratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/sellerrating?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let previousratingList: PreviousratingResult[] = [];
+            // get the previousratinglist.
+            const JSONPreviousratingList = result.previousratings;
+            // iterate through the previousratinglist and read each textbook into a textbook object and push to the list variable
+            JSONPreviousratingList.forEach(element => {
+                element.responseStatusCode =200;
+                previousratingList.push(element)
+            })
+            const previousratingResult = new PreviousratingResultList(200, previousratingList, "Successfully recieved previous ratings");
+            this._currentPreviousratingList.next(previousratingResult);
+        } else {
+            const previousratinglistResult = new PreviousratingResultList(responseCode, null,response.content.toString());
+            this._currentPreviousratingList.next(previousratinglistResult);
 
+        }
+    }, (e) => {
+        const previousratingResult = new PreviousratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentPreviousratingList.next(previousratingResult);
+    });
+}
+
+//buyer dashboard
+Previousbuyerratings(userid) {
+    const reqUrl = getString("sm-service-ratings-host") + "/buyerrating?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let previousratingList: PreviousratingResult[] = [];
+            // get the previousratinglist.
+            const JSONPreviousratingList = result.previousratings;
+            // iterate through the previousratinglist and read each textbook into a textbook object and push to the list variable
+            JSONPreviousratingList.forEach(element => {
+                element.responseStatusCode =200;
+                previousratingList.push(element)
+            })
+            const previousratingResult = new PreviousratingResultList(200, previousratingList, "Successfully recieved previous ratings");
+            this._currentPreviousratingList.next(previousratingResult);
+        } else {
+            const previousratinglistResult = new PreviousratingResultList(responseCode, null,response.content.toString());
+            this._currentPreviousratingList.next(previousratinglistResult);
+
+        }
+    }, (e) => {
+        const previousratingResult = new PreviousratingResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentPreviousratingList.next(previousratingResult);
+    });
+}
+
+StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, advertisementid: string) {
+    const reqUrl = getString("sm-service-messages-host") + "/chat";
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ sellerid: sellerid, buyerid: buyerid, advertisementtype: advertisementtype, advertisementid: advertisementid}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const StartChatResultErr = new StartChatResult(500, false,'00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+            this._currentStartChat.next(StartChatResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const StartChatsuccessResult = new StartChatResult(200, result.chatposted, result.chatid,result.message);
+            this._currentStartChat.next(StartChatsuccessResult);   
+        } else {
+            const StartChatsuccessResult = new StartChatResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+            this._currentStartChat.next(StartChatsuccessResult); 
+        }
+    }, (e) => {
+
+        const StartChatsuccessResult = new StartChatResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+            this._currentStartChat.next(StartChatsuccessResult); 
+    });
+    return null;
+} 
+
+InterestedBuyers(userid: string, advertisementid: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/interest" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ userid: userid, advertisementid: advertisementid}),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null);
+        } else if (responseCode === 200) {
+            // Make sure the response we receive is in JSON format.
+            const result = response.content.toJSON();
+            // Instansiate a textbook list object to read the response in to.
+            let interestedbuyerList: InterestedbuyerResult[] = [];
+            // get the textbooklist.
+            const JSONInterestedbuyerList = result.interestedbuyers;
+            const userchat = appSettings.getString("username");
+            // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
+            JSONInterestedbuyerList.forEach(element => {
+                element.responseStatusCode =200;
+                //for interestedbuyer styling
+                element.userchat = userchat;
+                interestedbuyerList.push(element)
+            })
+            const interestedbuyerResult = new InterestedbuyerResultList(200, interestedbuyerList, "Message successfully recieved");
+            this._currentInterestedbuyerList.next(interestedbuyerResult);
+        } else {
+            const interestedbuyerlistResult = new InterestedbuyerResultList(responseCode, null,response.content.toString());
+            this._currentInterestedbuyerList.next(interestedbuyerlistResult);
+
+        }
+    }, (e) => {
+        const interestedbuyerResult = new InterestedbuyerResultList(400,null, "An Error has been recieved, please contact support.");
+        this._currentInterestedbuyerList.next(interestedbuyerResult);
+    });
+}
+
+RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerrating: string, buyercomments: string) {
+    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({ advertisementid: advertisementid,  sellerid: sellerid, buyerid: buyerid, buyerrating: buyerrating, buyercomments: buyercomments }),
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const RateBuyerResultErr = new RateBuyerResult(500, false, '00000000-0000-0000-0000-000000000000','An error has occured whilst trying to connect.',);
+            this._currentRateBuyer.next(RateBuyerResultErr);
+        } else if (responseCode === 200) {
+            const result = response.content.toJSON();
+            const RateBuyersuccessResult = new RateBuyerResult(200, result.buyerrated, result.ratingid, result.message);
+            this._currentRateBuyer.next(RateBuyersuccessResult);
+        } else {
+            const RateBuyersuccessResult = new RateBuyerResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+            this._currentRateBuyer.next(RateBuyersuccessResult); 
+        }
+    }, (e) => {
+
+        const RateBuyersuccessResult = new RateBuyerResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+        this._currentRateBuyer.next(RateBuyersuccessResult);
+    });
+    return null;
+}
+}
 

@@ -164,6 +164,9 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
         const tappedAdvertItem = args.view.bindingContext;
         //console.log("Ad Type:  "+ tappedAdvertItem.advertisementtype +"\n ID:  "+ tappedAdvertItem.advertisementid)
         this.advertServ.setUserAdvert(tappedAdvertItem.advertisementtype, tappedAdvertItem.advertisementid);
+        //Set ID's for ratings 
+        appSettings.setString("buyerid", tappedAdvertItem.advertisementid);
+        appSettings.setString("advertisementid", tappedAdvertItem.advertisementid);
         this.router.navigate(['/advert/details'],
             {
                 animated: true,
@@ -174,5 +177,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                 }
             });
     }
+
+    
 
 }

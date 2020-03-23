@@ -19,14 +19,16 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
     private activechatResultListSub: Subscription;
     public activechatResultList: ActivechatResultList;
     public chatsLoaded : boolean;
+    public showDetails : boolean;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
         this.chatsLoaded = false;
+        this.showDetails = false;
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
-                    this.activechatResultList = activechatResult
+                    this.activechatResultList = activechatResult 
                     if(this.activechatResultList.responseStatusCode === 200){
                         this.chatsLoaded = true;
                     } else {
@@ -43,6 +45,8 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         const tappedActivechatItem = args.view.bindingContext;
         this.advertServ.setActivechat(tappedActivechatItem.chatid);
         appSettings.setString("chatid", tappedActivechatItem.chatid);
+        appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
+        appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);
         this.router.navigate(['/messagingdetails'],
             {
                 animated: true,
@@ -54,6 +58,18 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             });
 
     }
+
+    onViewAd(){
+        if (this.showDetails == false){
+            this.showDetails = true; 
+        } 
+        else {
+            this.showDetails = false;
+        }
+        ; 
+ 
+    }
+
     ngOnDestroy() {
         if(this.activechatResultListSub){
             this.activechatResultListSub.unsubscribe();

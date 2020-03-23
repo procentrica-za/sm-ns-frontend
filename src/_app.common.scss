@@ -455,7 +455,7 @@ ActionBar {
 }
 
 .chatsRadList {
-    margin-top: .05%;
+    margin-top: 3.5%;
     background-color: lightgray;
  
  
@@ -469,5 +469,62 @@ ActionBar {
 
  }
 
+ .ViewAdLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 20em;
+    color: $secondary;
+    background-color: lightgray;
+}
 
+ .AdLabel {
+    background-color: lightgray;
+    margin-left: 0;
+    margin-top: 0;
+}
+
+
+.InterestLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 700;
+    font-size: 60em;
+    text-align: center;
+}
+
+.ItemSoldLabel {
+    margin-left: 22;
+}
+.InterestedBuyers {
+    font-size: 25em;
+    margin-left: 20;
+}
+
+.InterestedBuyerslabel {
+    margin-top: 10;
+}
+
+.Ratebuyerlabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $secondary;
+    margin-top: 6;
+    font-weight: 700;
+    font-size: 25em;
+    text-align: center;
+}
+.DeleteLabel {
+    margin-left: 17;
+}
+ 
+.EditLabel {
+    margin-left: 17;
+}
+
+.DeleteLabelicon {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 700;
+    font-size: 57em;
+    text-align: center;
+}
  

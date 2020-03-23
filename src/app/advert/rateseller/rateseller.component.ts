@@ -71,6 +71,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
         if(this.rateResultSub){
             this.rateResultSub.unsubscribe();
         }
+        this.advertServ.clearSelectedOutstandingrating();
     }
 
     
@@ -94,7 +95,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                     if(this.rate.responseStatusCode === 200 && this.rate.sellerrated === true){
 
                        //Save user details and rememberme info
-                       this.router.navigate(['/advert/home'],
+                       this.router.navigate(['/ratinghome'],
             {
                 animated: true,
                 transition: {
