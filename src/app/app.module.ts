@@ -22,6 +22,10 @@ import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
 import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.component";
 import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
 
+//rating imports
+import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
+import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
+
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
 @NgModule({
@@ -51,7 +55,9 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         UpdateuserComponent,
         NewpasswordComponent,
         MessagingHomeComponent,
-        MessagingDetailsComponent
+        MessagingDetailsComponent,
+        RatingHomeComponent,
+        RatesellerComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

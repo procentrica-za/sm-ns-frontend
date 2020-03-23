@@ -1,5 +1,7 @@
 <ns-action-bar [actionBarTitle]="'Advert Details'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
 
+
+<!-- ######################################################## GRIDLAYOUT USED FOR TEXTBOOK ADS ########################################################-->
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="textbookResult" >
     <Image *ngIf="textbookResult"  row="0" col="1" colspan="3" [src]="textbookResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
@@ -37,6 +39,8 @@
 </Gridlayout>
 
 
+<!-- ######################################################## GRIDLAYOUT USED FOR USER TEXTBOOK ADS ########################################################-->
+
 
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="userAdvertTextbookResult" >
     <Image *ngIf="userAdvertTextbookResult"  row="0" col="1" colspan="3" [src]="userAdvertTextbookResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
@@ -70,86 +74,234 @@
         <Label row="8" col="2" colspan="2" [text]="userAdvertTextbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
-        <Label row="10" col="2" colspan="2" text="Edit Advertisement"></Label>
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="3" colspan="2" text="Delete Advertisement"></Label>
 </Gridlayout>
 
 
+
+
+<!-- ######################################################## GRIDLAYOUT USED FOR ACCOMODATION ADS ########################################################-->
 
 
 
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="accomodationResult" >
     <Image *ngIf="accomodationResult"  row="0" col="1" colspan="3" [src]="accomodationResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="accomodationResult" [text]="accomodationResult.location" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="accomodationResult"  [text]="accomodationResult.accomodationtypecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="accomodationResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="accomodationResult"  [text]="accomodationResult.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="accomodationResult" [text]="accomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView> 
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
+
+        <Label row="4" col="0" colspan = "2" text="Institution: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.institutionname" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Distance to Campus: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.distancetocampus" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="6" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+
+        <Label row="9" col="3"  text="&#xf086;" class="ContactSellerLabel"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
+
+<!-- ######################################################## GRIDLAYOUT USED FOR USER ACCOMODATION ADS ########################################################-->
 
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="userAdvertAccomodationResult" >
     <Image *ngIf="userAdvertAccomodationResult"  row="0" col="1" colspan="3" [src]="userAdvertAccomodationResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.location" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="userAdvertAccomodationResult"  [text]="userAdvertAccomodationResult.accomodationtypecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvertAccomodationResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvertAccomodationResult"  [text]="userAdvertAccomodationResult.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView> 
+
+        <Label row="4" col="0" colspan = "2" text="Institution: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.institutionname" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Distance to Campus: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.distancetocampus" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="6" col="2" colspan = "3" *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel" (tap)="deleteAdvertisement(userAdvertAccomodationResult.advertisementid)"></Label>
+        <Label row="10" col="3" colspan="2" text="Delete Advertisement" (tap)="deleteAdvertisement(userAdvertAccomodationResult.advertisementid)"></Label>
 </Gridlayout>
+
+<!-- ######################################################## GRIDLAYOUT USED FOR  TUTOR ADS ########################################################-->
 
 
 
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="tutorResult" >
     <Image *ngIf="tutorResult"  row="0" col="1" colspan="3" [src]="tutorResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="tutorResult" [text]="tutorResult.subject" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="tutorResult"  [text]="tutorResult.modulecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="tutorResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="tutorResult"  [text]="tutorResult.subject" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="tutorResult" [text]="tutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label row="4" col="0" colspan = "2" text="Year Completed: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="tutorResult" [text]="tutorResult.yearcompleted" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Venue: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="tutorResult" [text]="tutorResult.venue" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0" colspan = "2" text="Notes Provided: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2" colspan = "3" *ngIf="tutorResult" [text]="notesProvidedFull" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="7" col="0" colspan = "2" text="Terms: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="7" col="2" colspan = "3" *ngIf="tutorResult" [text]="tutorResult.terms" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="8" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="8" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="8" col="2" colspan = "3" *ngIf="tutorResult" [text]="tutorResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
+<!-- ######################################################## GRIDLAYOUT USED FOR USER TUTOR ADS ########################################################-->
+
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="userAdvertTutorResult" >
     <Image *ngIf="userAdvertTutorResult"  row="0" col="1" colspan="3" [src]="userAdvertTutorResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.subject" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="userAdvertTutorResult"  [text]="userAdvertTutorResult.modulecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvertTutorResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvertTutorResult"  [text]="userAdvertTutorResult.subject" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label row="4" col="0" colspan = "2" text="Year Completed: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.yearcompleted" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Venue: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.venue" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0" colspan = "2" text="Notes Provided: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2" colspan = "3" *ngIf="userAdvertTutorResult" [text]="notesProvidedFull" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="7" col="0" colspan = "2" text="Terms: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="7" col="2" colspan = "3" *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.terms" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="8" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="8" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="8" col="2" colspan = "3" *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="3" colspan="2" text="Delete Advertisement"></Label>
 </Gridlayout>
 
 
+
+
+
+
+
+<!-- ######################################################## GRIDLAYOUT USED FOR NOTE ADS ########################################################-->
 
 
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="noteResult" >
     <Image *ngIf="noteResult"  row="0" col="1" colspan="3" [src]="noteResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="noteResult" [text]="noteResult.modulecode" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="noteResult" [text]="noteResult.modulecode" class="GridLayoutLabelHeading" textwrap="true"></Label>
+            <Label *ngIf="noteResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="noteResult"  text="Notes" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
+
+        
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="noteResult" [text]="noteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label row="4" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="noteResult" [text]="noteResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
+<!-- ######################################################## GRIDLAYOUT USED FOR USER NOTE ADS ########################################################-->
+
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="userAdvertNoteResult" >
     <Image *ngIf="userAdvertNoteResult"  row="0" col="1" colspan="3" [src]="userAdvertNoteResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.modulecode" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.modulecode" class="GridLayoutLabelHeading" textwrap="true"></Label>
+            <Label *ngIf="userAdvertNoteResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="userAdvertNoteResult"  text="Notes" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
+
+        
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+        <Label row="4" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="3" colspan="2" text="Delete Advertisement"></Label>
 </Gridlayout>
+

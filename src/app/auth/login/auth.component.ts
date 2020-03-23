@@ -40,6 +40,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     login: LoginResult;
 
     constructor(private router: RouterExtensions, private authServ: AuthService) {
+        console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
 

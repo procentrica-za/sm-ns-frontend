@@ -18,6 +18,25 @@ export class AddAdvertisementResult {
     ){}
 }
 
+export class DeleteAdvertisementResult {
+    constructor(
+        public responseStatusCode: number,
+        public advertisementDeleted: boolean,
+        public advertisementID : string,
+        public message: string
+    ){}
+}
+
+
+export class UploadImage {
+    constructor(
+        public entityid: string,
+        public ismainimage: boolean,
+        public imagebytes: string
+    ){}
+}
+
+
 export class TextbookResult {
     constructor (
         public responseStatusCode : number,
@@ -252,6 +271,31 @@ export class MessageResultList {
     ){}
 }
 
+export class OutstandingratingResult {
+    constructor (
+        public responseStatusCode : number,
+        public ratingid : string,
+        public username : string,
+        public price : string,
+        public title : string,
+        public description : string,
+    ){}
+}
+export class OutstandingratingResultList {
+    constructor (
+        public responseStatusCode : number,
+        public Outstandingratings : OutstandingratingResult[],
+        public message : string,
+    ){}
+}
+
+export class RateSellerResult {
+    constructor (
+        public responseStatusCode : number,
+        public sellerrated : boolean,
+        public message : string,
+    ){}
+}
 
 
 

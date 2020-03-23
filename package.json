@@ -26,6 +26,7 @@
     "nativescript-fancyalert": "^3.0.9",
     "nativescript-imagepicker": "^7.1.0",
     "nativescript-ng-shadow": "^2.1.0",
+    "nativescript-radiobutton": "^0.1.0",
     "nativescript-theme-core": "~1.0.6",
     "nativescript-ui-listview": "^8.0.1",
     "nativescript-ui-sidedrawer": "^8.0.0",

@@ -38,7 +38,6 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
 
     constructor(private router: RouterExtensions, private advertServ: AdvertService){
         this.isSelling = appSettings.getBoolean("myAdvertsSelling");
-        
     }
 
     addAdvertisementNavigate(){
@@ -67,6 +66,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.isSelling = appSettings.getBoolean("myAdvertSelling");
         this.textbookImagesLoaded = false;
         this.accomodationImagesLoaded = false;
         this.tutorImagesLoaded = false;
@@ -89,6 +89,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                 }
             }
         );
+
 
         this.userAccomodationAdvertResultListSub = this.advertServ.currentUserAdvertAccomodationList.subscribe(
             userAdvertResult => {
