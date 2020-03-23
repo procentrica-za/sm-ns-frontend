@@ -71,13 +71,13 @@
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
         <Label *ngIf="notrated" row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
-        <Label *ngIf="notrated" row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
+        <Label *ngIf="notrated" row="10" col="2" text="Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
         
         <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
-        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+        <Label row="10" col="1"  text="Edit" class="EditLabel"></Label>
 
-        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel"></Label>
-        <Label row="10" col="3" colspan="2" text="Delete Advertisement"></Label>
+        <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon"></Label>
+        <Label row="10" col="3" text="Delete" class="DeleteLabel"></Label>
 </Gridlayout>
 
 
@@ -127,7 +127,7 @@
         </ScrollView> 
 
         <Label *ngIf="notrated" row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
-        <Label *ngIf="notrated" row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
+        <Label *ngIf="notrated" row="10" col="2" text="Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
 </Gridlayout>
 
 
@@ -154,6 +154,12 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1"  text="Edit" class="EditLabel"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon"></Label>
+        <Label row="10" col="3" text="Delete" class="DeleteLabel"></Label>
 
         <Label  row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
         <Label  row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
@@ -184,6 +190,12 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <<Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1"  text="Edit" class="EditLabel"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon"></Label>
+        <Label row="10" col="3" text="Delete" class="DeleteLabel"></Label>
 
         <Label  row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
         <Label  row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>

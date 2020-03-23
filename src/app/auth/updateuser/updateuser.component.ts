@@ -45,7 +45,7 @@ export class UpdateuserComponent implements OnInit {
     @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
 
 
-    constructor(private authServ: AuthService) {
+    constructor(private authServ: AuthService, private router: RouterExtensions) {
             
     }
     ngOnInit() {
@@ -108,8 +108,17 @@ export class UpdateuserComponent implements OnInit {
                     this.update = updateresult;
  
                     if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
-                       //Save user details and rememberme info
-                       TNSFancyAlert.showSuccess("Update Success", this.update.Message, "Dismiss")
+
+                       this.router.navigate(['/advert/home'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+                       TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss")
                     } else if (this.update.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
                     }

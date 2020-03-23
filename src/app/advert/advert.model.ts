@@ -224,11 +224,11 @@ export class ActivechatResult {
         public advertisementtype : string,
         public advertisementid : string,
         public username : string,
-        public message : string,
-        public messagedate : string,
         public price : string,
         public title : string,
         public description : string,
+        public message : string,
+        public messagedate : string,
     ){}
 }
 export class ActivechatResultList {

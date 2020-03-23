@@ -488,12 +488,12 @@ ActionBar {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
     font-weight: 700;
-    font-size: 25em;
+    font-size: 60em;
     text-align: center;
 }
 
 .ItemSoldLabel {
-    margin-left: 10;
+    margin-left: 22;
 }
 .InterestedBuyers {
     font-size: 25em;
@@ -510,6 +510,21 @@ ActionBar {
     margin-top: 6;
     font-weight: 700;
     font-size: 25em;
+    text-align: center;
+}
+.DeleteLabel {
+    margin-left: 17;
+}
+ 
+.EditLabel {
+    margin-left: 17;
+}
+
+.DeleteLabelicon {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 700;
+    font-size: 57em;
     text-align: center;
 }
  

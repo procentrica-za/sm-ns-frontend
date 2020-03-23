@@ -37,7 +37,7 @@ export class NewpasswordComponent implements OnInit {
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
 
 
-    constructor(private authServ: AuthService) {
+    constructor(private authServ: AuthService, private router: RouterExtensions) {
             
     }
     ngOnInit() {
@@ -78,6 +78,15 @@ export class NewpasswordComponent implements OnInit {
                     if(this.update.responseStatusCode === 200 && this.update.PasswordUpdated === true){
     
                        TNSFancyAlert.showSuccess("Update Success", this.update.Message, "Dismiss")
+                       this.router.navigate(['/advert/home'],
+                       {
+                           animated: true,
+                           transition: {
+                               name: "slide",
+                               duration: 200,
+                               curve: "ease"
+                           }
+                       });
                        this.authServ.clearAllObjects();
                     } else if(this.update.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
@@ -114,6 +123,11 @@ export class NewpasswordComponent implements OnInit {
 
     //Send User ID from app settings
         this.authServ.GetUser(id);
+    }
+
+    toggleShow() {
+        console.log(this.password1El.nativeElement.secure);
+        this.password1El.nativeElement.secure = !this.password1El.nativeElement.secure;
     }
 
 ngOnDestroy() {
