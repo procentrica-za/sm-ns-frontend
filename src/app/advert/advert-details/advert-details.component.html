@@ -70,9 +70,14 @@
         <Label row="8" col="2" colspan="2" [text]="userAdvertTextbookResult.price " textWrap="true" class="GridLayoutPriceLabel"></Label >  
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
-        <Label *ngIf="notrated" row="10" col="0" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
-        <Label *ngIf="notrated" row="10" col="1"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
-        <Label row="10" col="3" colspan="2" text="Edit Advertisement"></Label>
+        <Label *ngIf="notrated" row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
+        <Label *ngIf="notrated" row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
+        
+        <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="1" colspan="2" text="Edit Advertisement"></Label>
+
+        <Label row="9" col="3"  text="&#xf1f8;" class="ContactSellerLabel"></Label>
+        <Label row="10" col="3" colspan="2" text="Delete Advertisement"></Label>
 </Gridlayout>
 
 
@@ -82,13 +87,32 @@
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="accomodationResult" >
     <Image *ngIf="accomodationResult"  row="0" col="1" colspan="3" [src]="accomodationResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
     
-        <Label row="1" col="0" colspan="5" *ngIf="accomodationResult" [text]="accomodationResult.location" class="GridLayoutLabelHeading" textwrap="true"></Label>
+        <StackLayout row="1" col="0" colspan="5" orientation="horizontal">
+            <Label *ngIf="accomodationResult"  [text]="accomodationResult.accomodationtypecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="accomodationResult"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+            <Label *ngIf="accomodationResult"  [text]="accomodationResult.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+        </StackLayout>
        
         <Label row="2" col="0" colspan="5" text="Description:" class="GridLayoutStaticLabels"></Label>
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="accomodationResult" [text]="accomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView> 
-        <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
+
+        <Label row="4" col="0" colspan = "2" text="Institution: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="4" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.institutionname" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="5" col="0" colspan = "2" text="Distance to Campus: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="5" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.distancetocampus" textWrap="true" class="GridLayoutLabels" ></Label>
+        <StackLayout row="5" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+        <Label row="6" col="0" colspan = "2" text="Price: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+        <Label row="6" col="2" text="R " textWrap="true" class="GridLayoutLabels"></Label>
+        <Label row="6" col="2" colspan = "3" *ngIf="accomodationResult" [text]="accomodationResult.price" textWrap="true" class="GridLayoutPriceLabel" ></Label>
+        <StackLayout row="6" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
+
+
+        <Label row="9" col="3"  text="&#xf086;" class="ContactSellerLabel"></Label>
         <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
 </Gridlayout>
 
@@ -101,6 +125,9 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertAccomodationResult" [text]="userAdvertAccomodationResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView> 
+
+        <Label *ngIf="notrated" row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
+        <Label *ngIf="notrated" row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
 </Gridlayout>
 
 
@@ -127,6 +154,9 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertTutorResult" [text]="userAdvertTutorResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label  row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
+        <Label  row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
 </Gridlayout>
 
 
@@ -154,4 +184,7 @@
         <ScrollView row="3" col="0" colspan="5" >
             <Label *ngIf="userAdvertNoteResult" [text]="userAdvertNoteResult.description" textWrap="true" class="GridLayoutLabels" ></Label>
         </ScrollView>
+
+        <Label  row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
+        <Label  row="10" col="2" text="Item Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
 </Gridlayout>

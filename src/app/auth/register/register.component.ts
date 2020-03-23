@@ -126,11 +126,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
-        if(this.registerResultSub){
-            this.registerResultSub.unsubscribe();
-        }
-    }
+  
     onRegisterUser() {
         this.usernameEl.nativeElement.focus();
         this.passwordEl.nativeElement.focus();
@@ -154,5 +150,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
             //Verify register Credentials
             this.authServ.RegisterNewUser(username, password, name, surname, email);
         },100);
+    }
+
+      ngOnDestroy() {
+        if(this.registerResultSub){
+            this.registerResultSub.unsubscribe();
+        }
     }
 }
