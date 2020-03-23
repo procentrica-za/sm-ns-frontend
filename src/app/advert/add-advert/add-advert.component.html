@@ -2,6 +2,7 @@
 
 <ScrollView>
 <StackLayout class="form" [formGroup]="form">
+
     <StackLayout class="input-field">
         <Label
         class="label1"
@@ -16,6 +17,7 @@
         (tap)="takePic()"
         ></Button>-->
     </StackLayout>
+
     <StackLayout class="input-field">
         <Label
             class="label"
@@ -76,7 +78,7 @@
         class="label1"
         text="Advertisement Type"
     ></Label>
-    <StackLayout class="StackLayoutDividers1"></StackLayout> 
+     
        <!-- <TextField
         (tap)="onadvertTypeTap()"
         class="input"
@@ -91,7 +93,7 @@
         <ListPicker [items]="advertTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAdvertTypeChanged($event)"></ListPicker>
     </StackLayout>
    
-    <StackLayout class="StackLayoutDividers1"></StackLayout> 
+     
     </StackLayout>
 
     
@@ -171,7 +173,7 @@
     
     
     
-    <StackLayout class="StackLayoutDividers1"></StackLayout> 
+     
 
     <StackLayout>
         <Button
@@ -182,10 +184,7 @@
         
     </StackLayout>
    
-
-
     
-   
     
     </StackLayout>
 

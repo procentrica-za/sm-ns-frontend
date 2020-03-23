@@ -16,7 +16,8 @@ import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { ImageAsset } from "tns-core-modules/image-asset/image-asset";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-
+import { AddAdvertisementResult } from "../advert.model";
+import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 @Component({
     selector: 'ns-add-advert',
     templateUrl: './add-advert.component.html',
@@ -30,9 +31,11 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
     public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture: boolean;
-    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; myImg: string;
+    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; myImg; base64ImageString: string;
+    public advertPostedSub : Subscription;
+    private advertPosted: AddAdvertisementResult;
 
-    constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService) {
+    constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
         this.myImg = "";
         this.acdTypeBind = "";
         this.instTypeBind = "";
@@ -53,10 +56,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('acdTypeEl', {static:false}) acdTypeEl: ElementRef<TextField>;
     @ViewChild('instTypeEl', {static:false}) instTypeEl: ElementRef<TextField>;
    
-    ngOnInit(){
-        
-        
-
+    ngOnInit(){   
         this.form = new FormGroup({
             description: new FormControl(
                 null,
@@ -136,7 +136,10 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(){
-
+        if(this.advertPostedSub){
+            this.advertPostedSub.unsubscribe();
+        }
+       
     }
 
    
@@ -151,6 +154,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             selection.forEach(selected => {
                 let source = new ImageSource();
                 source.fromAsset(selected).then((imgSource: ImageSource) => {
+                    this.base64ImageString = imgSource.toBase64String("png"); 
                     this.myImg = imgSource.toBase64String("png");
                     this.myImg = "data:image/png;base64," + this.myImg;
                 });
@@ -193,18 +197,17 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         return uuid;
     };
 
-    
+    delay(ms: number) { // <------ Change
+        return new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired")); // <------ Change
+    }
 
-    onPostTap() {
-
-        console.log("Start");
+    async onPostTap() {
         this.priceEl.nativeElement.focus();
         this.descriptionEl.nativeElement.focus();
         this.locationEl.nativeElement.focus();
         this.distanceEl.nativeElement.focus();
         this.acdTypeEl.nativeElement.focus();
         this.instTypeEl.nativeElement.focus();
-
         
         if(!this.form.valid){
             return;
@@ -239,22 +242,50 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
 
             }
         }
-        //this.isLoading = true;
-        //Timeout to give loading bar time to appear
-       /* console.log("UserID: " + userid +
-                    "\n Selling: " + this.isSelling + 
-                    "\n advertType: " + this.advertType + 
-                    "\n Price: " + price + 
-                    "\n description: " + description + 
-                    "\n AccomodationID: " + accomodationID +
-                    "\n AccomodationType: " + acdType + 
-                    "\n Location: " + location +
-                    "\n Distance: " + distance +
-                    "\n InstitutionType: " + instType)*/
         setTimeout(() =>{
             //Call the service with captured information
             this.advertServ.AddNewAccomodationAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, accomodationID, acdType, location, distance, instType);
         },100);
+
+        await this.delay(1000);
+
+        this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+            advertResult => {
+                if(advertResult.advertisementposted) {
+                    this.advertPosted = advertResult;
+                    this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                    TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                        this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                        this.router.backToPreviousPage(),
+                        {
+                            animated: true,
+                            transition: {
+                                name: "slide",
+                                duration: 200,
+                                curve: "ease"  
+                            }
+                        }
+                        /*this.router.navigate(['/advert/myadverts'],
+                            {
+                                animated: true,
+                                transition: {
+                                    name: "slide",
+                                    duration: 200,
+                                    curve: "ease"
+                                }
+                            });*/
+                        }
+                    );
+                }else{
+                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted!!!!!!\n Message: " + advertResult.message,"Close");
+                }
+            }
+        );
+
+        if (this.advertPostedSub){
+            this.advertPostedSub.unsubscribe();
+        }
+        
     }
 
     onAccomodationTypeTap(){

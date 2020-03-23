@@ -15,9 +15,9 @@
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                 <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
                 <Label *ngIf="textbook" row="0" col="1" [text]="textbook.textbookname" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                <!--<ScrollView row="1" col="1">
+                <ScrollView row="1" col="1">
                     <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
-                </ScrollView>-->
+                </ScrollView>
                
                 <StackLayout *ngIf="textbook" row="3" col="1" orientation="horizontal" >
                     <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
@@ -34,9 +34,14 @@
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
-                    <Label *ngIf="accomodation" row="0" col="1" [text]="accomodation.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                    <!--<ScrollView row="1" col="1">
-                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    <StackLayout row="0" col="1" orientation="horizontal">
+                        <Label *ngIf="accomodation"  [text]="accomodation.accomodationtypecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                        <Label *ngIf="accomodation"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                        <Label *ngIf="accomodation"  [text]="accomodation.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    </StackLayout>
+                    
+                    <ScrollView row="1" col="1">
+                        <Label *ngIf="accomodation" [text]="accomodation.description" textWrap="true" class="GridLayoutLabels" ></Label>
                     </ScrollView>-->
                    
                     <StackLayout *ngIf="accomodation" row="3" col="1" orientation="horizontal" >
@@ -47,15 +52,16 @@
             </ng-template>
         </RadListView>
     </StackLayout>
+
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
         <RadListView  *ngIf="tutorImagesLoaded" [items]="tutorResultList.Tutors" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
                     <Label *ngIf="tutor" row="0" col="1" [text]="tutor.subject" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                    <!--<ScrollView row="1" col="1">
-                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
-                    </ScrollView>-->
+                    <ScrollView row="1" col="1">
+                        <Label *ngIf="tutor" [text]="tutor.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>
                    
                     <StackLayout *ngIf="tutor" row="3" col="1" orientation="horizontal" >
                         <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>
@@ -71,9 +77,9 @@
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>
                     <Label *ngIf="note" row="0" col="1" [text]="note.modulecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                    <!--<ScrollView row="1" col="1">
-                        <Label *ngIf="textbook" [text]="textbook.description" textWrap="true" class="GridLayoutLabels" ></Label>
-                    </ScrollView>-->
+                    <ScrollView row="1" col="1">
+                        <Label *ngIf="note" [text]="note.description" textWrap="true" class="GridLayoutLabels" ></Label>
+                    </ScrollView>
                    
                     <StackLayout *ngIf="note" row="3" col="1" orientation="horizontal" >
                         <Label  text="Price: R" textWrap="true" class="GridLayoutLabels"></Label>

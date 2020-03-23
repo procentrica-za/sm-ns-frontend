@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 import { AdvertService } from "../advert.service";
 import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult, StartChatResult} from '../advert.model';
+import { TextbookResult, AccomodationResult, TutorResult, NoteResult, UserAdvertTextbookResult, UserAdvertAccomodationResult, UserAdvertTutorResult, UserAdvertNoteResult, DeleteAdvertisementResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
@@ -18,6 +19,8 @@ import * as appSettings from "tns-core-modules/application-settings";
 
 export class AdvertDetailsComponent implements OnInit, OnDestroy {
     
+    public accomodationTypeFull; notesProvidedFull : string;
+
     private textbookResultSub: Subscription;
     public textbookResult : TextbookResult;
     private accomodationResultSub: Subscription;
@@ -35,6 +38,9 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     public userAdvertTutorResult : UserAdvertTutorResult;
     private userAdvertNoteResultSub: Subscription;
     public userAdvertNoteResult : UserAdvertNoteResult;
+
+    private deleteAdvertisementResultSub: Subscription;
+    public deleteAdvertisementResult: DeleteAdvertisementResult;
     
     public advertFound: boolean;
 
@@ -49,7 +55,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     constructor(private router: RouterExtensions, private advertServ: AdvertService) { }
 
     ngOnInit() { 
-        //get userid from app settings
+        
 
         this.textbookResultSub = this.advertServ.currentTextbook.subscribe(
             textbook => {
@@ -57,15 +63,35 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                     this.textbookResult = textbook;
                     this.advertFound = true;
             }});
+            
         this.accomodationResultSub = this.advertServ.currentAccomodation.subscribe(
             accomodation => {
                 if(accomodation) {
                     this.accomodationResult = accomodation;
+                    switch (accomodation.accomodationtypecode) {
+                        case "HSE":
+                            this.accomodationTypeFull = "House";
+                            break;
+                        case "APT":
+                            this.accomodationTypeFull = "Apartement";
+                            break;
+                        case "GDC":
+                            this.accomodationTypeFull = "Garden Cottage";
+                            break;
+                        case "COM":
+                            this.accomodationTypeFull = "Commune";
+                            break;
+                    }
                     this.advertFound = true;
             }});
         this.tutorResultSub = this.advertServ.currentTutor.subscribe(
             tutor => {
                 if(tutor) {
+                    if (tutor.notesincluded == "true"){
+                        this.notesProvidedFull = "Yes";
+                    }else {
+                        this.notesProvidedFull = "No";
+                    }
                     this.tutorResult = tutor;
                     this.advertFound = true;
             }});
@@ -85,11 +111,31 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
             accomodation => {
                 if(accomodation) {
                     this.userAdvertAccomodationResult = accomodation;
+                    switch (accomodation.accomodationtypecode) {
+                        case "HSE":
+                            this.accomodationTypeFull = "House";
+                            break;
+                        case "APT":
+                            this.accomodationTypeFull = "Apartement";
+                            break;
+                        case "GDC":
+                            this.accomodationTypeFull = "Garden Cottage";
+                            break;
+                        case "COM":
+                            this.accomodationTypeFull = "Commune";
+                            break;
+                    }
                     this.advertFound = true;
                 }});
         this.userAdvertTutorResultSub = this.advertServ.currentUserAdvertTutor.subscribe(
             tutor => {
                 if(tutor) {
+                    if (tutor.notesincluded == "true"){
+                        this.notesProvidedFull = "Yes";
+                    }else {
+                        this.notesProvidedFull = "No";
+                    }
+
                     this.userAdvertTutorResult = tutor;
                     this.advertFound = true;
                 }});
@@ -102,6 +148,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         if (!this.advertFound){
             TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
         }
+
+        // NOT IN USE
         /*this.textbookResultSub = this.advertServ.currentTextbook.subscribe(
             textbook => {
                 if(textbook) {
@@ -243,11 +291,55 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         });
         this.notrated = false;
     }
+    deleteAdvertisement(advertisementID: string){
+        this.advertServ.deleteAdvertisement(advertisementID);
 
+        this.deleteAdvertisementResultSub = this.advertServ.currentDeleteAdvertisementResult.subscribe(
+            advert => {
+                if(advert){
+                    this.deleteAdvertisementResult = advert;
+                    if(this.deleteAdvertisementResult.advertisementDeleted){
+                        TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Deleted!", "Close").then( t => {
+                            this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                            this.router.backToPreviousPage(),
+                            {
+                                animated: true,
+                                transition: {
+                                    name: "slide",
+                                    duration: 200,
+                                    curve: "ease"  
+                                }
+                            }
+                            /*this.router.navigate(['/advert/myadverts'],
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"
+                                    }
+                                });*/
+                            }
+                        );
+                    }else{
+                        TNSFancyAlert.showError("Error!", "Advertisement Could not be deleted \n" + this.deleteAdvertisementResult.message,"Close");
+                    }
+                }
+            }
+        );
+
+        if(this.deleteAdvertisementResultSub){
+            this.deleteAdvertisementResultSub.unsubscribe();
+        }
+        
+    }
 
     
 
     ngOnDestroy() {
+        if(this.deleteAdvertisementResultSub){
+            this.deleteAdvertisementResultSub.unsubscribe();
+        }
         if(this.textbookResultSub){
             this.textbookResultSub.unsubscribe();
         }
