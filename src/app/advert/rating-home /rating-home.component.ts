@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
@@ -18,6 +19,7 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
     private outstandingratingResultListSub: Subscription;
     public outstandingratingResultList: OutstandingratingResultList;
     public ratingsLoaded : boolean;
+    public myOutstandingratingArray : ObservableArray<OutstandingratingResult>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
@@ -25,8 +27,11 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
         this.outstandingratingResultListSub = this.advertServ.currentOutstandingratingList.subscribe(
             outstandingratingResult => {
                 if(outstandingratingResult) {
-                    this.outstandingratingResultList = outstandingratingResult
                     if(this.outstandingratingResultList.responseStatusCode === 200){
+                        this.myOutstandingratingArray = new ObservableArray(0);
+                        outstandingratingResult.Outstandingratings.forEach( t => {
+                            this.myOutstandingratingArray.push(t);
+                        });
                         this.ratingsLoaded = true;
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");

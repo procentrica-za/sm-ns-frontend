@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings 
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
@@ -17,6 +18,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
     public interestLoaded : boolean;
     private interestedbuyerResultListSub: Subscription;
     public interestedbuyerResultList: InterestedbuyerResultList;
+    public myInterestedbuyerArray : ObservableArray<InterestedbuyerResult>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
@@ -24,8 +26,11 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         this.interestedbuyerResultListSub = this.advertServ.currentInterestedbuyerList.subscribe(
             interestedbuyerResult => {
                 if(interestedbuyerResult) {
-                    this.interestedbuyerResultList = interestedbuyerResult
                     if(this.interestedbuyerResultList.responseStatusCode === 200){
+                        this.myInterestedbuyerArray = new ObservableArray(0);
+                        interestedbuyerResult.Interestedbuyers.forEach( t => {
+                            this.myInterestedbuyerArray.push(t);
+                        });
                         this.interestLoaded = true;
                     } else if(this.interestedbuyerResultList.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");

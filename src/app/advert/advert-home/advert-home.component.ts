@@ -47,7 +47,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             setTimeout(() =>{
                 this.advertServ.clearSelectedAdvertisement();
                 this.advertServ.initializeAdvertisements(this.isSelling);
-            },100); 
+            },100);  
         }
     }
 
