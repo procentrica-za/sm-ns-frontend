@@ -46,7 +46,6 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
     onItemSelected(args :ListViewEventData): void {
         const tappedOutstandingratingItem = args.view.bindingContext;
         appSettings.setString("ratingid", tappedOutstandingratingItem.ratingid);
-        console.log( appSettings.setString("ratingid", tappedOutstandingratingItem.ratingid))
         this.router.navigate(['/rateseller'],
             {
                 animated: true,

@@ -1115,7 +1115,7 @@ InterestedBuyers(userid: string, advertisementid: string) {
     }).then((response) => {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
-            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null);
+            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null, null);
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();

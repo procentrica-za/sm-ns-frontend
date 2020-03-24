@@ -331,6 +331,7 @@ export class InterestedbuyerResult {
         public responseStatusCode : number,
         public username : string,
         public advertisementid : string,
+        public advertisementtype : string,
         public sellerid : string,
         public buyerid : string,
     ){}
