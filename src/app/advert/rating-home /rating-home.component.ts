@@ -27,7 +27,7 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
         this.outstandingratingResultListSub = this.advertServ.currentOutstandingratingList.subscribe(
             outstandingratingResult => {
                 if(outstandingratingResult) {
-                    if(this.outstandingratingResultList.responseStatusCode === 200){
+                    if(outstandingratingResult.responseStatusCode === 200){
                         this.myOutstandingratingArray = new ObservableArray(0);
                         outstandingratingResult.Outstandingratings.forEach( t => {
                             this.myOutstandingratingArray.push(t);

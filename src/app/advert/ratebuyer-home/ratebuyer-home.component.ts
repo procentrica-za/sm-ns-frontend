@@ -26,7 +26,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         this.interestedbuyerResultListSub = this.advertServ.currentInterestedbuyerList.subscribe(
             interestedbuyerResult => {
                 if(interestedbuyerResult) {
-                    if(this.interestedbuyerResultList.responseStatusCode === 200){
+                    if(interestedbuyerResult.responseStatusCode === 200){
                         this.myInterestedbuyerArray = new ObservableArray(0);
                         interestedbuyerResult.Interestedbuyers.forEach( t => {
                             this.myInterestedbuyerArray.push(t);

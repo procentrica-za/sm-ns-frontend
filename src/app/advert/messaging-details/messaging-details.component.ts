@@ -33,7 +33,7 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
         this.messageResultListSub = this.advertServ.currentMessageList.subscribe(
             messageResult => {
                 if(messageResult) {
-                    if(this.messageResultList.responseStatusCode === 200){
+                    if(messageResult.responseStatusCode === 200){
                         this.myMessageArray = new ObservableArray(0);
                         messageResult.Messages.forEach( t => {
                             this.myMessageArray.push(t);

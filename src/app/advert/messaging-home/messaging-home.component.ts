@@ -30,7 +30,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
-                    if(this.activechatResultList.responseStatusCode === 200){
+                    if(activechatResult.responseStatusCode === 200){
                         this.myActivechatArray = new ObservableArray(0);
                         activechatResult.Activechats.forEach( t => {
                             this.myActivechatArray.push(t);

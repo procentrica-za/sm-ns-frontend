@@ -142,7 +142,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
         this.advertServ.setAdvert(tappedAdvertItem.advertisementtype, tappedAdvertItem.advertisementid);
-        appSettings.setString("buyerid", tappedAdvertItem.advertisementid);
+        appSettings.setString("sellerid", tappedAdvertItem.userid);
         appSettings.setString("advertisementtype", tappedAdvertItem.advertisementtype);
         appSettings.setString("advertisementid", tappedAdvertItem.advertisementid);
         this.router.navigate(['/advert/details'],

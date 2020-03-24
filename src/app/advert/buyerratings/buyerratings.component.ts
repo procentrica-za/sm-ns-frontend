@@ -27,7 +27,7 @@ export class BuyerratingsComponent implements OnInit, OnDestroy {
         this.previousratingResultListSub = this.advertServ.currentPreviousratingList.subscribe(
             previousratingResult => {
                 if(previousratingResult) {
-                    if(this.previousratingResultList.responseStatusCode === 200){
+                    if(previousratingResult.responseStatusCode === 200){
                         this.myPreviousratingArray = new ObservableArray(0);
                         previousratingResult.Previousratings.forEach( t => {
                             this.myPreviousratingArray.push(t);
