@@ -108,7 +108,7 @@ export class UpdateuserComponent implements OnInit {
                     this.update = updateresult;
  
                     if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
-
+                        TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss").then( t => {
                        this.router.navigate(['/advert/home'],
             {
                 animated: true,
@@ -118,7 +118,7 @@ export class UpdateuserComponent implements OnInit {
                     curve: "ease"
                 }
             });
-                       TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss")
+        });
                     } else if (this.update.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
                     }

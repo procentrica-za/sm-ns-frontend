@@ -109,8 +109,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
  
                     if(this.register.responseStatusCode === 200 && this.register.UserCreated === "true"){
 
-                       TNSFancyAlert.showSuccess("Registration success", "You have sucessfully registered.", "Dismiss");
+                       TNSFancyAlert.showSuccess("Registration success", "You have sucessfully registered.", "Dismiss").then( t => {
                        this.router.navigate([''], {clearHistory: true});
+                       });
                     } else if (this.register.responseStatusCode === 500){
                         TNSFancyAlert.showError("Connection error", this.register.Message, "Dismiss");
                     }
