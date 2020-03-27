@@ -248,7 +248,9 @@ export class ActivechatResult {
         public description : string,
         public message : string,
         public messagedate : string,
-        public isreda : string,
+        public isread : string,
+        public messageauthor : string,
+
     ){}
 }
 export class ActivechatResultList {
@@ -265,6 +267,7 @@ export class MessageResult {
         public username : string,
         public message : string,
         public messagedate : string,
+        public isread : string,
     ){}
 }
 export class MessageResultList {
