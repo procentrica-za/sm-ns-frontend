@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { AdvertService } from "../advert.service";
-import { ActivechatResult, ActivechatResultList} from '../advert.model';
+import { MessageService } from "../message.service";
+import { ActivechatResult, ActivechatResultList} from '../message.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
@@ -9,12 +9,12 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
-    selector: 'ns-messaging-home',
-    templateUrl: './messaging-home.component.html',
-    styleUrls: ['./messaging-home.component.scss'],
+    selector: 'ns-message-home',
+    templateUrl: './message-home.component.html',
+    styleUrls: ['./message-home.component.scss'],
     moduleId: module.id
 })
-export class MessagingHomeComponent implements OnInit, OnDestroy {
+export class MessageHomeComponent implements OnInit, OnDestroy {
     userid = "";
     chatid = "";
     private activechatResultListSub: Subscription; 
@@ -22,18 +22,23 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
     public myActivechatArray : ObservableArray<ActivechatResult>;
     public chatsLoaded : boolean;
     public showDetails : boolean;
-    constructor(private advertServ: AdvertService, private router: RouterExtensions) {
+    constructor(private messageServ: MessageService, private router: RouterExtensions) {
     }
     ngOnInit() {
         this.chatsLoaded = false;
         this.showDetails = false;
-        this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
+
+        const userid = appSettings.getString("userid");
+        this.messageServ.initializeActiveChats(userid);
+
+        this.activechatResultListSub = this.messageServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
                     if(activechatResult.responseStatusCode === 200){
                         this.myActivechatArray = new ObservableArray(0);
                         activechatResult.Activechats.forEach( t => {
                             this.myActivechatArray.push(t);
+                            console.log(this.myActivechatArray);
                         });
                         this.chatsLoaded = true;
                     } else {
@@ -43,16 +48,14 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             }
         );
 
-        const userid = appSettings.getString("userid");
-        this.advertServ.initializeActiveChats(userid);
     }
     onItemSelected(args :ListViewEventData): void {
         const tappedActivechatItem = args.view.bindingContext;
-        this.advertServ.setActivechat(this.userid,tappedActivechatItem.chatid);
+        this.messageServ.setActivechat(this.userid,tappedActivechatItem.chatid);
         appSettings.setString("chatid", tappedActivechatItem.chatid);
         appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
         appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);
-        this.router.navigate(['/messagingdetails'],
+        this.router.navigate(['/message/details'],
             {
                 animated: true,
                 transition: {

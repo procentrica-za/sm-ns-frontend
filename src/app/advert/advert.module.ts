@@ -23,7 +23,7 @@ import { AdvertListPickerComponent } from "./advert-listpicker/advert-listpicker
     ],
     imports: [NativeScriptCommonModule,
               SharedModule,
-              AdvertRoutingModule,
+              AdvertRoutingModule, 
               NativeScriptUIListViewModule,
               NgShadowModule,
               DropDownModule,

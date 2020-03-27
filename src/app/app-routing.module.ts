@@ -6,9 +6,6 @@ import { RegisterComponent } from "./auth/register/register.component";
 import { ForgotpasswordComponent } from "./auth/forgotpassword/forgotpassword.component";
 import { UpdateuserComponent } from "./auth/updateuser/updateuser.component";
 import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
-//messaging imports 
-import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.component";
-import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
 //rating imports
 import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
 import { RatesellerComponent } from "./advert/rateseller/rateseller.component";
@@ -31,8 +28,10 @@ const routes: Routes = [
         path: 'advert',
         loadChildren: '~/app/advert/advert.module#AdvertModule'
     },
-    { path: 'messaginghome', component: MessagingHomeComponent },
-    { path: 'messagingdetails', component: MessagingDetailsComponent },
+    {
+        path: 'message',
+        loadChildren: '~/app/message/message.module#MessageModule'
+    },
     { path: 'ratinghome', component: RatingHomeComponent },
     { path: 'rateseller', component: RatesellerComponent },
     { path: 'buyerrating', component: BuyerratingsComponent },

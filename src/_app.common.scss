@@ -452,10 +452,12 @@ ActionBar {
     background-color: #ffffff;
     border-color: #efeeee;
     border-radius: 5;
+    margin-left: 3%;
+    margin-right:3%;
 }
 
 .chatsRadList {
-    margin-top: 3.5%;
+
     background-color: lightgray;
  
  
@@ -474,7 +476,7 @@ ActionBar {
     font-weight: 100;
     font-size: 20em;
     color: $secondary;
-    background-color: lightgray;
+
 }
 
  .AdLabel {

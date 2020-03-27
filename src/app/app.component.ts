@@ -60,7 +60,7 @@ export class AppComponent implements OnInit{
 
     Messagehome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/messaginghome']);
+        this.router.navigate(['/message']);
     }
 
     Ratinghome(){

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
-import { AdvertService } from "../advert.service";
-import { MessageResult, MessageResultList} from '../advert.model';
+import { MessageService } from "../message.service";
+import { MessageResult, MessageResultList} from '../message.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
@@ -12,11 +12,11 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
     selector: 'ns-messaging-details',
-    templateUrl: './messaging-details.component.html',
-    styleUrls: ['./messaging-details.component.scss'],
+    templateUrl: './message-details.component.html',
+    styleUrls: ['./message-details.component.scss'],
     moduleId: module.id
 })
-export class MessagingDetailsComponent implements OnInit, OnDestroy {
+export class MessageDetailsComponent implements OnInit, OnDestroy {
     
     form: FormGroup;
     messageControlIsValid = true;
@@ -26,11 +26,11 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
     public messageResultList: MessageResultList;
     public messagesLoaded : boolean;
     public myMessageArray : ObservableArray<MessageResult>;
-    constructor(private advertServ: AdvertService, private router: RouterExtensions) {
+    constructor(private messageServ: MessageService, private router: RouterExtensions) {
     }
     ngOnInit() {
         this.messagesLoaded = false;
-        this.messageResultListSub = this.advertServ.currentMessageList.subscribe(
+        this.messageResultListSub = this.messageServ.currentMessageList.subscribe(
             messageResult => {
                 if(messageResult) {
                     if(messageResult.responseStatusCode === 200){
@@ -85,24 +85,9 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
 
          setTimeout(() =>{
     //send message
-             this.advertServ.SendMessage(chatid,authorid, message);
+             this.messageServ.SendMessage(chatid,authorid, message);
          },100);
          this.form.reset();
      }
 
-     onAdvertRequested() {
-        const advertisementtype = appSettings.getString("advertisementtype");
-        const advertisementid = appSettings.getString("advertisementid");
-        this.advertServ.setAdvert(advertisementtype, advertisementid);
-        console.log(advertisementtype, advertisementid);
-        this.router.navigate(['/advert/details'],
-            {
-                animated: true,
-                transition: {
-                    name: "slide",
-                    duration: 200,
-                    curve: "ease"
-                }
-            });
-    }
 }

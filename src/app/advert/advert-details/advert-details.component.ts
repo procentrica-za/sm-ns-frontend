@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 import { AdvertService } from "../advert.service";
+import { MessageService } from "../../../app/message/message.service";
 import { TextbookResult,
          AccomodationResult,
          TutorResult,
@@ -60,7 +61,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     
     buyerid = "";
 
-    constructor(private router: RouterExtensions, private advertServ: AdvertService) { }
+    constructor(private router: RouterExtensions, private advertServ: AdvertService, private messageServ: MessageService) { }
 
     ngOnInit() { 
         
@@ -236,12 +237,12 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
             startchatresult => {
                 if(startchatresult){
                     this.startchat = startchatresult;
- 
+                    const userid = appSettings.getString("userid");
                     if(this.startchat.responseStatusCode === 200 && this.startchat.chatposted === true){
                         //send chatID to chats service
-                       this.advertServ.setActivechat(this.startchat.chatID);
+                       this.messageServ.setActivechat(userid, this.startchat.chatID);
                        TNSFancyAlert.showSuccess("Chat Success", this.startchat.message, "Dismiss");
-                       this.router.navigate(['/messagingdetails'],
+                       this.router.navigate(['/message/details'],
                        {
                            animated: true,
                            transition: {
@@ -255,8 +256,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                     }
                     else if (this.startchat.responseStatusCode === 200 && this.startchat.chatposted === false){
                         TNSFancyAlert.showSuccess("This chat is already active", "You will be redirected to the chat.", "Dismiss");
-                        this.advertServ.setActivechat(this.startchat.chatID);
-                        this.router.navigate(['/messagingdetails'],
+                        this.messageServ.setActivechat(userid,this.startchat.chatID);
+                        this.router.navigate(['/message/details'],
                         {
                             animated: true,
                             transition: {

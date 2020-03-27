@@ -11,6 +11,7 @@ import { AuthComponent } from "./auth/login/auth.component";
 
 import { AuthService } from "./auth/auth.service";
 import { AdvertService } from "./advert/advert.service";
+import { MessageService } from "./message/message.service";
 
 
 import { SharedModule } from "./shared/shared.module";
@@ -19,8 +20,6 @@ import { ForgotpasswordComponent } from "./auth/forgotpassword/forgotpassword.co
 import { UpdateuserComponent } from "./auth/updateuser/updateuser.component";
 import { NewpasswordComponent } from "./auth/newpassword/newpassword.component";
 //Messaging components
-import { MessagingHomeComponent } from "./advert/messaging-home/messaging-home.component";
-import { MessagingDetailsComponent } from "./advert/messaging-details/messaging-details.component";
 
 //rating imports
 import { RatingHomeComponent } from "./advert/rating-home /rating-home.component";
@@ -48,7 +47,8 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
     ],
     providers: [
         AuthService,
-        AdvertService
+        AdvertService,
+        MessageService
     ],
     declarations: [
         AppComponent, 
@@ -58,8 +58,6 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         ForgotpasswordComponent,
         UpdateuserComponent,
         NewpasswordComponent,
-        MessagingHomeComponent,
-        MessagingDetailsComponent,
         RatingHomeComponent,
         RatesellerComponent,
         BuyerratingsComponent,
