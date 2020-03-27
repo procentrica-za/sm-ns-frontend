@@ -7,6 +7,7 @@ import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
@@ -24,6 +25,7 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
     private messageResultListSub: Subscription;
     public messageResultList: MessageResultList;
     public messagesLoaded : boolean;
+    public myMessageArray : ObservableArray<MessageResult>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
@@ -31,8 +33,11 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
         this.messageResultListSub = this.advertServ.currentMessageList.subscribe(
             messageResult => {
                 if(messageResult) {
-                    this.messageResultList = messageResult
-                    if(this.messageResultList.responseStatusCode === 200){
+                    if(messageResult.responseStatusCode === 200){
+                        this.myMessageArray = new ObservableArray(0);
+                        messageResult.Messages.forEach( t => {
+                            this.myMessageArray.push(t);
+                        });
                         this.messagesLoaded = true;
                     } else if(this.messageResultList.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");

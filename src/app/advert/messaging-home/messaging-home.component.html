@@ -3,7 +3,7 @@
     <Label row="0" col="0" class="AdLabel" text="View Advertisement details:" textWrap="true"  ></Label>
     <Label row="0" col="1" class="SentMsessageusername" (tap)="onViewAd()" text="&#xf05a;" class="ViewAdLabel" textWrap="true"  ></Label>
 </Gridlayout>
-    <RadListView  *ngIf="chatsLoaded " [items]="activechatResultList.Activechats" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
+    <RadListView  *ngIf="chatsLoaded " [items]="myActivechatArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-activechat="item" >
             <Gridlayout rows="*,*,*,*,*,*,*,*" columns="*,2*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label row="0" col="0" class="SentMsessageusername" [text]="activechat.username" textWrap="true"  ></Label>

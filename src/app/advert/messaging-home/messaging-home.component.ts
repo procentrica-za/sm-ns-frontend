@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
@@ -16,8 +17,9 @@ import * as appSettings from "tns-core-modules/application-settings";
 export class MessagingHomeComponent implements OnInit, OnDestroy {
     userid = "";
     chatid = "";
-    private activechatResultListSub: Subscription;
+    private activechatResultListSub: Subscription; 
     public activechatResultList: ActivechatResultList;
+    public myActivechatArray : ObservableArray<ActivechatResult>;
     public chatsLoaded : boolean;
     public showDetails : boolean;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
@@ -28,8 +30,11 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
             activechatResult => {
                 if(activechatResult) {
-                    this.activechatResultList = activechatResult 
-                    if(this.activechatResultList.responseStatusCode === 200){
+                    if(activechatResult.responseStatusCode === 200){
+                        this.myActivechatArray = new ObservableArray(0);
+                        activechatResult.Activechats.forEach( t => {
+                            this.myActivechatArray.push(t);
+                        });
                         this.chatsLoaded = true;
                     } else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");

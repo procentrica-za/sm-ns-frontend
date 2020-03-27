@@ -1,6 +1,6 @@
 <ns-action-bar  [actionBarTitle]="'Chat'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
 <StackLayout [formGroup]="form" class="messageinput">
-    <RadListView left="0" top="0" dock="top"  *ngIf="messagesLoaded " [items]="messageResultList.Messages" class="messageRadList">
+    <RadListView left="0" top="0" dock="top"  *ngIf="messagesLoaded " [items]="myMessageArray" class="messageRadList">
         <ng-template tkListItemTemplate let-message="item" >
             <Gridlayout rows="*,*,*,*" columns="15*,40*,12*" class="messageitem" class="GridLayoutMessageListStyle" shadow="6" >
                 <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="0" col="0" text="" textWrap="true"  ></Label>

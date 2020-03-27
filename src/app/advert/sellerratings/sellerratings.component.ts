@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ObservableArray, ChangedData } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 @Component({
@@ -18,6 +19,7 @@ export class SellerratingsComponent implements OnInit, OnDestroy {
     private previousratingResultListSub: Subscription;
     public previousratingResultList: PreviousratingResultList;
     public ratingsLoaded : boolean;
+    public myPreviousratingArray : ObservableArray<PreviousratingResult>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
@@ -25,8 +27,11 @@ export class SellerratingsComponent implements OnInit, OnDestroy {
         this.previousratingResultListSub = this.advertServ.currentPreviousratingList.subscribe(
             previousratingResult => {
                 if(previousratingResult) {
-                    this.previousratingResultList = previousratingResult
-                    if(this.previousratingResultList.responseStatusCode === 200){
+                    if(previousratingResult.responseStatusCode === 200){
+                        this.myPreviousratingArray = new ObservableArray(0);
+                        previousratingResult.Previousratings.forEach( t => {
+                            this.myPreviousratingArray.push(t);
+                        });
                         this.ratingsLoaded = true;
                     } else {
                         TNSFancyAlert.showError("No ratings", "There aren't any previous rattings to display");

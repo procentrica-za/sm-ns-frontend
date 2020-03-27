@@ -11,7 +11,7 @@
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    <RadListView  *ngIf="textbookImagesLoaded" [items]="userTextbookAdvertResultList.Textbooks" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+    <RadListView  *ngIf="textbookImagesLoaded" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                 <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -31,7 +31,7 @@
 
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-        <RadListView  *ngIf="accomodationImagesLoaded" [items]="userAccomodationAdvertResultList.Accomodations" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView  *ngIf="accomodationImagesLoaded" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -55,7 +55,7 @@
 
     <!-- TAB AND RADLIST USED FOR TUTOR -->    
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-        <RadListView  *ngIf="tutorImagesLoaded" [items]="userTutorAdvertResultList.Tutors" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView  *ngIf="tutorImagesLoaded" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -75,7 +75,7 @@
 
      <!-- TAB AND RADLIST USED FOR NOTE --> 
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-        <RadListView  *ngIf="noteImagesLoaded" [items]="userNoteAdvertResultList.Notes" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView  *ngIf="noteImagesLoaded" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>

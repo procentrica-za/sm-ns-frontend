@@ -243,9 +243,10 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.0.126:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.0.126:9953");
-        setString("sm-service-file-manager-host", "http://192.168.0.126:9955");
+        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
     }
     
     deleteAdvertisement(advertisementID: string){
