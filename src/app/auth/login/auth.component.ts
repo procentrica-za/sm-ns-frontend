@@ -93,16 +93,21 @@ export class AuthComponent implements OnInit, OnDestroy {
                 if(login){
                     this.isLoading = false; 
                     this.login = login;
-                    // TODO : Need to validate if this is a valid login
                     if(this.login.responseStatusCode === 200){
-                       //Save user details and rememberme info
-                       appSettings.setString("userid", this.login.loginUser.id);
-                       //Save username for messaging purposes
-                       appSettings.setString("username", this.login.loginUser.username);
-                       appSettings.setBoolean("rememberme", this.rememberMe);
-                       appSettings.setBoolean("loggedIn", true);
-                       this.authServ.clearAllObjects();
-                       this.router.navigate(['/advert/home'], {clearHistory: true});
+                        //Check if login details were correct
+                        if(this.login.loginUser.id != ""){
+                            //Save user details and rememberme info
+                            appSettings.setString("userid", this.login.loginUser.id);
+                            //Save username for messaging purposes
+                            appSettings.setString("username", this.login.loginUser.username);
+                            appSettings.setBoolean("rememberme", this.rememberMe);
+                            appSettings.setBoolean("loggedIn", true);
+                            this.authServ.clearAllObjects();
+                            this.router.navigate(['/advert/home'], {clearHistory: true});
+                        }
+                        else {
+                            TNSFancyAlert.showError("Login Error", "Incorrect username and password combination.", "Dismiss");
+                        }
                     } else {
                         TNSFancyAlert.showError("Login Error", this.login.loginAttemptMessage, "Dismiss");
                     }
