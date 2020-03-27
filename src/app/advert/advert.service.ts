@@ -730,7 +730,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null);
+                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -755,8 +755,8 @@ export class AdvertService {
             this._currentActivechatList.next(activechatResult);
         });
     }
-    setActivechat(chatid: string) {
-        const reqUrl = getString("sm-service-messages-host") + "/message?chatid=" + chatid;
+    setActivechat(userid: string, chatid: string) {
+        const reqUrl = getString("sm-service-messages-host") + "/message?userid=" + userid + "&chatid=" + chatid;
         console.log(reqUrl);
         request ({
             url: reqUrl,

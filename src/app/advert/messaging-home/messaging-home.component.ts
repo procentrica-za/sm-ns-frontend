@@ -48,7 +48,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
     }
     onItemSelected(args :ListViewEventData): void {
         const tappedActivechatItem = args.view.bindingContext;
-        this.advertServ.setActivechat(tappedActivechatItem.chatid);
+        this.advertServ.setActivechat(this.userid,tappedActivechatItem.chatid);
         appSettings.setString("chatid", tappedActivechatItem.chatid);
         appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
         appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);

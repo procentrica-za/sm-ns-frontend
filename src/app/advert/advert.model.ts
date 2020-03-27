@@ -248,6 +248,7 @@ export class ActivechatResult {
         public description : string,
         public message : string,
         public messagedate : string,
+        public isreda : string,
     ){}
 }
 export class ActivechatResultList {

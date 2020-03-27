@@ -57,7 +57,7 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const loginResultErr = new LoginResult(500, "TODO", null);
+                const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
                 this._currentLogin.next(loginResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
