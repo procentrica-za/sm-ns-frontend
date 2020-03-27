@@ -126,7 +126,6 @@ export class NewpasswordComponent implements OnInit {
     }
 
     toggleShow() {
-        console.log(this.password1El.nativeElement.secure);
         this.password1El.nativeElement.secure = !this.password1El.nativeElement.secure;
     }
 
