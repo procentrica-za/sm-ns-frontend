@@ -28,8 +28,8 @@ export class MessageHomeComponent implements OnInit, OnDestroy {
         this.chatsLoaded = false;
         this.showDetails = false;
 
-        const userid = appSettings.getString("userid");
-        this.messageServ.initializeActiveChats(userid);
+        this.userid = appSettings.getString("userid");
+        this.messageServ.initializeActiveChats(this.userid);
 
         this.activechatResultListSub = this.messageServ.currentActivechatList.subscribe(
             activechatResult => {
@@ -38,7 +38,6 @@ export class MessageHomeComponent implements OnInit, OnDestroy {
                         this.myActivechatArray = new ObservableArray(0);
                         activechatResult.Activechats.forEach( t => {
                             this.myActivechatArray.push(t);
-                            console.log(this.myActivechatArray);
                         });
                         this.chatsLoaded = true;
                     } else {
@@ -50,8 +49,10 @@ export class MessageHomeComponent implements OnInit, OnDestroy {
 
     }
     onItemSelected(args :ListViewEventData): void {
+        console.log(this.userid);
         const tappedActivechatItem = args.view.bindingContext;
         this.messageServ.setActivechat(this.userid,tappedActivechatItem.chatid);
+
         appSettings.setString("chatid", tappedActivechatItem.chatid);
         appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
         appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);

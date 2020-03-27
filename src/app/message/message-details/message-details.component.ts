@@ -37,6 +37,7 @@ export class MessageDetailsComponent implements OnInit, OnDestroy {
                         this.myMessageArray = new ObservableArray(0);
                         messageResult.Messages.forEach( t => {
                             this.myMessageArray.push(t);
+                            console.log(this.myMessageArray);
                         });
                         this.messagesLoaded = true;
                     } else if(this.messageResultList.responseStatusCode === 500) {
