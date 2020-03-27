@@ -755,7 +755,8 @@ export class AdvertService {
             this._currentActivechatList.next(activechatResult);
         });
     }
-    setActivechat(userid: string, chatid: string) {
+    setActivechat(chatid: string) {
+        const userid = appSettings.getString("userid");
         const reqUrl = getString("sm-service-messages-host") + "/message?userid=" + userid + "&chatid=" + chatid;
         console.log(reqUrl);
         request ({
