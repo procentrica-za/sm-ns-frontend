@@ -22,28 +22,14 @@ export class AppComponent implements OnInit{
     private drawersub: Subscription;
     @ViewChild(RadSideDrawerComponent, {static: false}) drawerComponent: RadSideDrawerComponent;
 
-    public myActivechatArray : ObservableArray<ActivechatResult>;
+    
     constructor(
         private router: RouterExtensions,
         private uiService: UIService,
         private changeDetectionRef: ChangeDetectorRef,){}
 
     ngOnInit(
-        this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
-            activechatResult => {
-                if(activechatResult) {
-                    if(activechatResult.responseStatusCode === 200){
-                        this.myActivechatArray = new ObservableArray(0);
-                        activechatResult.Activechats.forEach( t => {
-                            this.myActivechatArray.push(t);
-                        });
-                        this.chatsLoaded = true;
-                    } else {
-                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                    }
-                }
-            }
-        );
+    
     ){}
 
     onRouterOutletActivate(event : any) {
