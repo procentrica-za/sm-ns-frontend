@@ -18,4 +18,4 @@ const routes: Routes = [
     exports: [NativeScriptRouterModule]
 })
 
-export class AdvertRoutingModule{}
+export class AdvertRoutingModule{} 

@@ -18,7 +18,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
     userid = "";
     chatid = "";
     private activechatResultListSub: Subscription; 
-    public activechatResultList: ActivechatResultList;
+    public activechatResultList: ActivechatResultList; 
     public myActivechatArray : ObservableArray<ActivechatResult>;
     public chatsLoaded : boolean;
     public showDetails : boolean;

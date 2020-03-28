@@ -22,13 +22,29 @@ export class AppComponent implements OnInit{
     private drawersub: Subscription;
     @ViewChild(RadSideDrawerComponent, {static: false}) drawerComponent: RadSideDrawerComponent;
 
-
+    public myActivechatArray : ObservableArray<ActivechatResult>;
     constructor(
         private router: RouterExtensions,
         private uiService: UIService,
         private changeDetectionRef: ChangeDetectorRef,){}
 
-    ngOnInit(){}
+    ngOnInit(
+        this.activechatResultListSub = this.advertServ.currentActivechatList.subscribe(
+            activechatResult => {
+                if(activechatResult) {
+                    if(activechatResult.responseStatusCode === 200){
+                        this.myActivechatArray = new ObservableArray(0);
+                        activechatResult.Activechats.forEach( t => {
+                            this.myActivechatArray.push(t);
+                        });
+                        this.chatsLoaded = true;
+                    } else {
+                        TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                    }
+                }
+            }
+        );
+    ){}
 
     onRouterOutletActivate(event : any) {
         if(appSettings.getBoolean("loggedIn")) {
@@ -65,17 +81,17 @@ export class AppComponent implements OnInit{
 
     Ratinghome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/ratinghome']);
+        this.router.navigate(['/rating']);
     }
 
     Buyerhome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/buyerrating']);
+        this.router.navigate(['/rating/buyerrating']);
     }
     
     Sellerhome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/sellerrating']);
+        this.router.navigate(['/rating/sellerrating']);
     }
 
     logOut() {

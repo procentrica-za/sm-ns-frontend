@@ -31,6 +31,10 @@ const routes: Routes = [
         path: 'advert',
         loadChildren: '~/app/advert/advert.module#AdvertModule'
     },
+    {
+        path: 'rating',
+        loadChildren: '~/app/rating/rating.module#RatingModule'
+    },
     { path: 'messaginghome', component: MessagingHomeComponent },
     { path: 'messagingdetails', component: MessagingDetailsComponent },
     { path: 'ratinghome', component: RatingHomeComponent },
