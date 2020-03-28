@@ -37,6 +37,8 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
                         this.myMessageArray = new ObservableArray(0);
                         messageResult.Messages.forEach( t => {
                             this.myMessageArray.push(t);
+                            const userid = appSettings.getString("userid");
+                            this.advertServ.initializeActiveChats(userid);
                         });
                         this.messagesLoaded = true;
                     } else if(this.messageResultList.responseStatusCode === 500) {
