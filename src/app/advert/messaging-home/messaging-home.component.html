@@ -7,7 +7,7 @@
         <ng-template tkListItemTemplate let-activechat="item" >
             <Gridlayout rows="*,*,*,*,*,*,*,*" columns="*,2*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label row="0" col="0" class="SentMsessageusername" [text]="activechat.username" textWrap="true"  ></Label>
-                <Label *ngIf="activechat.username === activechat.messageauthor && activechat.isread === 'true'" row="0" col="1" class="SentMsessageusername" text="Read Message" textWrap="true"  ></Label>
+                <Label *ngIf="activechat.username === activechat.messageauthor && activechat.isread === 'true'" row="0" col="1" text="&#xf0f3;" class="Unreadmessage" textWrap="true"  ></Label>
                 <Label *ngIf="activechat.username != activechat.messageauthor" row="0" col="1" class="SentMsessageusername" text="" textWrap="true"  ></Label>
                 <Label row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
                 <Label  row="2" col="2" [text]="activechat.messagedate" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>

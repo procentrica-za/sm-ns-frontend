@@ -267,7 +267,6 @@ export class MessageResult {
         public username : string,
         public message : string,
         public messagedate : string,
-        public isread : string,
     ){}
 }
 export class MessageResultList {
