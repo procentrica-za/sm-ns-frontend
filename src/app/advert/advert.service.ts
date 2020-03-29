@@ -32,7 +32,7 @@ import {    TextbookResult,
             StartChatResult ,
             InterestedbuyerResult,
             InterestedbuyerResultList,
-            RateBuyerResult } from './advert.model'
+            RateBuyerResult, UnreadChatsResult } from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -110,6 +110,8 @@ export class AdvertService {
 
     private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
 
+    private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
+
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -139,6 +141,10 @@ export class AdvertService {
         return this._currentStartChat.asObservable();
     }
 
+     //start chat
+     get currentUnreadMessages() {
+        return this._currentUnreadChats.asObservable();
+    }
     //Rate buyer
     get currentRateBuyer() {
         return this._currentRateBuyer.asObservable();
@@ -1100,6 +1106,36 @@ StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, adver
 
         const StartChatsuccessResult = new StartChatResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
             this._currentStartChat.next(StartChatsuccessResult); 
+    });
+    return null;
+} 
+
+UnreadChats() {
+    const userid = appSettings.getString("userid");
+    const reqUrl = getString("sm-service-messages-host") + "/unreadchats?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const UnreadChatsResultErr = new UnreadChatsResult(500, false,);
+            this._currentUnreadChats.next(UnreadChatsResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const UnreadChatssuccessResult = new UnreadChatsResult(200, result.unreadmessages);
+            this._currentUnreadChats.next(UnreadChatssuccessResult);   
+        } else {
+            const UnreadChatssuccessResult = new UnreadChatsResult(responseCode, false);
+            this._currentUnreadChats.next(UnreadChatssuccessResult); 
+        }
+    }, (e) => {
+
+        const UnreadChatssuccessResult = new UnreadChatsResult(400, false);
+            this._currentUnreadChats.next(UnreadChatssuccessResult); 
     });
     return null;
 } 

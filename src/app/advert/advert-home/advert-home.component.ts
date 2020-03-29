@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AdvertService } from "../advert.service";
-import { TextbookResult, TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, AccomodationResult, NoteResult, TutorResult} from '../advert.model';
+import { TextbookResult, TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, AccomodationResult, NoteResult, TutorResult, UnreadChatsResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { ImageSource } from "tns-core-modules/image-source";
@@ -32,6 +32,11 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     public myAccomodationArray : ObservableArray<AccomodationResult>;
     public myNoteArray : ObservableArray<NoteResult>;
     public myTutorArray : ObservableArray<TutorResult>;
+
+    //unread messages
+     unreadchatsResultSub: Subscription;
+     unreadchats: UnreadChatsResult;
+     unreadMessages : boolean;
 
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
@@ -137,6 +142,31 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             }
         );
         this.advertServ.initializeAdvertisements(this.isSelling);
+
+        this.advertServ.UnreadChats();
+
+        this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
+            unreadchatsresult => {
+                if(unreadchatsresult){
+                    this.unreadchats = unreadchatsresult;
+ 
+                    if(this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === true){
+                        this.unreadMessages = true;
+                
+                    } else if (this.unreadchats.responseStatusCode === 500){
+                        TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Dismiss");
+                    }
+                    else if (this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === false){
+                        this.unreadMessages = false;
+          
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support." , "Dismiss");
+                    }
+                    
+                }
+            }
+        );
     }
     
     onItemSelected(args :ListViewEventData): void {
@@ -156,7 +186,18 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    onViewUnread(){
+        this.router.navigate(['/messaginghome'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+ 
+    }
 
     ngOnDestroy() {
         if(this.textbookResultListSub){
@@ -170,6 +211,9 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
         }
         if(this.noteResultListSub){
             this.noteResultListSub.unsubscribe();
+        }
+        if(this.unreadchatsResultSub){
+            this.unreadchatsResultSub.unsubscribe();
         }
     }
 }

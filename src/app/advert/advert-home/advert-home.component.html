@@ -2,6 +2,7 @@
     
 </ns-action-bar>
 <StackLayout style="background-color: #efeeee;" orientation="vertical">
+    <Label  *ngIf="unreadMessages" text="&#xf0f3;" class="ViewAdLabel" textWrap="true" (tap)="onViewUnread()" ></Label>
     <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
 </StackLayout>
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">

@@ -356,6 +356,13 @@ export class RateBuyerResult {
     ){}
 }
 
+export class UnreadChatsResult {
+    constructor (
+        public responseStatusCode: number,
+        public unreadmessages: boolean, 
+    ){}
+}
+
 
 
 
