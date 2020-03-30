@@ -67,12 +67,6 @@ export class RatesellerComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnDestroy() {
-        if(this.rateResultSub){
-            this.rateResultSub.unsubscribe();
-        }
-        this.advertServ.clearSelectedOutstandingrating();
-    }
 
     
 //Send message function
@@ -91,9 +85,8 @@ export class RatesellerComponent implements OnInit, OnDestroy {
             rateresult => {
                 if(rateresult){
                     this.rate = rateresult;
- 
                     if(this.rate.responseStatusCode === 200 && this.rate.sellerrated === true){
-
+                      TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss");
                        //Save user details and rememberme info
                        this.router.navigate(['/ratinghome'],
             {
@@ -104,16 +97,19 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                     curve: "ease"
                 }
             });
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss")
+                       this.rateResultSub.unsubscribe();
                     } else if (this.rate.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                        this.rateResultSub.unsubscribe();
                     }
                     else if (this.rate.responseStatusCode === 400 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                        this.rateResultSub.unsubscribe();
                     }
                     else {
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        console.log(this.rate.sellerrated)
+                        this.rateResultSub.unsubscribe();
+
                     }
                 }
             }
@@ -122,7 +118,14 @@ export class RatesellerComponent implements OnInit, OnDestroy {
          setTimeout(() =>{
     //send message
              this.advertServ.RateSeller(ratingid,sellerrating, sellercomments);
-             this.form.reset();
          },100);
      }
+
+     ngOnDestroy() {
+        if(this.rateResultSub){
+            this.rateResultSub.unsubscribe();
+        }
+        this.advertServ.clearSelectedOutstandingrating();
+    }
+
 }

@@ -19,9 +19,9 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
     private interestedbuyerResultListSub: Subscription;
     public interestedbuyerResultList: InterestedbuyerResultList;
     public myInterestedbuyerArray : ObservableArray<InterestedbuyerResult>;
-    //Rating result for Tutoring
-    rateResultSub: Subscription;
-    rate: RateBuyerResult;
+     //Rating result for Tutoring
+     rateResultSub: Subscription;
+     rate: RateBuyerResult;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
@@ -90,16 +90,47 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         appSettings.setString("advertisementid", tappedInterestedItem.advertisementid);
         appSettings.setString("sellerid", tappedInterestedItem.sellerid);
         appSettings.setString("buyerid", tappedInterestedItem.buyerid);
-
-        //get to see if the advertisement is for a tutor
-        const advertisementtype = appSettings.getString("advertisementtype");
-        if (advertisementtype == 'TUT') {
-
-            this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.sellerid, tappedInterestedItem.buyerid, '0', "Tutoring was concluded, a tutor may not rate a student");
-        }
-        else {
-
-        
+         //get to see if the advertisement is for a tutor
+         const advertisementtype = tappedInterestedItem.advertisementtype;
+         console.log(advertisementtype);
+         if (advertisementtype == 'TUT') {
+ 
+             this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.sellerid, tappedInterestedItem.buyerid, '0', "Tutoring was concluded, a tutor may not rate a student");
+             this.rateResultSub = this.advertServ.currentRateBuyer.subscribe( 
+                rateresult => {
+                    if(rateresult){
+                        this.rate = rateresult;
+    
+                        if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
+    
+                           this.router.back();
+                           TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss")
+    
+                        } else if (this.rate.responseStatusCode === 500 ){
+                            TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                        }
+                        else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
+                            TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss");
+                            this.router.navigate(['/advert/myadverts'],
+                      {
+                         animated: true,
+                         transition: {
+                         name: "slide",
+                         duration: 2,
+                         curve: "ease"
+                         }
+                });
+                        }
+                        else {
+                            TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
+                            console.log(this.rate.buyerrated)
+                        }
+                    }
+                }
+            );
+         }
+         else {
+ 
         this.router.navigate(['/ratebuyer'],
             {
                 animated: true,
@@ -110,7 +141,6 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
                 }
             });
         }
-
     }
 
     ngOnDestroy() {

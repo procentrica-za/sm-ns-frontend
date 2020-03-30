@@ -33,6 +33,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     public myNoteArray : ObservableArray<NoteResult>;
     public myTutorArray : ObservableArray<TutorResult>;
 
+
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
         console.log("Logged in user: " + appSettings.getString("userid"));
@@ -137,6 +138,8 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             }
         );
         this.advertServ.initializeAdvertisements(this.isSelling);
+
+
     }
     
     onItemSelected(args :ListViewEventData): void {
@@ -155,7 +158,6 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
 
 
     ngOnDestroy() {

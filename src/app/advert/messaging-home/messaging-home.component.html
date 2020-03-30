@@ -3,10 +3,11 @@
     <Label row="0" col="0" class="AdLabel" text="View Advertisement details:" textWrap="true"  ></Label>
     <Label row="0" col="1" class="SentMsessageusername" (tap)="onViewAd()" text="&#xf06e;" class="ViewAdLabel" textWrap="true"  ></Label>
 </Gridlayout>
-    <RadListView  *ngIf="chatsLoaded " [items]="myActivechatArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
+    <RadListView  *ngIf="chatsLoaded" [items]="myActivechatArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-activechat="item" >
             <Gridlayout rows="*,*,*,*,*,*,*,*" columns="*,2*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
                 <Label row="0" col="0" class="SentMsessageusername" [text]="activechat.username" textWrap="true"  ></Label>
+                <Label row="0" col="1"  *ngIf="activechat.chatid === activechat.chatid && activechat.username === activechat.messageauthor && activechat.isread === 'false'" text="&#xf0f3;" class="ViewAdLabel" textWrap="true"  ></Label>
                 <Label row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
                 <Label  row="2" col="2" [text]="activechat.messagedate" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>
                 <Label *ngIf="showDetails" row="4" col="1" text="Advertisement details:" textWrap="true" ></Label>
@@ -20,3 +21,4 @@
         </ng-template>
     </RadListView>
     
+ 

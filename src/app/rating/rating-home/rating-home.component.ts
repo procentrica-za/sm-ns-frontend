@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { AdvertService } from "../advert.service";
-import { OutstandingratingResult, OutstandingratingResultList} from '../advert.model';
+import { RatingService } from "../rating.service";
+import { OutstandingratingResult, OutstandingratingResultList} from '../rating.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
@@ -20,11 +20,11 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
     public outstandingratingResultList: OutstandingratingResultList;
     public ratingsLoaded : boolean;
     public myOutstandingratingArray : ObservableArray<OutstandingratingResult>;
-    constructor(private advertServ: AdvertService, private router: RouterExtensions) {
+    constructor(private ratingServ: RatingService, private router: RouterExtensions) {
     }
     ngOnInit() {
         this.ratingsLoaded = false;
-        this.outstandingratingResultListSub = this.advertServ.currentOutstandingratingList.subscribe(
+        this.outstandingratingResultListSub = this.ratingServ.currentOutstandingratingList.subscribe(
             outstandingratingResult => {
                 if(outstandingratingResult) {
                     if(outstandingratingResult.responseStatusCode === 200){
@@ -41,7 +41,7 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
         );
 
         const userid = appSettings.getString("userid");
-        this.advertServ.initializeOutstandingratings(userid);
+        this.ratingServ.initializeOutstandingratings(userid);
     }
     onItemSelected(args :ListViewEventData): void {
         const tappedOutstandingratingItem = args.view.bindingContext;
@@ -61,6 +61,6 @@ export class RatingHomeComponent implements OnInit, OnDestroy {
         if(this.outstandingratingResultListSub){
             this.outstandingratingResultListSub.unsubscribe();
         }
-        this.advertServ.clearSelectedOutstandingrating();
+        this.ratingServ.clearSelectedOutstandingrating();
     }
 }

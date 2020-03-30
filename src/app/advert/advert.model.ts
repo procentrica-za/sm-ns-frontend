@@ -248,6 +248,9 @@ export class ActivechatResult {
         public description : string,
         public message : string,
         public messagedate : string,
+        public isread : string,
+        public messageauthor : string,
+
     ){}
 }
 export class ActivechatResultList {
@@ -331,6 +334,7 @@ export class InterestedbuyerResult {
         public responseStatusCode : number,
         public username : string,
         public advertisementid : string,
+        public advertisementtype : string,
         public sellerid : string,
         public buyerid : string,
     ){}
@@ -349,6 +353,13 @@ export class RateBuyerResult {
         public buyerrated : boolean,
         public ratingid : string,
         public message : string,
+    ){}
+}
+
+export class UnreadChatsResult {
+    constructor (
+        public responseStatusCode: number,
+        public unreadmessages: boolean, 
     ){}
 }
 

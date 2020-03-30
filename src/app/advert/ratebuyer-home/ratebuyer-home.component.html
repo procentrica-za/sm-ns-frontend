@@ -1,4 +1,6 @@
 <ns-action-bar [actionBarTitle]="'Interested buyers'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout backgroundColor="lightgray">
+    <Label  class="ratingLabel" text="Please select the user who transacted with you:" textWrap="true"  ></Label>
     <RadListView  *ngIf="interestLoaded " [items]="myInterestedbuyerArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-interested="item" >
             <Gridlayout rows="*,*,*" columns="*,*,"  class="GridLayoutChatListStyle" shadow="6" >
@@ -7,4 +9,5 @@
             </Gridlayout>
         </ng-template>
     </RadListView>
+</StackLayout>
     

@@ -32,7 +32,7 @@ import {    TextbookResult,
             StartChatResult ,
             InterestedbuyerResult,
             InterestedbuyerResultList,
-            RateBuyerResult } from './advert.model'
+            RateBuyerResult, UnreadChatsResult } from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -110,6 +110,8 @@ export class AdvertService {
 
     private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
 
+    private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
+
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
     }
@@ -139,6 +141,10 @@ export class AdvertService {
         return this._currentStartChat.asObservable();
     }
 
+     //start chat
+     get currentUnreadMessages() {
+        return this._currentUnreadChats.asObservable();
+    }
     //Rate buyer
     get currentRateBuyer() {
         return this._currentRateBuyer.asObservable();
@@ -730,7 +736,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null);
+                const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -756,7 +762,8 @@ export class AdvertService {
         });
     }
     setActivechat(chatid: string) {
-        const reqUrl = getString("sm-service-messages-host") + "/message?chatid=" + chatid;
+        const userid = appSettings.getString("userid");
+        const reqUrl = getString("sm-service-messages-host") + "/message?userid=" + userid + "&chatid=" + chatid;
         console.log(reqUrl);
         request ({
             url: reqUrl,
@@ -1103,6 +1110,36 @@ StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, adver
     return null;
 } 
 
+UnreadChats() {
+    const userid = appSettings.getString("userid");
+    const reqUrl = getString("sm-service-messages-host") + "/unreadchats?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const UnreadChatsResultErr = new UnreadChatsResult(500, false,);
+            this._currentUnreadChats.next(UnreadChatsResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const UnreadChatssuccessResult = new UnreadChatsResult(200, result.unreadmessages);
+            this._currentUnreadChats.next(UnreadChatssuccessResult);   
+        } else {
+            const UnreadChatssuccessResult = new UnreadChatsResult(responseCode, false);
+            this._currentUnreadChats.next(UnreadChatssuccessResult); 
+        }
+    }, (e) => {
+
+        const UnreadChatssuccessResult = new UnreadChatsResult(400, false);
+            this._currentUnreadChats.next(UnreadChatssuccessResult); 
+    });
+    return null;
+} 
+
 InterestedBuyers(userid: string, advertisementid: string) {
     const reqUrl = getString("sm-service-ratings-host") + "/interest" ;
     console.log(reqUrl);
@@ -1115,7 +1152,7 @@ InterestedBuyers(userid: string, advertisementid: string) {
     }).then((response) => {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
-            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null);
+            const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null, null);
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();

@@ -452,6 +452,8 @@ ActionBar {
     background-color: #ffffff;
     border-color: #efeeee;
     border-radius: 5;
+    margin-left: 4%;
+    margin-right: 4%;
 }
 
 .chatsRadList {
@@ -474,12 +476,12 @@ ActionBar {
     font-weight: 100;
     font-size: 20em;
     color: $secondary;
-    background-color: lightgray;
+
 }
 
  .AdLabel {
-    background-color: lightgray;
-    margin-left: 0;
+ 
+    margin-left: 1%;
     margin-top: 0;
 }
 
@@ -528,7 +530,6 @@ ActionBar {
     text-align: center;
 }
  
-
 .PasswordLabel {
     font-family: FontAwesome, fontawesome-webfont;
     color: $secondary;
@@ -545,4 +546,27 @@ ActionBar {
     font-weight: 700;
     font-size: 18em;
     text-align: center;
+} 
+
+.ratingLabel {
+   margin-left: 9%;
+   margin-top: 0;
+
+}
+
+.Unreadmessage {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 16em;
+    color: $secondary;
+    margin-left: 42%;
+    margin-top: 20%;
+}
+
+.Notification {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 50;
+    font-size: 15em;
+    color: $secondary;
+    margin-left: 93%;
 }
