@@ -74,12 +74,12 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
         this.hiddenEl.nativeElement.focus();
         this.emailEl.nativeElement.focus();
         this.emailEl.nativeElement.dismissSoftInput();
-        console.log(this.form.valid)
+        
        if(!this.form.valid){
            return;
        }
         const email = this.form.get('email').value;
-        console.log("Forgot Password: " + email);
+        
         this.isLoading = true;
         //Timeout to give loading bar time to appear
         setTimeout(() =>{

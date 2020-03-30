@@ -47,38 +47,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
                 }
             }
         );
-        this.rateResultSub = this.advertServ.currentRateBuyer.subscribe( 
-            rateresult => {
-                if(rateresult){
-                    this.rate = rateresult;
- 
-                    if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
-    
-                       this.router.back();
-                       TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss")
-
-                    } else if (this.rate.responseStatusCode === 500 ){
-                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                    }
-                    else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
-                        TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss");
-                        this.router.navigate(['/advert/myadverts'],
-                  {
-                     animated: true,
-                     transition: {
-                     name: "slide",
-                     duration: 2,
-                     curve: "ease"
-                     }
-            });
-                    }
-                    else {
-                        TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        console.log(this.rate.buyerrated)
-                    }
-                }
-            }
-        );
+        
 
         const userid = appSettings.getString("userid");
         const advertisementid = appSettings.getString("advertisementid");
@@ -103,27 +72,28 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
     
                         if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
     
+                        TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss").then( t => {
+                           this.rateResultSub.unsubscribe();
                            this.router.back();
-                           TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss")
-    
+                        });
                         } else if (this.rate.responseStatusCode === 500 ){
                             TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                         }
                         else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
-                            TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss");
+                            TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
                             this.router.navigate(['/advert/myadverts'],
-                      {
+                         {
                          animated: true,
                          transition: {
                          name: "slide",
                          duration: 2,
                          curve: "ease"
                          }
-                });
+                         });
+                        });
                         }
                         else {
                             TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                            console.log(this.rate.buyerrated)
                         }
                     }
                 }
