@@ -56,23 +56,21 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
  
                     if(this.deletechat.responseStatusCode === 200 && this.deletechat.chatposted === true){
                         this.advertServ.initializeActiveChats();
-                        this.deletechatResultSub.unsubscribe();
                         TNSFancyAlert.showSuccess("Success!", "Chat Successfully Deleted!", "Close")
                         this.deleteChat = false;
                     } else if (this.deletechat.responseStatusCode === 500){
                         TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Close");
                         this.deleteChat = false;
-                        this.deletechatResultSub.unsubscribe();
                     }
     
                     else {
                         TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support." , "Close");
                         this.deleteChat = false;
-                        this.deletechatResultSub.unsubscribe();
                     }
                     
                 }
             }
+           
         );
 
     
@@ -86,9 +84,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                 message: "Are you sure that you wish to delete this chat?",
                 okButtonText: "Yes",
                 cancelButtonText: "No",
-            }).then(result => {
-                // result argument is boolean
-                console.log("Dialog result: " + result);
+            }).then(result => {             
                 if (result == true) {
                     this.advertServ.deleteChat(tappedActivechatItem.chatid);
                     
