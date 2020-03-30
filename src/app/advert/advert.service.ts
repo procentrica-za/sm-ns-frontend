@@ -1162,7 +1162,7 @@ deleteChat(chatid: string){
             this._currentDeleteChatResult.next(DeleteChatResultErr);
         } else if (responseCode === 200){
             const result = response.content.toJSON();
-            const DeleteChatResultSuccess = new DeleteChatResult(200, result.advertisementdeleted, result.message);
+            const DeleteChatResultSuccess = new DeleteChatResult(200, result.chatposted, result.message);
             this._currentDeleteChatResult.next(DeleteChatResultSuccess);
         } else {
             const DeleteChatResultSuccess = new DeleteChatResult(responseCode, false, 'An internal error has occured whilst trying to delete ' + chatid);
