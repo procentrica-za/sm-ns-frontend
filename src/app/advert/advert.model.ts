@@ -363,6 +363,15 @@ export class UnreadChatsResult {
     ){}
 }
 
+export class DeleteChatResult {
+    constructor (
+        public responseStatusCode: number,
+        public chatdeleted: boolean, 
+        public message : string,
+    ){}
+}
+
+
 
 
 

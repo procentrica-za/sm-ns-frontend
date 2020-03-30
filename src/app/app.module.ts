@@ -11,7 +11,6 @@ import { AuthComponent } from "./auth/login/auth.component";
 
 import { AuthService } from "./auth/auth.service";
 import { AdvertService } from "./advert/advert.service";
-import { RatingService } from "./rating/rating.service";
 
 
 import { SharedModule } from "./shared/shared.module";
@@ -50,7 +49,6 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
     providers: [
         AuthService,
         AdvertService,
-        RatingService
     ],
     declarations: [
         AppComponent, 

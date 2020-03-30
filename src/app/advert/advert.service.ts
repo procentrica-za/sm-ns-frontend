@@ -32,7 +32,7 @@ import {    TextbookResult,
             StartChatResult ,
             InterestedbuyerResult,
             InterestedbuyerResultList,
-            RateBuyerResult, UnreadChatsResult } from './advert.model'
+            RateBuyerResult, UnreadChatsResult, DeleteChatResult } from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -111,6 +111,8 @@ export class AdvertService {
     private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
 
     private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
+
+    private _currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -247,6 +249,11 @@ export class AdvertService {
     get currentDeleteAdvertisementResult(){
         return this._currentDeleteAdvertisementResult.asObservable();
     }
+
+    get currentDeleteChatResult(){
+        return this._currentDeleteChatResult.asObservable();
+    }
+
 
     constructor(private http: HttpClient){
         setString("sm-service-ratings-host", "http://192.168.1.174:9957");
@@ -726,7 +733,8 @@ export class AdvertService {
             })
         });
     }
-    initializeActiveChats(userid) {
+    initializeActiveChats() {
+        const userid = appSettings.getString("userid");
         const reqUrl = getString("sm-service-messages-host") + "/chats?userid=" + userid;
         console.log(reqUrl);
         request ({
@@ -1139,6 +1147,32 @@ UnreadChats() {
     });
     return null;
 } 
+
+deleteChat(chatid: string){
+    const reqUrl = getString("sm-service-messages-host") + "/chat?id=" + chatid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "DELETE",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if (responseCode === 500){
+            const DeleteChatResultErr = new DeleteChatResult(500, false , 'An internal error has occured whilst trying to delete ' + chatid);
+            this._currentDeleteChatResult.next(DeleteChatResultErr);
+        } else if (responseCode === 200){
+            const result = response.content.toJSON();
+            const DeleteChatResultSuccess = new DeleteChatResult(200, result.advertisementdeleted, result.message);
+            this._currentDeleteChatResult.next(DeleteChatResultSuccess);
+        } else {
+            const DeleteChatResultSuccess = new DeleteChatResult(responseCode, false, 'An internal error has occured whilst trying to delete ' + chatid);
+            this._currentDeleteChatResult.next(DeleteChatResultSuccess);
+        }
+    }, (e) => {
+        const DeleteChatResultSuccess = new DeleteChatResult(400, false, "An Error has been recieved, please contact support.");
+            this._currentDeleteChatResult.next(DeleteChatResultSuccess); 
+    });
+}
 
 InterestedBuyers(userid: string, advertisementid: string) {
     const reqUrl = getString("sm-service-ratings-host") + "/interest" ;
