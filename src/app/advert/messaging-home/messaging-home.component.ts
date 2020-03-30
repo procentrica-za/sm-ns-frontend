@@ -55,8 +55,9 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                     this.deletechat = deletechatresult;
  
                     if(this.deletechat.responseStatusCode === 200 && this.deletechat.chatposted === true){
-                        this.advertServ.initializeActiveChats();
+                        console.log(this.deletechat.responseStatusCode,this.deletechat);
                         TNSFancyAlert.showSuccess("Success!", "Chat Successfully Deleted!", "Close")
+                        this.advertServ.initializeActiveChats();
                         this.deleteChat = false;
                     } else if (this.deletechat.responseStatusCode === 500){
                         TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Close");
