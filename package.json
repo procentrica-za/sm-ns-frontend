@@ -31,6 +31,7 @@
     "nativescript-ui-listview": "^8.0.1",
     "nativescript-ui-sidedrawer": "^8.0.0",
     "nativescript-uuid": "0.0.1",
+    "ngx-paypal": "^6.0.1",
     "node-uuid": "^1.4.8",
     "reflect-metadata": "~0.1.12",
     "rxjs": "^6.4.0",

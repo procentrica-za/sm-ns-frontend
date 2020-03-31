@@ -32,6 +32,9 @@ import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
+
+import { NgxPayPalModule } from 'ngx-paypal';
+
 @NgModule({
     bootstrap: [
         AppComponent
@@ -44,7 +47,8 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         HttpClientModule,
         SharedModule,
         NativeScriptUISideDrawerModule,
-        NativeScriptUIListViewModule
+        NativeScriptUIListViewModule,
+        NgxPayPalModule
     ],
     providers: [
         AuthService,
