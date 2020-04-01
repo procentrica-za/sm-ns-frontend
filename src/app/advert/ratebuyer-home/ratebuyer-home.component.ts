@@ -71,15 +71,16 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
                         this.rate = rateresult;
     
                         if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
-    
+                            this.advertServ.clearRating();
                         TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss").then( t => {
-                           this.advertServ.clearRating();
                            this.router.back();
                         });
                         } else if (this.rate.responseStatusCode === 500 ){
+                            this.advertServ.clearRating();
                             TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                         }
                         else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
+                            this.advertServ.clearRating();
                             TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
                             this.router.navigate(['/advert/myadverts'],
                          {
