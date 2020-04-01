@@ -222,5 +222,11 @@ export class AuthService {
         this._currentLogin = null;
     
     }
+    
+    clearUserDetails(){
+        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
+        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
+    
+    }
 
 }

@@ -78,6 +78,7 @@ export class NewpasswordComponent implements OnInit {
                     if(this.update.responseStatusCode === 200 && this.update.PasswordUpdated === true){
     
                        TNSFancyAlert.showSuccess("Update Success", this.update.Message, "Dismiss").then( t => {
+                        this.authServ.clearUserDetails();
                        this.router.navigate(['/advert/home'],
                        {
                            animated: true,
@@ -129,8 +130,14 @@ export class NewpasswordComponent implements OnInit {
         this.password1El.nativeElement.secure = !this.password1El.nativeElement.secure;
     }
 
+ngOnDestroy() {
+    if(this.getuserResultSub && this.updateResultSub){
+        this.getuserResultSub.unsubscribe();
+        this.updateResultSub.unsubscribe();
+    }
+    }
 
-   async onUpdatePassword() {
+    onUpdatePassword() {
         this.password1El.nativeElement.focus();
         this.passwordEl.nativeElement.focus();
         this.passwordEl.nativeElement.dismissSoftInput();
@@ -157,13 +164,4 @@ export class NewpasswordComponent implements OnInit {
         },100);
              }
     }
-
-    ngOnDestroy() {
-        if(this.getuserResultSub){
-            this.getuserResultSub.unsubscribe();
-        }
-        if( this.updateResultSub){
-            this.updateResultSub.unsubscribe();
-        }
-        }
  }

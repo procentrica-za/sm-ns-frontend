@@ -1566,5 +1566,9 @@ RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerratin
     });
     return null;
 }
+
+clearChat(){
+    this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
+}
 }
 

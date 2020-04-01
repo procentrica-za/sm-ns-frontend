@@ -101,7 +101,7 @@ export class UpdateuserComponent implements OnInit {
             this.emailControlIsValid = status === 'VALID';
         });
 
-    
+
         //find User from app settings
         this.userFound = false;
         const id = appSettings.getString("userid");
@@ -121,13 +121,16 @@ export class UpdateuserComponent implements OnInit {
                 }
              }
         );
-        
 
     //Send User ID from app settings
         this.authServ.GetUser(id);
     }
 
-    async onUpdateUser() {
+
+    onUpdateUser() {
+
+
+
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
@@ -158,6 +161,7 @@ export class UpdateuserComponent implements OnInit {
  
                     if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
                         TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss").then( t => {
+                       this.authServ.clearAllObjects();
                        this.router.navigate(['/advert/home'],
             {
                 animated: true,
@@ -181,18 +185,15 @@ export class UpdateuserComponent implements OnInit {
             }
             
         );
+
+    }
+    ngOnDestroy() {
+        if(this.getuserResultSub){
+            this.getuserResultSub.unsubscribe();
+        }
         
-    }
-    
- 
-
-ngOnDestroy() {
-    if(this.getuserResultSub ){
-        this.getuserResultSub.unsubscribe();
-    }
-
-    if(this.updateResultSub ){
-        this.updateResultSub.unsubscribe();
-    }
-    }
-}
+        if(this.updateResultSub){
+            this.updateResultSub.unsubscribe();
+        }
+        }
+ }

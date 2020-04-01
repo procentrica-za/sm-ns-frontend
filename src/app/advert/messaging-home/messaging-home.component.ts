@@ -49,36 +49,37 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             }
         );
 
-        this.deletechatResultSub = this.advertServ.currentDeleteChatResult.subscribe(
-            deletechatresult => {
-                if(deletechatresult){
-                    this.deletechat = deletechatresult;
- 
-                    if(this.deletechat.responseStatusCode === 200 && this.deletechat.chatposted === true){
-                       
-                        TNSFancyAlert.showSuccess("Success!", "Chat Successfully Deleted!", "Close")
-                        this.advertServ.initializeActiveChats();
-                        this.deleteChat = false;
-                    } else if (this.deletechat.responseStatusCode === 500){
-                        TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Close");
-                        this.deleteChat = false;
-                    }
-    
-                    else {
-                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support." , "Close");
-                        this.deleteChat = false;
-                    }
-                    
-                }
-            }
-           
-        );
 
     
         this.advertServ.initializeActiveChats();
     }
     onItemSelected(args :ListViewEventData): void {
         if(this.deleteChat == true){
+            this.deletechatResultSub = this.advertServ.currentDeleteChatResult.subscribe(
+                deletechatresult => {
+                    if(deletechatresult){
+                        this.deletechat = deletechatresult;
+     
+                        if(this.deletechat.responseStatusCode === 200 && this.deletechat.chatposted === true){
+                            this.advertServ.clearChat();
+                            TNSFancyAlert.showSuccess("Success!", "Chat Successfully Deleted!", "Close")
+                            this.advertServ.initializeActiveChats();
+                            this.deleteChat = false;
+                        } else if (this.deletechat.responseStatusCode === 500){
+                            TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Close");
+                            this.deleteChat = false;
+                        }
+        
+                        else {
+                            TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support." , "Close");
+                            this.deleteChat = false;
+                        }
+                        
+                    }
+                }
+               
+            );
+            
             const tappedActivechatItem = args.view.bindingContext;
             dialogs.confirm({
                 title: "Please confirm deletion",
