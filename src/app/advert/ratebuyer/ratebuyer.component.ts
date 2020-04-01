@@ -69,15 +69,16 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
  
                     if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
     
+                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message + " Please delete your advertisement if it is now concluded.", "Dismiss").then( t => {
+                       this.rateResultSub.unsubscribe();
                        this.router.back();
                        this.router.back();
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss")
-
+                    });
                     } else if (this.rate.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                     }
                     else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
-                        TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss");
+                        TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
                         this.router.navigate(['/advert/myadverts'],
                   {
                      animated: true,
@@ -87,7 +88,9 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                      curve: "ease"
                      }
             });
+        });
                     }
+                    
                     else {
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                         console.log(this.rate.buyerrated)

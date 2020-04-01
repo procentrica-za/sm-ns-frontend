@@ -283,7 +283,13 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         const buyerid = appSettings.getString("userid");
         const advertisementtype = appSettings.getString("advertisementtype");
         const advertisementid = appSettings.getString("advertisementid"); 
-        this.advertServ.StartNewChat(sellerid, buyerid, advertisementtype, advertisementid);
+        if (sellerid == buyerid) {
+            TNSFancyAlert.showError("Error", "As this is your own advertisement, you may not purchase your own product or service.", "I understand!");
+        }
+        else {
+            this.advertServ.StartNewChat(sellerid, buyerid, advertisementtype, advertisementid);
+        }
+
     }
 
     onViewInterest(args :ListViewEventData) {

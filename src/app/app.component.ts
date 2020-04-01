@@ -3,12 +3,7 @@ import { AdvertService } from "../app/advert/advert.service";
 import { UnreadChatsResult} from '../app/advert/advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-import { ImageSource } from "tns-core-modules/image-source";
-import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
-import { EventData } from "tns-core-modules/ui/page/page";
-import { Switch } from "tns-core-modules/ui/switch/switch";
-import { ObservableArray, ChangedData } from "tns-core-modules/data/observable-array";
 
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
 import { UIService } from './shared/ui/ui.service';
@@ -42,7 +37,6 @@ export class AppComponent implements OnInit{
     ngOnInit(
     
     ){
-        this.advertServ.UnreadChats();
 
         this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
             unreadchatsresult => {
@@ -71,6 +65,7 @@ export class AppComponent implements OnInit{
     onRouterOutletActivate(event : any) {
         if(appSettings.getBoolean("loggedIn")) {
             this.isLoggedIn = true;
+            this.advertServ.UnreadChats();
         } else {
             this.isLoggedIn = false;
         }
@@ -79,41 +74,49 @@ export class AppComponent implements OnInit{
     advertHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/advert']);
+
     }
 
     myAdsHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/advert/myadverts']);
+        
     }
 
     myPersonalDetails(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/updateuser']);
+        
     }
 
     PasswordUpdate(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/newpassword']);
+        
     }
 
     Messagehome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/messaginghome']);
+      
     }
 
     Ratinghome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['ratinghome']);
+       
     }
 
     Buyerhome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['buyerrating']);
+        
     }
     
     Sellerhome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['sellerrating']);
+    
     }
 
     logOut() {

@@ -5,7 +5,7 @@
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="My Adverts" (tap)="myAdsHome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Personal Details" (tap)="myPersonalDetails()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Update Password" (tap)="PasswordUpdate()"></Button>
-            <Label  *ngIf="unreadMessages" text="&#xf0f3;" class="ViewAdLabel" textWrap="true" (tap)="onViewUnread()" ></Label>
+            <Label  *ngIf="unreadMessages" text="&#xf0f3;" class="Homeunread" textWrap="true" (tap)="onViewUnread()" ></Label>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Messages" (tap)="Messagehome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Outstanding Ratings" (tap)="Ratinghome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Ratings From Purchasing" (tap)="Buyerhome()"></Button>

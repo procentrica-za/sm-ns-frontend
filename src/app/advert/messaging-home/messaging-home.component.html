@@ -1,7 +1,9 @@
 <ns-action-bar [actionBarTitle]="'Chats'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-<Gridlayout rows="*,*,*,*,*,*,*,*" columns="1.7*,1*," class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
-    <Label row="0" col="0" class="AdLabel" text="View Advertisement details:" textWrap="true"  ></Label>
+<Gridlayout rows="*,*,*,*,*,*,*,*" columns="3*,1*,2*,1*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
+    <Label row="0" col="0" class="AdLabel" text="Advertisement info:" textWrap="true"  ></Label>
     <Label row="0" col="1" class="SentMsessageusername" (tap)="onViewAd()" text="&#xf06e;" class="ViewAdLabel" textWrap="true"  ></Label>
+    <Label row="0" col="2" class="AdLabel" text="Delete Chat:" textWrap="true"  ></Label>
+    <Label row="0" col="3"  class="SentMsessageusername" text="&#xf1f8;" class="Deletechat" (tap)="onDeleteChat()" textWrap="true"  ></Label>
 </Gridlayout>
     <RadListView  *ngIf="chatsLoaded" [items]="myActivechatArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-activechat="item" >
@@ -10,6 +12,7 @@
                 <Label row="0" col="1"  *ngIf="activechat.chatid === activechat.chatid && activechat.username === activechat.messageauthor && activechat.isread === 'false'" text="&#xf0f3;" class="ViewAdLabel" textWrap="true"  ></Label>
                 <Label row="1" col="1" [text]="activechat.message"  textWrap="true"  ></Label>
                 <Label  row="2" col="2" [text]="activechat.messagedate" textWrap="true" style=" margin-left: 35%; font-size: 8em;"  ></Label>
+                <Label *ngIf="deleteChat" row="3" col="1" text="&#xf1f8;" class="Deletechaticon" textWrap="true"   ></Label>
                 <Label *ngIf="showDetails" row="4" col="1" text="Advertisement details:" textWrap="true" ></Label>
                 <Label *ngIf="showDetails" row="5" col="0" text="&#xf0d6;" class="activechaticon" textWrap="true" ></Label>
                 <Label *ngIf="showDetails" row="5" col="1" [text]="'R' + activechat.price" textWrap="true"   ></Label>

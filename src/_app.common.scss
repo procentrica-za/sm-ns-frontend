@@ -561,3 +561,30 @@ ActionBar {
     color: $secondary;
     margin-left: 93%;
 }
+
+.Homeunread {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 20em;
+    color: $secondary;
+    margin-left: 93%;
+
+}
+
+.Deletechat {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 20em;
+    color: red;
+    margin-left: 7%;
+
+}
+
+.Deletechaticon {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 20em;
+    color: red;
+    margin-left: 59%;
+
+}
