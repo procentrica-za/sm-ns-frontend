@@ -53,7 +53,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     @ViewChild('venueTypeEl', {static:false}) venueTypeEl: ElementRef<TextField>;
     @ViewChild('noteTypeEl', {static:false}) noteTypeEl: ElementRef<TextField>;
     @ViewChild('termTypeEl', {static:false}) termTypeEl: ElementRef<TextField>;
-    @ViewChild(' distanceEl', {static:false})  distanceEl: ElementRef<TextField>;
+    @ViewChild('distanceEl', {static:false}) distanceEl: ElementRef<TextField>;
     
    
 

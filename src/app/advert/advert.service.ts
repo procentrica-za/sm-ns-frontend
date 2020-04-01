@@ -41,7 +41,8 @@ import {    TextbookResult,
             ModuleCodeList,
             ModuleCode,
             UnreadChatsResult,
-            DeleteChatResult} from './advert.model'
+            DeleteChatResult,
+            ImageUploadedResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -56,6 +57,9 @@ import * as appSettings from "tns-core-modules/application-settings";
 import { propagateInheritableCssProperties } from 'tns-core-modules/ui/page/page';
 @Injectable({ providedIn: 'root' })
 export class AdvertService {
+
+    private _currentImageUploaded = new BehaviorSubject<ImageUploadedResult>(null);
+
     private _currentAddTextbookList = new BehaviorSubject<TextbookList>(null);
     private _currentAddTextbook = new BehaviorSubject<Textbook>(null);
 
@@ -131,6 +135,10 @@ export class AdvertService {
 
     private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
     private _currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
+
+    get currentImageUploaded(){
+        return this._currentImageUploaded.asObservable();
+    }
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -368,6 +376,14 @@ export class AdvertService {
         return null;
     }
 
+    setImageUploaded(uploaded: ImageUploadedResult){
+        this._currentImageUploaded.next(uploaded);
+    }
+
+    clearImageUploaded(){
+        this._currentImageUploaded.next(null);
+    }
+
     setAddTextbook(textbook: Textbook){
         this._currentAddTextbook.next(textbook);
     }
@@ -398,7 +414,6 @@ export class AdvertService {
 
     AddNewImage(advertisementID: string, isMainImage: boolean, imageBytes: string){
         const reqUrl = getString("sm-service-file-manager-host") + "/uploadimage";
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
@@ -408,8 +423,15 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 200) {
+                //const result = response.content.toJSON();
+                const addImageResult = new ImageUploadedResult(true, "Success")
+                this.setImageUploaded(addImageResult);
                 console.log("Image Successfully uploaded and linked to advertisement: Status Code ---> " + responseCode);
+                
             } else {
+                //const result = response.content.toJSON();
+                const addImageResult = new ImageUploadedResult(false, "Error")
+                this.setImageUploaded(addImageResult);
                 console.log("Internal Error encountered: Status Code ---> " + responseCode);
             }
         }, (e) => {
@@ -699,6 +721,13 @@ export class AdvertService {
         this.initializeUserAdvertAccomodation(userID, isSelling);
         this.initializeUserAdvertTutors(userID, isSelling);
         this.initializeUserAdvertNotes(userID, isSelling);
+    }
+
+    clearUserAdvertisements(){
+        this._currentUserAdvertTextbookList.next(null);
+        this._currentUserAdvertAccomodationList.next(null);
+        this._currentUserAdvertTutorList.next(null);
+        this._currentUserAdvertNoteList.next(null);
     }
 
     

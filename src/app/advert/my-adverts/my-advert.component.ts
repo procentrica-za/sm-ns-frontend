@@ -15,9 +15,9 @@ import { ObservableArray } from "tns-core-modules/data/observable-array/observab
     moduleId: module.id
 })
 
-
-
 export class MyAdvertComponent implements OnInit, OnDestroy {
+    private imageUploadedSub : Subscription;
+    public imageUploaded : boolean;
 
     public myTextbookArray : ObservableArray<UserAdvertTextbookResult>;
     public myAccomodationArray : ObservableArray<UserAdvertAccomodationResult>;
@@ -62,99 +62,26 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
         let sw = args.object as Switch;
         appSettings.setBoolean("myAdvertSelling", sw.checked);
         this.isSelling = sw.checked
-        if(this.allImagesLoaded) {
-            this.allImagesLoaded = false;
-            setTimeout(() =>{
-                this.advertServ.clearSelectedUserAdvertisement();
-                
-            },100); 
-            this.advertServ.initializeUserAdvertisements(this.UserID, this.isSelling);
-            this.userTextbookAdvertResultListSub = this.advertServ.currentUserAdvertTextbookList.subscribe(
-                textbookResult => {
-                    if(textbookResult) {
-                        if(textbookResult.responseStatusCode === 200){
-                            this.myTextbookArray = new ObservableArray(0);
-                            textbookResult.Textbooks.forEach( t => {
-                                this.myTextbookArray.push(t);
-                            });
-                            this.textbookImagesLoaded = true;
-                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
-                                this.allImagesLoaded = true;
-                            }
-                        }else {
-                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                        }
-                    }
-                }
-            );
+        this.textbookImagesLoaded = false;
+        this.accomodationImagesLoaded = false;
+        this.tutorImagesLoaded = false;
+        this.noteImagesLoaded = false; 
+        this.allImagesLoaded = false;
+        setTimeout(() =>{
+            this.advertServ.clearSelectedUserAdvertisement();
+            this.advertServ.clearUserAdvertisements();
+        },100); 
+        this.advertServ.initializeUserAdvertisements(this.UserID, this.isSelling);
+    };
     
-    
-            this.userAccomodationAdvertResultListSub = this.advertServ.currentUserAdvertAccomodationList.subscribe(
-                accomodationResult => {
-                    if(accomodationResult) {
-                        if(accomodationResult.responseStatusCode === 200){
-                            this.accomodationImagesLoaded = true;
-                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
-                                this.allImagesLoaded = true;
-                            }
-                        }else {
-                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                        }
-                        this.myAccomodationArray = new ObservableArray(0);
-                        accomodationResult.Accomodations.forEach( t => {
-                            this.myAccomodationArray.push(t);
-                        })
-                    }
-                }
-            );
-    
-            this.userTutorAdvertResultListSub = this.advertServ.currentUserAdvertTutorList.subscribe(
-                tutorResult => {
-                    if(tutorResult) {
-                        if(tutorResult.responseStatusCode === 200){
-                            this.tutorImagesLoaded = true;
-                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
-                                this.allImagesLoaded = true;
-                            }
-                        }else {
-                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                        }
-                        this.myTutorArray = new ObservableArray(0);
-                        tutorResult.Tutors.forEach( t => {
-                            this.myTutorArray.push(t);
-                        })
-                    }
-                }
-            );
-    
-            this.userNoteAdvertResultListSub = this.advertServ.currentUserAdvertNoteList.subscribe(
-                noteResult => {
-                    if(noteResult) {
-                        if(noteResult.responseStatusCode === 200){
-                            this.noteImagesLoaded = true;
-                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
-                                this.allImagesLoaded = true;
-                            }
-                        }else {
-                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                        }
-                        this.myNoteArray = new ObservableArray(0);
-                        noteResult.Notes.forEach( t => {
-                            this.myNoteArray.push(t);
-                        })
-                    }
-                }
-            );
-        }
-    }
 
     ngOnInit() {
         this.textbookImagesLoaded = false;
         this.accomodationImagesLoaded = false;
         this.tutorImagesLoaded = false;
         this.noteImagesLoaded = false; 
-        this.allImagesLoaded = false;      
-        
+        this.allImagesLoaded = false;
+
         this.userTextbookAdvertResultListSub = this.advertServ.currentUserAdvertTextbookList.subscribe(
             textbookResult => {
                 if(textbookResult) {
@@ -179,6 +106,10 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
             accomodationResult => {
                 if(accomodationResult) {
                     if(accomodationResult.responseStatusCode === 200){
+                        this.myAccomodationArray = new ObservableArray(0);
+                        accomodationResult.Accomodations.forEach( t => {
+                            this.myAccomodationArray.push(t);
+                        })
                         this.accomodationImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
                             this.allImagesLoaded = true;
@@ -186,10 +117,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                     }else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
-                    this.myAccomodationArray = new ObservableArray(0);
-                    accomodationResult.Accomodations.forEach( t => {
-                        this.myAccomodationArray.push(t);
-                    })
+                   
                 }
             }
         );
@@ -198,6 +126,10 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
             tutorResult => {
                 if(tutorResult) {
                     if(tutorResult.responseStatusCode === 200){
+                        this.myTutorArray = new ObservableArray(0);
+                        tutorResult.Tutors.forEach( t => {
+                        this.myTutorArray.push(t);
+                        })
                         this.tutorImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
                             this.allImagesLoaded = true;
@@ -205,10 +137,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                     }else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
-                    this.myTutorArray = new ObservableArray(0);
-                    tutorResult.Tutors.forEach( t => {
-                        this.myTutorArray.push(t);
-                    })
+                    
                 }
             }
         );
@@ -217,6 +146,10 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
             noteResult => {
                 if(noteResult) {
                     if(noteResult.responseStatusCode === 200){
+                        this.myNoteArray = new ObservableArray(0);
+                        noteResult.Notes.forEach( t => {
+                        this.myNoteArray.push(t);
+                        })
                         this.noteImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
                             this.allImagesLoaded = true;
@@ -224,10 +157,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                     }else {
                         TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                     }
-                    this.myNoteArray = new ObservableArray(0);
-                    noteResult.Notes.forEach( t => {
-                        this.myNoteArray.push(t);
-                    })
+                    
                 }
             }
         );
