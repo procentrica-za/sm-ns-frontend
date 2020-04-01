@@ -62,6 +62,14 @@ export class AppComponent implements OnInit{
         );
     }
 
+    ngAfterViewInit() {
+        this.drawersub = this.uiService.drawerState.subscribe(() =>{
+            this.drawerComponent.sideDrawer.toggleDrawerState();
+        });
+
+        this.changeDetectionRef.detectChanges();
+    }
+
     onRouterOutletActivate(event : any) {
         if(appSettings.getBoolean("loggedIn")) {
             this.isLoggedIn = true;
@@ -140,6 +148,9 @@ export class AppComponent implements OnInit{
     }
 
     ngOnDestroy() {
+        if(this.drawersub){
+            this.drawersub.unsubscribe();
+        }
         if(this.unreadchatsResultSub){
             this.unreadchatsResultSub.unsubscribe();
         }
