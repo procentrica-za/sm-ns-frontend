@@ -1570,5 +1570,16 @@ RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerratin
 clearChat(){
     this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
 }
+
+clearRating(){
+    this._currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
+}
+
+clearMessages(){
+    this._currentMessage = new BehaviorSubject<MessageResult>(null);
+    this._currentSendMessage = new BehaviorSubject<MessageResult>(null)
+    this._currentStartChat = new BehaviorSubject<StartChatResult>(null);
+}
+
 }
 

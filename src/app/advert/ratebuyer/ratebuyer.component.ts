@@ -11,6 +11,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import * as appSettings from "tns-core-modules/application-settings";
 import { ItemEventData } from "tns-core-modules/ui/list-view";
 import { Slider } from "tns-core-modules/ui/slider";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 @Component({
     selector: 'ns-ratebuyer',
     templateUrl: './ratebuyer.component.html',
@@ -69,10 +70,27 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
  
                     if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
     
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message + " Please delete your advertisement if it is now concluded.", "Dismiss").then( t => {
-                       this.rateResultSub.unsubscribe();
-                       this.router.back();
-                       this.router.back();
+                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss").then( t => {
+                       this.advertServ.clearRating();
+                       dialogs.confirm({
+                        title: "Please confirm deletion",
+                        message: "Would you like to delete this Advertisement now?",
+                        okButtonText: "Yes",
+                        cancelButtonText: "No",
+                    }).then(result => {             
+                        if (result == true) {
+                            const advertisementID = appSettings.getString("advertisementid");
+                            this.advertServ.deleteAdvertisement(advertisementID);
+                            this.router.back();
+                            this.router.back();
+                            
+                        }
+                        else {
+                            this.router.back();
+                            this.router.back();
+                            this.router.back();
+                        }
+                    });
                     });
                     } else if (this.rate.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");

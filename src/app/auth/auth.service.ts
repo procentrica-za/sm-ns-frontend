@@ -229,4 +229,8 @@ export class AuthService {
     
     }
 
+    clearRegistration() {
+        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
+    }
+
 }
