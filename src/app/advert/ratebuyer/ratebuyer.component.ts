@@ -73,22 +73,31 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                        TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss").then( t => {
                        this.advertServ.clearRating();
                        dialogs.confirm({
-                        title: "Please confirm deletion",
+                        title: "Please Choose an action:",
                         message: "Would you like to delete this Advertisement now?",
                         okButtonText: "Yes",
                         cancelButtonText: "No",
                     }).then(result => {             
                         if (result == true) {
                             const advertisementID = appSettings.getString("advertisementid");
-                            this.advertServ.deleteAdvertisement(advertisementID);
-                            this.router.back();
-                            this.router.back();
+                            this.advertServ.deleteAdvertisement(advertisementID)
+                            this.router.navigate(['/advert/home'],
+                            {
+                             animated: true,
+                             transition: {
+                             name: "slide",
+                             duration: 200,
+                             curve: "ease"
+                            }
+                            }).then( t => {
+                                TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Deleted!", "Close");
+                               });
                             
                         }
                         else {
                             this.router.back();
                             this.router.back();
-                            this.router.back();
+                            
                         }
                     });
                     });

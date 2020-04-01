@@ -231,6 +231,7 @@ export class AuthService {
 
     clearRegistration() {
         this._currentRegister = new BehaviorSubject<RegisterResult>(null)
+        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
     }
 
 }
