@@ -1537,14 +1537,14 @@ InterestedBuyers(userid: string, advertisementid: string) {
     });
 }
 
-RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerrating: string, buyercomments: string) {
+RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerrating: string, buyercomments: string) {
     const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        content: JSON.stringify({ advertisementid: advertisementid,  sellerid: sellerid, buyerid: buyerid, buyerrating: buyerrating, buyercomments: buyercomments }),
+        content: JSON.stringify({ advertisementid: advertisementid,  buyerid: buyerid, sellerid: sellerid, buyerrating: buyerrating, buyercomments: buyercomments }),
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;

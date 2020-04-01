@@ -64,7 +64,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
          console.log(advertisementtype);
          if (advertisementtype == 'TUT') {
  
-             this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.sellerid, tappedInterestedItem.buyerid, '0', "Tutoring was concluded, a tutor may not rate a student");
+             this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.buyerid,tappedInterestedItem.sellerid, '0', "Tutoring was concluded, a tutor may not rate a student");
              this.rateResultSub = this.advertServ.currentRateBuyer.subscribe( 
                 rateresult => {
                     if(rateresult){

@@ -155,7 +155,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
              const advertisementid = appSettings.getString("advertisementid"); 
              const sellerid = appSettings.getString("sellerid"); 
              const buyerid = appSettings.getString("buyerid"); 
-             this.advertServ.RateBuyer(advertisementid, sellerid, buyerid ,buyerrating, buyercomments);
+             this.advertServ.RateBuyer(advertisementid, buyerid,sellerid ,buyerrating, buyercomments);
          },100);
      }
 }
