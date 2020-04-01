@@ -527,7 +527,18 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy(){
-
+        if (this.textbookResultListSub){
+            this.textbookResultListSub.unsubscribe();
+        }
+        if (this.accomodationResultListSub){
+            this.accomodationResultListSub.unsubscribe();
+        }
+        if (this.tutorResultListSub){
+            this.tutorResultListSub.unsubscribe();
+        }
+        if (this.noteResultListSub){
+            this.noteResultListSub.unsubscribe();
+        }
     }
 
     
