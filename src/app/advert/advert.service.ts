@@ -39,7 +39,9 @@ import {    TextbookResult,
             Textbook,
             TextbookList,
             ModuleCodeList,
-            ModuleCode} from './advert.model'
+            ModuleCode,
+            UnreadChatsResult,
+            DeleteChatResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -126,6 +128,9 @@ export class AdvertService {
     private _currentInterestedbuyer = new BehaviorSubject<InterestedbuyerResult>(null);
 
     private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
+
+    private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
+    private _currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -231,6 +236,14 @@ export class AdvertService {
         return this._currentUserAdvertNote.asObservable();
     }
 
+    get currentAddTextbook(){
+        return this._currentAddTextbook.asObservable();
+    } 
+
+    get currentAddTextbookList(){
+        return this._currentAddTextbookList.asObservable();
+    }
+
     get currentAddAccomodation(){
         return this._currentAddAccomodation.asObservable();
     }
@@ -279,11 +292,19 @@ export class AdvertService {
         return this._currentDeleteAdvertisementResult.asObservable();
     }
 
+    get currentDeleteChatResult(){
+        return this._currentDeleteChatResult.asObservable();
+    }
+
+    get currentUpdateAdvertisementResult(){
+        return this._currentUpdateAdvertisementResult.asObservable();
+    }
+
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
-        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.56:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.56:9955");
+        setString("sm-service-messages-host", "http://192.168.1.56:9956");
     }
     
     initializeModuleCodeList(){
