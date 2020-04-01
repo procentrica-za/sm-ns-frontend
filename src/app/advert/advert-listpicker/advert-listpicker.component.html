@@ -1,12 +1,76 @@
 
 <StackLayout>
+
+    <StackLayout *ngIf="QualityType">
+        <ListPicker [items]="qualityTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexQualityTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onQualityTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
     <StackLayout *ngIf="AccomodationType">
         <ListPicker [items]="accomodationTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAcdTypeChanged($event)"></ListPicker>
         <Button text="Confirm" (tap)="onAcdTap()" class="btn btn-primary btn-rounded-lg"></Button>
     </StackLayout>
+
     <StackLayout *ngIf="InstitutionType">
         <ListPicker [items]="institutionTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexInstTypeChanged($event)"></ListPicker>
         <Button text="Confirm" (tap)="onInstTap()" class="btn btn-primary btn-rounded-lg"></Button>
     </StackLayout>
+
+    <StackLayout *ngIf="YearCompletedType">
+        <ListPicker [items]="yearCompletedTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexYearTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onYearTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
+    <StackLayout *ngIf="VenueType">
+        <ListPicker [items]="venueTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexVenueTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onVenueTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
+    <StackLayout *ngIf="NoteType">
+        <ListPicker [items]="noteTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexNoteTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onNoteTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
+    <StackLayout *ngIf="TermType">
+        <ListPicker [items]="termTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexTermTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onTermTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
+    <StackLayout *ngIf="ModuleCodeType">
+        <SearchBar hint="Search..."
+            [text]="moduleSearch" (textChange)="onModuleSearchChanged($event)">
+        </SearchBar>
+        <ListPicker [items]="moduleCodeTypesFilter" selectedIndex="0" (selectedIndexChange)="onSelectedIndexModuleTypeChanged($event)"></ListPicker>
+        <Button *ngIf="!noFilterResults" text="Confirm" (tap)="onModuleTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
+    <RadListView  *ngIf="TextbookType" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <ng-template tkListItemTemplate let-textbook="item" >
+            <Gridlayout rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                <Label *ngIf = "textbook" row="0" col="0" colspan="2" [text]="textbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                <StackLayout row="1" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "textbook" row="2" col="0" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "textbook" row="2" col="1" [text]="textbook.author" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="3" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "textbook" row="4" col="0" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "textbook" row="4" col="1" [text]="textbook.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="5" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "textbook" row="6" col="0" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "textbook" row="6" col="1" [text]="textbook.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="7" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "textbook" row="8" col="0" text="For Module: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "textbook" row="8" col="1" [text]="textbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+            </Gridlayout>
+        </ng-template>
+    </RadListView>
+   <!-- public responseCode : number,
+    public modulecode : string,
+    public id : string,
+    public name : string,
+    public edition : string,
+    public quality : string,
+    public author : string-->
 </StackLayout>
+
 

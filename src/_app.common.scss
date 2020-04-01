@@ -172,7 +172,6 @@ ActionBar {
     font-weight: 400;
     font-size: 35em;
     background-color: #efeeee;
-    margin-top:6%;
 }
 
 .tab-fa {
@@ -519,6 +518,24 @@ ActionBar {
     font-weight: 700;
     font-size: 57em;
     text-align: center;
+}
+
+.FilterLabelicon {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 700;
+    font-size: 30em;
+    text-align: right;
+    margin-top: 1%;
+}
+
+.FilterLabel {
+    font-weight: 700;
+    font-size: 24em;
+    margin-right: 25;
+    text-align: right;
+    margin-top: 1%;
+    margin-left: 70%
 }
  
 .PasswordLabel {

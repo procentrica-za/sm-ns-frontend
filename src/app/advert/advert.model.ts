@@ -9,11 +9,37 @@ export class AddAccomodationResult {
    ){}
 }
 
+export class AddTutorResult {
+    constructor (
+        public responseStatusCode: number,
+        public tutoradded: boolean,
+        public id: string,
+        public message: string
+   ){}
+}
+
+export class AddNoteResult {
+    constructor (
+        public responseStatusCode: number,
+        public noteadded: boolean,
+        public id: string,
+        public message: string
+   ){}
+}
+
 export class AddAdvertisementResult {
     constructor(
         public responseStatusCode: number,
         public advertisementposted: boolean,
         public id: string,
+        public message: string
+    ){}
+}
+
+export class UpdateAdvertisementResult {
+    constructor(
+        public responseStatusCode: number,
+        public advertisementUpdated: boolean,
         public message: string
     ){}
 }
@@ -27,6 +53,25 @@ export class DeleteAdvertisementResult {
     ){}
 }
 
+
+export class Textbook {
+    constructor(
+        public responseCode : number,
+        public modulecode : string,
+        public ID : string,
+        public name : string,
+        public edition : string,
+        public quality : string,
+        public author : string
+    ){}
+}
+
+export class TextbookList {
+    constructor(
+        public responseCode : number,
+        public Textbooks : Textbook[]
+    ){}
+}
 
 export class UploadImage {
     constructor(
@@ -233,6 +278,20 @@ export class UserAdvertNoteResultList {
     constructor (
         public responseStatusCode : number,
         public Notes : UserAdvertNoteResult[]
+    ){}
+}
+
+export class ModuleCode {
+    constructor(
+        public responseStatusCode : number,
+        public code : string
+    ){}
+}
+
+export class ModuleCodeList {
+    constructor(
+        public responseStatusCode : number,
+        public ModuleCodes : ModuleCode[]
     ){}
 }
 //messaging service
