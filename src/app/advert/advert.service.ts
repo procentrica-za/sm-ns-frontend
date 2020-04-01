@@ -249,10 +249,10 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
-        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-ratings-host", "http://192.168.88.18:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.88.18:9953");
+        setString("sm-service-file-manager-host", "http://192.168.88.18:9955");
+        setString("sm-service-messages-host", "http://192.168.88.18:9956");
     }
     
     deleteAdvertisement(advertisementID: string){
@@ -726,7 +726,10 @@ export class AdvertService {
             })
         });
     }
+
+
     initializeActiveChats(userid) {
+        console.log("initialize active chats **********");
         const reqUrl = getString("sm-service-messages-host") + "/chats?userid=" + userid;
         console.log(reqUrl);
         request ({
@@ -736,6 +739,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
+                console.log("inside the 500");
                 const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
@@ -750,6 +754,7 @@ export class AdvertService {
                     activechatList.push(element)
                 })
                 const activechatResult = new ActivechatResultList(200, activechatList, "Successfully recieved chats");
+                console.log(activechatResult);
                 this._currentActivechatList.next(activechatResult);
             } else {
                 const activechatlistResult = new ActivechatResultList(responseCode, null,response.content.toString());
