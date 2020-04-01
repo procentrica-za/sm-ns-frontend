@@ -101,6 +101,55 @@ export class UpdateuserComponent implements OnInit {
             this.emailControlIsValid = status === 'VALID';
         });
 
+    
+        //find User from app settings
+        this.userFound = false;
+        const id = appSettings.getString("userid");
+
+
+
+        //subscribe to Get User result
+        this.getuserResultSub = this.authServ.currentGetUser.subscribe(
+        userResult => {
+            if(userResult) {
+                this.getuser = userResult
+                if(this.getuser.responseStatusCode === 200){
+                    this.userFound = true;
+                } else {
+                    TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                 }
+                }
+             }
+        );
+        
+
+    //Send User ID from app settings
+        this.authServ.GetUser(id);
+    }
+
+    async onUpdateUser() {
+        this.usernameEl.nativeElement.focus();
+        this.nameEl.nativeElement.focus();
+        this.surnameEl.nativeElement.focus();
+        this.emailEl.nativeElement.focus();
+        this.emailEl.nativeElement.dismissSoftInput(); 
+
+        if(!this.form.valid){
+            return;
+        }
+        const id = appSettings.getString("userid");
+        const username = this.form.get('username').value;
+        const name = this.form.get('name').value;
+        const surname = this.form.get('surname').value;
+        const email = this.form.get('email').value;
+
+        this.isLoading = true;
+        //Timeout to give loading bar time to appear
+        setTimeout(() =>{
+            //Verify register Credentials
+            this.authServ.UpdateUser(id, username, name, surname, email);
+        },100);
+
         this.updateResultSub = this.authServ.currentUpdateUser.subscribe(
             updateresult => {
                 if(updateresult){
@@ -130,60 +179,20 @@ export class UpdateuserComponent implements OnInit {
                     }
                 }
             }
+            
         );
-
-        //find User from app settings
-        this.userFound = false;
-        const id = appSettings.getString("userid");
-
-
-
-        //subscribe to Get User result
-        this.getuserResultSub = this.authServ.currentGetUser.subscribe(
-        userResult => {
-            if(userResult) {
-                this.getuser = userResult
-                if(this.getuser.responseStatusCode === 200){
-                    this.userFound = true;
-                } else {
-                    TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
-                 }
-                }
-             }
-        );
-
-    //Send User ID from app settings
-        this.authServ.GetUser(id);
+        
     }
+    
+ 
 
 ngOnDestroy() {
-    if(this.getuserResultSub && this.updateResultSub){
+    if(this.getuserResultSub ){
         this.getuserResultSub.unsubscribe();
+    }
+
+    if(this.updateResultSub ){
         this.updateResultSub.unsubscribe();
     }
     }
-
-    onUpdateUser() {
-        this.usernameEl.nativeElement.focus();
-        this.nameEl.nativeElement.focus();
-        this.surnameEl.nativeElement.focus();
-        this.emailEl.nativeElement.focus();
-        this.emailEl.nativeElement.dismissSoftInput(); 
-
-        if(!this.form.valid){
-            return;
-        }
-        const id = appSettings.getString("userid");
-        const username = this.form.get('username').value;
-        const name = this.form.get('name').value;
-        const surname = this.form.get('surname').value;
-        const email = this.form.get('email').value;
-
-        this.isLoading = true;
-        //Timeout to give loading bar time to appear
-        setTimeout(() =>{
-            //Verify register Credentials
-            this.authServ.UpdateUser(id, username, name, surname, email);
-        },100);
-    }
- }
+}

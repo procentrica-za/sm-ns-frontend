@@ -301,10 +301,10 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.56:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.56:9955");
-        setString("sm-service-messages-host", "http://192.168.1.56:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
+        setString("sm-service-messages-host", "http://192.168.1.174:9956");
     }
     
     initializeModuleCodeList(){
@@ -1064,7 +1064,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                console.log("inside the 500");
+                
                 const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
@@ -1079,7 +1079,7 @@ export class AdvertService {
                     activechatList.push(element)
                 })
                 const activechatResult = new ActivechatResultList(200, activechatList, "Successfully recieved chats");
-                console.log(activechatResult);
+                
                 this._currentActivechatList.next(activechatResult);
             } else {
                 const activechatlistResult = new ActivechatResultList(responseCode, null,response.content.toString());
@@ -1133,6 +1133,7 @@ export class AdvertService {
     SendMessage(chatid: string, authorid: string, message: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message" ;
         console.log(reqUrl);
+      
         request ({
             url: reqUrl,
             method: "POST",
@@ -1151,7 +1152,6 @@ export class AdvertService {
                 // get the textbooklist.
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
-                console.log(userchat);
                 // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;

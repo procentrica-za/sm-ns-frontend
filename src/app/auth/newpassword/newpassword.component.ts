@@ -87,7 +87,6 @@ export class NewpasswordComponent implements OnInit {
                                curve: "ease"
                            }
                        });
-                       this.authServ.clearAllObjects();
                     });
                     } else if(this.update.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
@@ -130,14 +129,8 @@ export class NewpasswordComponent implements OnInit {
         this.password1El.nativeElement.secure = !this.password1El.nativeElement.secure;
     }
 
-ngOnDestroy() {
-    if(this.getuserResultSub && this.updateResultSub){
-        this.getuserResultSub.unsubscribe();
-        this.updateResultSub.unsubscribe();
-    }
-    }
 
-    onUpdatePassword() {
+   async onUpdatePassword() {
         this.password1El.nativeElement.focus();
         this.passwordEl.nativeElement.focus();
         this.passwordEl.nativeElement.dismissSoftInput();
@@ -164,4 +157,13 @@ ngOnDestroy() {
         },100);
              }
     }
+
+    ngOnDestroy() {
+        if(this.getuserResultSub){
+            this.getuserResultSub.unsubscribe();
+        }
+        if( this.updateResultSub){
+            this.updateResultSub.unsubscribe();
+        }
+        }
  }
