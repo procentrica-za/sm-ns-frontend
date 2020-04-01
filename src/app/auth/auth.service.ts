@@ -44,12 +44,11 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.56:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.88.18:9952");
     }
 
     validateCredentials(username: string, password: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/userlogin?username=" + username + "&password=" + password;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -75,7 +74,6 @@ export class AuthService {
 
     ResetPassword(email: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/forgotpassword?email=" + email;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -102,7 +100,6 @@ export class AuthService {
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
@@ -133,7 +130,6 @@ export class AuthService {
 
     GetUser(id: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/user?id="  + id;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -160,7 +156,6 @@ export class AuthService {
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
@@ -190,7 +185,6 @@ export class AuthService {
 
     UpdatePassword(id: string, password: string ) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/userpassword" ;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
@@ -219,8 +213,16 @@ export class AuthService {
     
     //This method clears all results
     clearAllObjects(){
-        this._currentLogin = null;
-    
+        this._currentLogin = new BehaviorSubject<LoginResult>(null);
+        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
+        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
+        this._currentGetUser = new BehaviorSubject<GetUserResult>(null)
+        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
+        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
+    }
+
+    clearLoginObject() {
+        this._currentLogin = new BehaviorSubject<LoginResult>(null);
     }
 
 }
