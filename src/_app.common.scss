@@ -315,18 +315,15 @@ ActionBar {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
     font-size: 36em;
-    color: $secondary;
+    color: $primary;
 }
 
 .GridLayoutMessages {
-    margin-top: 50;
-    margin-left: 15;
-    margin-right: 15;
     border-style: solid;
     border-width: 1px;
-    background-color: #ffffff;
-    border-color: #efeeee;
-    border-radius: 5;
+    background-color: lightgray;
+    border-color: lightgray;
+    z-index: 99;
 }
 
 .SentMessage {
@@ -378,42 +375,36 @@ ActionBar {
 
 .messageRadList {
    margin-top: .05%;
-   margin-bottom: 7%;
    background-color: lightgray;
-
-
+   height:90%;
 }
 
-.messageinput {
-   background-color: $primary;
-   
+.chatPageForm{
+    border-style: solid;
+    border-width: 2;
+    height: 100%;
 }
+
 .messagetext {
     border-style: solid;
-    border-radius: 20%;
+    border-radius: 10%;
     border-width: 2;
     border-bottom-style: groove;
-}
-
-.messagegroup {
-    width: 100%;
-    border-bottom-color: $primary;
-
+    z-index: 99;
+    background-color: white;
 }
 
 .GridLayoutMessageinput {
-    border-color: #efeeee;
-    border-radius: 5;
-    background-color: $primary;
+
 }
 
 .messageitem {
     width: 95%;
-            height: 70;
-            margin-top: 5;
-            border-bottom-color: $secondary;
-            border-bottom-width: 1;
-            align-content: center;
+    height: 70;
+    margin-top: 5;
+    border-bottom-color: $secondary;
+    border-bottom-width: 1;
+    align-content: center;
 }
 
 .GridLayoutMessageListStyle {

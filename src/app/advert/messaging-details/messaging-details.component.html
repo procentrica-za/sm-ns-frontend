@@ -1,6 +1,6 @@
 <ns-action-bar  [actionBarTitle]="'Chat'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
-<StackLayout [formGroup]="form" class="messageinput">
-    <RadListView left="0" top="0" dock="top"  *ngIf="messagesLoaded " [items]="myMessageArray" class="messageRadList">
+<StackLayout [formGroup]="form" class="chatPageForm" >
+    <RadListView *ngIf="messagesLoaded " [items]="myMessageArray" class="messageRadList">
         <ng-template tkListItemTemplate let-message="item" >
             <Gridlayout rows="*,*,*,*" columns="15*,40*,12*" class="messageitem" class="GridLayoutMessageListStyle" shadow="6" >
                 <Label  *ngIf="message.username === message.userchat" class="SentMessage" row="0" col="0" text="" textWrap="true"  ></Label>
@@ -26,23 +26,22 @@
     </RadListView>
 
     
-    <Gridlayout rows="45" columns="45*,5*" class="messagegroup" class="GridLayoutMessageinput" shadow="6" >
+    <Gridlayout rows="*" columns="5*,*" class="GridLayoutMessages">
         <TextView
-        class ="messagetext"
+        class="messagetext"
         row="0" col="0"
-        height="auto" 
-        editable="true" 
-        hint="Type a message ..."
+        editable="true" hint="Type a message..."
         returnKeyType="done"
         [autocorrect]="false"
         autocapitalizationType="none"
         formControlName="message"
+        lineHeight="50"
         #messageEl
         ></TextView>
         <Label row="0" col="1"(tap)="onSendMessage()" text="&#xf1d8;" class="SendMessageLabel" ></Label>
     </Gridlayout>
-        <TextField 
-        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
+    <TextField 
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: lightgray; height:0;"           
         #hiddenEl
     ></TextField>
-    </StackLayout>
+</StackLayout>
