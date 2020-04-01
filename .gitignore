@@ -6,3 +6,5 @@ webpack.config.js
 .cloud/android/.nsbuildinfo
 
 .cloud/android/smnsfrontend.apk
+
+.cloud/android/
