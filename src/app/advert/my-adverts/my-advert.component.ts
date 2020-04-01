@@ -61,13 +61,90 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
     onCheckedChange(args: EventData){
         let sw = args.object as Switch;
         appSettings.setBoolean("myAdvertSelling", sw.checked);
-        this.isSelling = appSettings.getBoolean("myAdvertSelling");
+        this.isSelling = sw.checked
         if(this.allImagesLoaded) {
             this.allImagesLoaded = false;
             setTimeout(() =>{
                 this.advertServ.clearSelectedUserAdvertisement();
-                this.advertServ.initializeUserAdvertisements(this.UserID, this.isSelling);
+                
             },100); 
+            this.advertServ.initializeUserAdvertisements(this.UserID, this.isSelling);
+            this.userTextbookAdvertResultListSub = this.advertServ.currentUserAdvertTextbookList.subscribe(
+                textbookResult => {
+                    if(textbookResult) {
+                        if(textbookResult.responseStatusCode === 200){
+                            this.myTextbookArray = new ObservableArray(0);
+                            textbookResult.Textbooks.forEach( t => {
+                                this.myTextbookArray.push(t);
+                            });
+                            this.textbookImagesLoaded = true;
+                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                                this.allImagesLoaded = true;
+                            }
+                        }else {
+                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                        }
+                    }
+                }
+            );
+    
+    
+            this.userAccomodationAdvertResultListSub = this.advertServ.currentUserAdvertAccomodationList.subscribe(
+                accomodationResult => {
+                    if(accomodationResult) {
+                        if(accomodationResult.responseStatusCode === 200){
+                            this.accomodationImagesLoaded = true;
+                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                                this.allImagesLoaded = true;
+                            }
+                        }else {
+                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                        }
+                        this.myAccomodationArray = new ObservableArray(0);
+                        accomodationResult.Accomodations.forEach( t => {
+                            this.myAccomodationArray.push(t);
+                        })
+                    }
+                }
+            );
+    
+            this.userTutorAdvertResultListSub = this.advertServ.currentUserAdvertTutorList.subscribe(
+                tutorResult => {
+                    if(tutorResult) {
+                        if(tutorResult.responseStatusCode === 200){
+                            this.tutorImagesLoaded = true;
+                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                                this.allImagesLoaded = true;
+                            }
+                        }else {
+                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                        }
+                        this.myTutorArray = new ObservableArray(0);
+                        tutorResult.Tutors.forEach( t => {
+                            this.myTutorArray.push(t);
+                        })
+                    }
+                }
+            );
+    
+            this.userNoteAdvertResultListSub = this.advertServ.currentUserAdvertNoteList.subscribe(
+                noteResult => {
+                    if(noteResult) {
+                        if(noteResult.responseStatusCode === 200){
+                            this.noteImagesLoaded = true;
+                            if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
+                                this.allImagesLoaded = true;
+                            }
+                        }else {
+                            TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
+                        }
+                        this.myNoteArray = new ObservableArray(0);
+                        noteResult.Notes.forEach( t => {
+                            this.myNoteArray.push(t);
+                        })
+                    }
+                }
+            );
         }
     }
 

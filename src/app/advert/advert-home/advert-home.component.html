@@ -1,14 +1,17 @@
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false>
     
 </ns-action-bar>
-<StackLayout style="background-color: #efeeee;" orientation="vertical">
-    <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>
-</StackLayout>
+
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
     
     <!-- TAB AND RADLIST USED FOR TEXTBOOK -->
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    
+
+    <StackLayout orientation="horizontal">
+        <Label text="Filters" class="FilterLabel"></Label>
+        <Label text="&#xf161;" class="FilterLabelicon" (tap)="onTextbookFilterTap()" ></Label>
+    </StackLayout>
+
     <RadListView  *ngIf="textbookImagesLoaded" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -29,6 +32,12 @@
 
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
+
+        <StackLayout orientation="horizontal">
+            <Label col="1" text="Filters" class="FilterLabel" ></Label>
+            <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onAccomodationFilterTap()" ></Label>
+        </StackLayout>
+
         <RadListView  *ngIf="accomodationImagesLoaded" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -46,7 +55,14 @@
             </ng-template>
         </RadListView>
     </StackLayout>
+
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
+
+        <StackLayout orientation="horizontal">
+            <Label col="1" text="Filters" class="FilterLabel" ></Label>
+            <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onTutorFilterTap()" ></Label>
+        </StackLayout>
+
         <RadListView  *ngIf="tutorImagesLoaded" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -64,7 +80,14 @@
             </ng-template>
         </RadListView>
     </StackLayout>
+
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
+
+        <StackLayout orientation="horizontal">
+            <Label col="1" text="Filters" class="FilterLabel" ></Label>
+            <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onNoteFilterTap()" ></Label>
+        </StackLayout>
+
         <RadListView  *ngIf="noteImagesLoaded" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >

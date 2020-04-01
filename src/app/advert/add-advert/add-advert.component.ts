@@ -16,7 +16,7 @@ import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { ImageAsset } from "tns-core-modules/image-asset/image-asset";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-import { AddAdvertisementResult } from "../advert.model";
+import { AddAdvertisementResult, Textbook } from "../advert.model";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 @Component({
     selector: 'ns-add-advert',
@@ -30,15 +30,25 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     form: FormGroup;
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
-    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture: boolean;
-    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; myImg; base64ImageString: string;
-    public advertPostedSub : Subscription;
+    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType: boolean;
+    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; yearTypeBind; venueTypeBind; noteTypeBind; termTypeBind; moduleCodeTypeBindTutor; moduleCodeTypeBindNote; myImg; base64ImageString: string;
+    public advertPostedSub; textbookSub : Subscription;
+    public addTextbook : Textbook;
     private advertPosted: AddAdvertisementResult;
+    
 
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
+        
+        this.TextbookType = false;
         this.myImg = "";
         this.acdTypeBind = "";
         this.instTypeBind = "";
+        this.yearTypeBind = "";
+        this.venueTypeBind = "";
+        this.noteTypeBind = "";
+        this.termTypeBind = "";
+        this.moduleCodeTypeBindTutor = "";
+        this.moduleCodeTypeBindNote = "";
         this.advertTypes = new Array<string>("Textbook", "Accomodation", "Tutor", "Note");
         this.accomodationTypes = new Array<string>("Apartement", "Commune", "House", "Garden Cottage");
         this.institutionTypes = new Array<string>("University Of Pretoria","University Of Johannesburg");
@@ -55,6 +65,13 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('distanceEl', {static:false}) distanceEl: ElementRef<TextField>;
     @ViewChild('acdTypeEl', {static:false}) acdTypeEl: ElementRef<TextField>;
     @ViewChild('instTypeEl', {static:false}) instTypeEl: ElementRef<TextField>;
+    @ViewChild('subjectEl', {static:false}) subjectEl: ElementRef<TextField>;
+    @ViewChild('yearTypeEl', {static:false}) yearTypeEl: ElementRef<TextField>;
+    @ViewChild('venueTypeEl', {static:false}) venueTypeEl: ElementRef<TextField>;
+    @ViewChild('noteTypeEl', {static:false}) noteTypeEl: ElementRef<TextField>;
+    @ViewChild('termTypeEl', {static:false}) termTypeEl: ElementRef<TextField>;
+    @ViewChild('moduleCodeTutorTypeEl', {static:false}) moduleCodeTutorTypeEl: ElementRef<TextField>;
+    @ViewChild('moduleCodeNoteTypeEl', {static:false}) moduleCodeNoteTypeEl: ElementRef<TextField>;
    
     ngOnInit(){   
         this.form = new FormGroup({
@@ -108,6 +125,76 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 }
             ),
             acdType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            subject: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            yearType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            venueType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            noteType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            termType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            moduleCodeTutorType: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
+                }
+            ),
+            moduleCodeNoteType: new FormControl(
                 null,
                 {
                     updateOn: 'blur',
@@ -197,95 +284,241 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         return uuid;
     };
 
-    delay(ms: number) { // <------ Change
-        return new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired")); // <------ Change
+    delay(ms: number) { 
+        return new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired")); 
     }
 
     async onPostTap() {
+        
         this.priceEl.nativeElement.focus();
         this.descriptionEl.nativeElement.focus();
-        this.locationEl.nativeElement.focus();
-        this.distanceEl.nativeElement.focus();
-        this.acdTypeEl.nativeElement.focus();
-        this.instTypeEl.nativeElement.focus();
-        
-        if(!this.form.valid){
-            return;
-        }
+
+        const entityID = this.generateUUIDv4();
         const userid = appSettings.getString('userid');
         const price = this.form.get('price').value;
         const description = this.form.get('description').value;
-        const location = this.form.get('location').value;
-        const distance = this.form.get('distance').value;
-        var acdType = this.form.get('acdType').value;
-        const instType = this.form.get('instType').value;
-        const accomodationID = this.generateUUIDv4();
+            if(this.advertType == "ACD"){
+                console.log("Hello There ACD");
+                this.locationEl.nativeElement.focus();
+                this.distanceEl.nativeElement.focus();
+                this.acdTypeEl.nativeElement.focus();
+                this.instTypeEl.nativeElement.focus();
 
-        switch (acdType){
-            case "Apartement": {
-                acdType = "APT";
-                break;
-            }
-            case "Commune": {
-                acdType = "COM";
-                break;
-            }
-            case "House": {
-                acdType = "HSE";
-                break;
-            }
-            case "Garden Cottage": {
-                acdType = "GDC";
-                break;
-            }
-            default: {
+                const location = this.form.get('location').value;
+                const distance = this.form.get('distance').value;
+                var acdType = this.form.get('acdType').value;
+                const instType = this.form.get('instType').value;
 
-            }
-        }
-        setTimeout(() =>{
-            //Call the service with captured information
-            this.advertServ.AddNewAccomodationAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, accomodationID, acdType, location, distance, instType);
-        },100);
-
-        await this.delay(1000);
-
-        this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
-            advertResult => {
-                if(advertResult.advertisementposted) {
-                    this.advertPosted = advertResult;
-                    this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
-                    TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
-                        this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
-                        this.router.backToPreviousPage(),
-                        {
-                            animated: true,
-                            transition: {
-                                name: "slide",
-                                duration: 200,
-                                curve: "ease"  
-                            }
-                        }
-                        /*this.router.navigate(['/advert/myadverts'],
-                            {
-                                animated: true,
-                                transition: {
-                                    name: "slide",
-                                    duration: 200,
-                                    curve: "ease"
+                switch (acdType){
+                    case "Apartement": {
+                        acdType = "APT";
+                        break;
+                    }
+                    case "Commune": {
+                        acdType = "COM";
+                        break;
+                    }
+                    case "House": {
+                        acdType = "HSE";
+                        break;
+                    }
+                    case "Garden Cottage": {
+                        acdType = "GDC";
+                        break;
+                    }
+                }
+                setTimeout(() =>{
+                    //Call the service with captured information
+                    this.advertServ.AddNewAccomodationAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, acdType, location, distance, instType);
+                },100);
+        
+                await this.delay(1000);
+        
+                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+                    advertResult => {
+                        if(advertResult.advertisementposted) {
+                            this.advertPosted = advertResult;
+                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                                this.router.backToPreviousPage(),
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"  
+                                    }
                                 }
-                            });*/
+                                }
+                            );
+                        }else{
+                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
                         }
-                    );
-                }else{
-                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted!!!!!!\n Message: " + advertResult.message,"Close");
+                    }
+                );
+        
+                if (this.advertPostedSub){
+                    this.advertPostedSub.unsubscribe();
                 }
             }
-        );
+                
 
-        if (this.advertPostedSub){
-            this.advertPostedSub.unsubscribe();
-        }
+            if(this.advertType == "TXB"){
+                //console.log("Hello There TXB");;
+                setTimeout(() =>{
+                    //Call the service with captured information
+                    this.advertServ.AddNewTextbookAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, this.addTextbook.ID);
+                },100);
         
+                await this.delay(1000);
+        
+                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+                    advertResult => {
+                        if(advertResult.advertisementposted) {
+                            this.advertPosted = advertResult;
+                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                                this.router.backToPreviousPage(),
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"  
+                                    }
+                                }
+                                }
+                            );
+                        }else{
+                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
+                        }
+                    }
+                );
+        
+                if (this.advertPostedSub){
+                    this.advertPostedSub.unsubscribe();
+                }
+            }
+                
+           
+            if(this.advertType == "TUT"){
+                console.log("Hello There TUT");
+                this.subjectEl.nativeElement.focus();
+                this.yearTypeEl.nativeElement.focus();
+                this.venueTypeEl.nativeElement.focus();
+                this.noteTypeEl.nativeElement.focus();
+                this.termTypeEl.nativeElement.focus();
+                this.moduleCodeTutorTypeEl.nativeElement.focus();
+                
+                const subject = this.form.get('subject').value;
+                const yearType = this.form.get('yearType').value;
+                const venueType = this.form.get('venueType').value;
+                var noteType = this.form.get('noteType').value;
+                const termType = this.form.get('termType').value;
+                const moduleCodeTutorType = this.form.get('moduleCodeTutorType').value;
+
+                if(noteType == "Yes"){
+                    noteType = "True";
+                }else{
+                    noteType = "False";
+                }
+               
+                setTimeout(() =>{
+                    //Call the service with captured information
+                    this.advertServ.AddNewTutorAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, subject, yearType,venueType,noteType,termType,moduleCodeTutorType);
+                },100);
+        
+                await this.delay(1000);
+        
+                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+                    advertResult => {
+                        if(advertResult.advertisementposted) {
+                            this.advertPosted = advertResult;
+                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                                this.router.backToPreviousPage(),
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"  
+                                    }
+                                }
+                                }
+                            );
+                        }else{
+                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
+                        }
+                    }
+                );
+        
+                if (this.advertPostedSub){
+                    this.advertPostedSub.unsubscribe();
+                }
+            }
+            
+            if(this.advertType == "NTS"){
+                console.log("Hello There NTS");
+                this.moduleCodeNoteTypeEl.nativeElement.focus();
+
+                const moduleCodeNoteType = this.form.get('moduleCodeNoteType').value;
+
+                setTimeout(() =>{
+                    //Call the service with captured information
+                    this.advertServ.AddNewNoteAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, moduleCodeNoteType);
+                },100);
+        
+                await this.delay(1000);
+        
+                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+                    advertResult => {
+                        if(advertResult.advertisementposted) {
+                            this.advertPosted = advertResult;
+                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                                this.router.backToPreviousPage(),
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"  
+                                    }
+                                }
+                                }
+                            );
+                        }else{
+                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
+                        }
+                    }
+                );
+        
+                if (this.advertPostedSub){
+                    this.advertPostedSub.unsubscribe();
+                }
+            }
+    }
+
+    onTextbookSelectTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef, 
+            animated: true,
+            fullscreen: true,
+            context: {string: "TextbookType" } }).then((selection: boolean) => {
+                this.TextbookType=selection;
+                if(this.TextbookType){
+                    this.textbookSub = this.advertServ.currentAddTextbook.subscribe(
+                        (textbookResult) => {
+                            this.addTextbook = textbookResult;
+                        }
+                    )
+                }
+            });
+
     }
 
     onAccomodationTypeTap(){
@@ -306,45 +539,67 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             });
     }
 
-   /* onadvertTypeTap(){
-        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,  animated: true, fullscreen: true, context: {string: "AdvertType" } });
-    }*/
+    onYearTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "YearCompletedType" } }).then((selection:string) => {
+                this.yearTypeBind=selection;
+            });
+    }
+
+    onVenueTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "VenueType" } }).then((selection:string) => {
+                this.venueTypeBind=selection;
+            });    
+    }
+
+    onTermsTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "TermType" } }).then((selection:string) => {
+                this.termTypeBind=selection;
+            });      
+    }
+
+    onNoteTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "NoteType" } }).then((selection:string) => {
+                this.noteTypeBind=selection;
+            });    
+    }
+
+    onTutorModuleCodeTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "ModuleCodeType" } }).then((selection:string) => {
+                this.moduleCodeTypeBindTutor=selection;
+            });      
+    }
+
+    onNoteModuleCodeTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "ModuleCodeType" } }).then((selection:string) => {
+                this.moduleCodeTypeBindNote=selection;
+            });      
+    }
+
+  
 
 
     onCheckedChange(args: EventData){
         let sw = args.object as Switch;
         this.isSelling = sw.checked;
     }
-
-    //------------------------------------------
-    // CODE USED FOR DROPDOWN MENU
-    //------------------------------------------
-   /* public onchange(args: SelectedIndexChangedEventData) {
-    this.selectedIndex = args.newIndex;
-
-    switch (this.selectedIndex){
-        case 0:
-            this.advertType = "TXB";
-            break;
-        case 1:
-            this.advertType = "ACD";
-            break;
-        case 2:
-            this.advertType = "TUT";
-            break;
-        case 3:
-            this.advertType = "NTS";
-            break;
-    }
-    }
-    
-     /*public onopen() {
-        console.log("Drop Down opened.");
-    }
- 
-    public onclose() {
-        console.log("Drop Down closed.");
-    }*/
 
     onSelectedIndexAdvertTypeChanged(args: EventData){
         const picker = <ListPicker>args.object;

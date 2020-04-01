@@ -13,13 +13,17 @@ import { DropDownModule } from "nativescript-drop-down/angular";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AdvertListPickerComponent } from "./advert-listpicker/advert-listpicker.component"
+import { AdvertFilterComponent } from "./advert-filter-modal/advert-filter.component"
+import { UpdateAdvertComponent } from "./update-advert/update-advert.component";
 @NgModule({
     declarations: [
         AdvertHomeComponent,
         AdvertDetailsComponent,
         MyAdvertComponent,
         AddAdvertComponent,
-        AdvertListPickerComponent
+        AdvertListPickerComponent,
+        UpdateAdvertComponent,
+        AdvertFilterComponent
     ],
     imports: [NativeScriptCommonModule,
               SharedModule,
@@ -33,7 +37,7 @@ import { AdvertListPickerComponent } from "./advert-listpicker/advert-listpicker
         AdvertService
     ],
     schemas: [NO_ERRORS_SCHEMA],
-    entryComponents: [AdvertListPickerComponent]
+    entryComponents: [AdvertListPickerComponent, AdvertFilterComponent]
 })
 
 export class AdvertModule {}

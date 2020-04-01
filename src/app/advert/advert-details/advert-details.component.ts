@@ -342,7 +342,20 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         
     }
 
-    
+    updateAdvertisement(advertisementID: string, advertType: string){
+        /*appSettings.setString("ToUpdateAdvertisementID", advertisementID);
+        appSettings.setString("ToUpdateAdvertType", advertType);*/
+        this.advertServ.setUserAdvert(advertisementID, advertType);
+        this.router.navigate(['/advert/updateadvert'],
+        {
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
+    }
 
     ngOnDestroy() {
         if(this.deleteAdvertisementResultSub){

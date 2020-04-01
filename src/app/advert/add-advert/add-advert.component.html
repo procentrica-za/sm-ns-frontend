@@ -36,7 +36,7 @@
     <StackLayout class="input-field">
         <Label
             class="label"
-            text="Price"
+            text="Price (R)"
         ></Label>
         <TextField
             class="input"
@@ -58,37 +58,12 @@
         </StackLayout>
        
     </StackLayout>
-
-    <!--<StackLayout class="input-field">
-        <Label
-            class="label"
-            text="Advertisement Type"
-        ></Label>
-        <DropDown #dropDownEl
-                [items]="advertTypes"
-                (selectedIndexChanged)="onchange($event)"
-                (opened)="onopen()"
-                (closed)="onclose()"
-                row="0"
-                colSpan="2"></DropDown>
-    </StackLayout>-->
      
     <StackLayout class="input-field">
         <Label
         class="label1"
         text="Advertisement Type"
     ></Label>
-     
-       <!-- <TextField
-        (tap)="onadvertTypeTap()"
-        class="input"
-        returnKeyType="next"
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="advertType"
-        #advertTypeEl
-        ></TextField>-->
     <StackLayout class="input-field">
         <ListPicker [items]="advertTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAdvertTypeChanged($event)"></ListPicker>
     </StackLayout>
@@ -97,18 +72,45 @@
     </StackLayout>
 
     
-
+    <!-- STACKLAYOUT USED TO CAPTURE TEXTBOOKS-->
     <StackLayout *ngIf="textbookCapture" class="input-field">
-        <Label class="label" text="Textbook"></Label>
+        <StackLayout>
+            <Label *ngIf="!addTextbook" class="label" text="Select" (tap)="onTextbookSelectTap()" ></Label>
+            <Label *ngIf="addTextbook" class="label" text="Re-Select" (tap)="onTextbookSelectTap()" ></Label>
+        </StackLayout>
+        <StackLayout>
+            <Gridlayout *ngIf="addTextbook" rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle">
+                <Label *ngIf = "addTextbook" row="0" col="0" colspan="2" [text]="addTextbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                <StackLayout row="1" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "addTextbook" row="2" col="0" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "addTextbook" row="2" col="1" [text]="addTextbook.author" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="3" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "addTextbook" row="4" col="0" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "addTextbook" row="4" col="1" [text]="addTextbook.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="5" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "addTextbook" row="6" col="0" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "addTextbook" row="6" col="1" [text]="addTextbook.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="7" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                <Label *ngIf = "addTextbook" row="8" col="0" text="For Module: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                <Label *ngIf = "addTextbook" row="8" col="1" [text]="addTextbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+                <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+            </Gridlayout>
+        </StackLayout>
+        <StackLayout>
+            <Button
+            *ngIf="addTextbook"
+            class="btn btn-primary btn-rounded-lg"
+            text="Post"
+            (tap)="onPostTap()"
+            ></Button>
+        </StackLayout>
     </StackLayout>
 
-    
+    <!-- STACKLAYOUT USED TO CAPTURE ACCOMODATIONS-->
     <StackLayout *ngIf="accomodationCapture" class="input-field">
-    <!--<Label class="label" text="Accomodation Type"></Label>
-    <ListPicker [items]="institutionTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexinstTypeChanged($event)"></ListPicker>-->
     <Label
     class="label"
-    text="Location"
+    text="Address"
     ></Label>
     <TextField
         class="input"
@@ -122,6 +124,20 @@
 
     <Label
     class="label"
+    text="Distance From Campus (Km)"
+    ></Label>
+    <TextField
+        class="input"
+        returnKeyType="next"
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="distance"
+        #distanceEl
+    ></TextField >
+
+    <Label
+    class="label"
     text="Accomodation Type"
     (tap)="onAccomodationTypeTap()"
     ></Label>
@@ -129,7 +145,7 @@
     [text]="acdTypeBind"
     (tap)="onAccomodationTypeTap()"
     class="input"
-    returnKeyType="next"()
+    returnKeyType="next"
     required
     [autocorrect]="false"
     autocapitalizationType="none"
@@ -146,60 +162,164 @@
     [text]="instTypeBind"
     (tap)="onInstitutionTypeTap()"
     class="input"
-    returnKeyType="next"()
+    returnKeyType="next"
     required
     [autocorrect]="false"
     autocapitalizationType="none"
     formControlName="instType"
     #instTypeEl
     ></TextField>
-        
-    <Label
-    class="label"
-    text="Distance From Campus"
-    ></Label>
-    <TextField
-        class="input"
-        returnKeyType="next"
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="distance"
-        #distanceEl
-    ></TextField >
-<!-- <Label class="label" text="Accomodation Type"></Label>
-    <ListPicker [items]="accomodationTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAcdTypeChanged($event)"></ListPicker>-->
-   
     
-    
-    
-     
-
     <StackLayout>
         <Button
         class="btn btn-primary btn-rounded-lg"
         text="Post"
         (tap)="onPostTap()"
         ></Button>
-        
     </StackLayout>
-   
-    
-    
-    </StackLayout>
+</StackLayout>
 
+
+    <!-- STACKLAYOUT USED TO CAPTURE TUTORS-->
     <StackLayout *ngIf="tutorCapture" class="input-field">
-        <Label class="label" text="Tutor"></Label>
+        <Label
+        class="label"
+        text="Subject"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="subject"
+            #subjectEl
+        ></TextField>
+
+        <Label
+        class="label"
+        text="Year Completed"
+        (tap)="onYearTypeTap()"
+        ></Label>
+        <TextField
+        [text]="yearTypeBind"
+        (tap)="onYearTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="yearType"
+        #yearTypeEl
+        ></TextField>
+
+        <Label
+        class="label"
+        text="Venue"
+        (tap)="onVenueTypeTap()"
+        ></Label>
+        <TextField
+        [text]="venueTypeBind"
+        (tap)="onVenueTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="venueType"
+        #venueTypeEl
+        ></TextField>
+
+        <Label
+        class="label"
+        text="Terms"
+        (tap)="onTermsTypeTap()"
+        ></Label>
+        <TextField
+        [text]="termTypeBind"
+        (tap)="onTermsTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="termType"
+        #termTypeEl
+        ></TextField>
+
+        <Label
+        class="label"
+        text="Note Included"
+        (tap)="onNoteTypeTap()"
+        ></Label>
+        <TextField
+        [text]="noteTypeBind"
+        (tap)="onNoteTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="noteType"
+        #noteTypeEl
+        ></TextField>
+
+        <Label
+        class="label"
+        text="Module Code"
+        (tap)="onTutorModuleCodeTypeTap()"
+        ></Label>
+        <TextField
+        [text]="moduleCodeTypeBindTutor"
+        (tap)="onTutorModuleCodeTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="moduleCodeTutorType"
+        #moduleCodeTutorTypeEl
+        ></TextField>
+       
+        <StackLayout>
+            <Button
+            class="btn btn-primary btn-rounded-lg"
+            text="Post"
+            (tap)="onPostTap()"
+            ></Button>
+        </StackLayout>
+
     </StackLayout>
 
+    <!-- STACKLAYOUT USED TO CAPTURE NOTES-->
     <StackLayout *ngIf="noteCapture" class="input-field">
-        <Label class="label" text="Note"></Label>
+        <Label
+        class="label"
+        text="Module Code"
+        (tap)="onNoteModuleCodeTypeTap()"
+        ></Label>
+        <TextField
+        [text]="moduleCodeTypeBindNote"
+        (tap)="onNoteModuleCodeTypeTap()"
+        class="input"
+        returnKeyType="next"()
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="moduleCodeNoteType"
+        #moduleCodeNoteTypeEl
+        ></TextField>
+
+        <StackLayout>
+            <Button
+            class="btn btn-primary btn-rounded-lg"
+            text="Post"
+            (tap)="onPostTap()"
+            ></Button>
+        </StackLayout>
     </StackLayout>
 
 
     
 </StackLayout>
 </ScrollView>
-<!--<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
-    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
-</FlexboxLayout>-->

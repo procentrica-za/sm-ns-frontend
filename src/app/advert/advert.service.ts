@@ -21,6 +21,8 @@ import {    TextbookResult,
             UploadImage,
             MessageResult,
             AddAccomodationResult,
+            AddTutorResult,
+            AddNoteResult,
             OutstandingratingResult,
             OutstandingratingResultList,
             RateSellerResult,
@@ -32,7 +34,12 @@ import {    TextbookResult,
             StartChatResult ,
             InterestedbuyerResult,
             InterestedbuyerResultList,
-            RateBuyerResult } from './advert.model'
+            RateBuyerResult, 
+            UpdateAdvertisementResult,
+            Textbook,
+            TextbookList,
+            ModuleCodeList,
+            ModuleCode} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -44,8 +51,12 @@ import { isEnabled } from 'tns-core-modules/trace/trace';
 import { Subscription } from "rxjs";
 //Used for chat styling
 import * as appSettings from "tns-core-modules/application-settings";
+import { propagateInheritableCssProperties } from 'tns-core-modules/ui/page/page';
 @Injectable({ providedIn: 'root' })
 export class AdvertService {
+    private _currentAddTextbookList = new BehaviorSubject<TextbookList>(null);
+    private _currentAddTextbook = new BehaviorSubject<Textbook>(null);
+
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
 
@@ -73,11 +84,17 @@ export class AdvertService {
     private _currentAddAdvertisement = new BehaviorSubject<AddAdvertisementResult>(null);
 
     private _currentAddAccomodation = new BehaviorSubject<AddAccomodationResult>(null);
+    private _currentAddTutor = new BehaviorSubject<AddTutorResult>(null);
+    private _currentAddNote = new BehaviorSubject<AddNoteResult>(null);
 
     //private _currentUploadImage = new BehaviorSubject<UploadImage>(null);
 
     private _currentDeleteAdvertisementResult = new BehaviorSubject<DeleteAdvertisementResult>(null);
 
+    private _currentUpdateAdvertisementResult = new BehaviorSubject<UpdateAdvertisementResult>(null);
+
+    private _currentModuleCode = new BehaviorSubject<ModuleCode>(null);
+    private _currentModuleCodeList = new BehaviorSubject<ModuleCodeList>(null);
 
     //Messaging, active chat service
     private _currentActivechatList = new BehaviorSubject<ActivechatResultList>(null);
@@ -109,6 +126,13 @@ export class AdvertService {
     private _currentInterestedbuyer = new BehaviorSubject<InterestedbuyerResult>(null);
 
     private _currentStartChat = new BehaviorSubject<StartChatResult>(null);
+
+    get currentAddTextbookList() {
+        return this._currentAddTextbookList.asObservable();
+    }
+    get currentAddTextbook() {
+        return this._currentAddTextbook.asObservable();
+    }
 
     get currentTextbookList() {
         return this._currentTextbookList.asObservable();
@@ -214,8 +238,24 @@ export class AdvertService {
         return this._currentAddAccomodation.asObservable();
     }
 
+    get currentAddTutor(){
+        return this._currentAddTutor.asObservable();
+    }
+
+    get currentAddNote(){
+        return this._currentAddNote.asObservable();
+    }
+
     get currentAddAdvertisement(){
         return this._currentAddAdvertisement.asObservable();
+    }
+
+    get currentModuleCode(){
+        return this._currentModuleCode.asObservable();
+    }
+
+    get currentModuleCodeList(){
+        return this._currentModuleCodeList.asObservable();
     }
 
      // Rating Dashboard results
@@ -242,13 +282,82 @@ export class AdvertService {
         return this._currentDeleteAdvertisementResult.asObservable();
     }
 
+    get currentUpdateAdvertisementResult(){
+        return this._currentUpdateAdvertisementResult.asObservable();
+    }
+
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
-        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.56:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.56:9955");
+        setString("sm-service-messages-host", "http://192.168.1.56:9956");
     }
     
+    initializeModuleCodeList(){
+        const reqUrl = getString("sm-service-advert-manager-host") + "/modulecode"
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500){
+                const modulecodeErr = new ModuleCode(500, null);
+            }else if(responseCode === 200){
+                const result = response.content.toJSON();
+                let modulecodeList: ModuleCode[] = [];
+                const JSONModuleCodeList = result.modulecodes;
+                JSONModuleCodeList.forEach(element => {
+                    element.responseStatusCode = 200;
+                    modulecodeList.push(element);
+                });
+                const toNextList = new ModuleCodeList(200, modulecodeList);
+                this._currentModuleCodeList.next(toNextList);
+            }else {
+                console.log("in the else");
+            }
+        }, (e) => {
+            console.log(e);
+        });
+        return null;
+    }
+
+    initializeAddTextbookList(){
+        const reqUrl = getString("sm-service-advert-manager-host") + "/textbooks"
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const textbookErr = new Textbook(500, null, null, null, null, null, null);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                let textbookList: Textbook[] = [];
+                const JSONTextbookList = result.textbooks;
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
+                JSONTextbookList.forEach(element => {
+                    element.responseStatusCode =200;
+                    textbookList.push(element)
+                })
+                const textbookListResult = new TextbookList(200, textbookList);
+                this._currentAddTextbookList.next(textbookListResult);
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
+
+    setAddTextbook(textbook: Textbook){
+        this._currentAddTextbook.next(textbook);
+    }
+
     deleteAdvertisement(advertisementID: string){
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement?id=" + advertisementID;
         request ({
@@ -294,7 +403,36 @@ export class AdvertService {
         });
     }
 
-   
+    AddNewTextbookAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string){
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+        console.log(reqUrl);
+       
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const AddAdvertisementSuccess = new AddAdvertisementResult(200, result.advertisementposted, result.id, result.message);
+                this._currentAddAdvertisement.next(AddAdvertisementSuccess);   
+               
+            } else {
+                const AddAdvertisementSuccess = new AddAdvertisementResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+            }
+        }, (e) => {
+            const AddAdvertisementSuccess = new AddAdvertisementResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+            this._currentAddAdvertisement.next(AddAdvertisementSuccess);  
+        })
+    }
+
     AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/accomodation" ;
         console.log(reqUrl);
@@ -363,13 +501,183 @@ export class AdvertService {
         return null;
     }  
 
+    /* ADD NEW TUTOR ADVERTISEMENT */
 
+   
+
+    AddNewTutorAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string, subject: string, yearcompleted: string, venue: string, notesincluded: string, terms: string, moduleCode: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/tutor" ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ id: entityID, modulecode: moduleCode, subject: subject, yearcompleted: yearcompleted, venue: venue, notesincluded: notesincluded, terms: terms }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const AddTutorResultErr = new AddTutorResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddTutor.next(AddTutorResultErr);
+            } else if (responseCode === 200) {
+
+                const result = response.content.toJSON();
+                const AddTutorSuccess = new AddTutorResult(200, result.tutoradded, result.id, result.message);
+                this._currentAddTutor.next(AddTutorSuccess); 
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+                console.log(reqUrl);
+               
+                request ({
+                    url: reqUrl,
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+                    timeout: 5000
+                }).then((response) => {
+                    const responseCode = response.statusCode;
+                    if(responseCode === 500) {
+                        const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                        this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+                    } else if (responseCode === 200) {
+                        const result = response.content.toJSON();
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(200, result.advertisementposted, result.id, result.message);
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess);   
+                       
+                    } else {
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                    }
+                }, (e) => {
+        
+                    const AddAdvertisementSuccess = new AddAdvertisementResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                });
+
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                
+            } else {
+                const AddAccomodationSuccess = new AddAccomodationResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+            }
+        }, (e) => {
+
+            const AddAccomodationSuccess = new AddAccomodationResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+        });
+
+        return null;
+    }
+
+
+
+    AddNewNoteAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string, moduleCode: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/note" ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ id: entityID, modulecode: moduleCode}),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const AddNoteResultErr = new AddNoteResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddNote.next(AddNoteResultErr);
+            } else if (responseCode === 200) {
+
+                const result = response.content.toJSON();
+                const AddNoteSuccess = new AddNoteResult(200, result.noteadded, result.id, result.message);
+                this._currentAddNote.next(AddNoteSuccess); 
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+                console.log(reqUrl);
+               
+                request ({
+                    url: reqUrl,
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+                    timeout: 5000
+                }).then((response) => {
+                    const responseCode = response.statusCode;
+                    if(responseCode === 500) {
+                        const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                        this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+                    } else if (responseCode === 200) {
+                        const result = response.content.toJSON();
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(200, result.advertisementposted, result.id, result.message);
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess);   
+                       
+                    } else {
+                        const AddAdvertisementSuccess = new AddAdvertisementResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                    }
+                }, (e) => {
+        
+                    const AddAdvertisementSuccess = new AddAdvertisementResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                        this._currentAddAdvertisement.next(AddAdvertisementSuccess); 
+                });
+
+                /* ===============================================================================================
+                ==================================================================================================
+                ================================================================================================*/
+                
+            } else {
+                const AddAccomodationSuccess = new AddAccomodationResult(responseCode, false, '00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+            }
+        }, (e) => {
+
+            const AddAccomodationSuccess = new AddAccomodationResult(400, false, '00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentAddAccomodation.next(AddAccomodationSuccess); 
+        });
+
+        return null;
+    }
+
+
+
+
+
+    UpdateAdvertisement(advertisementid: string, userid: string, isSelling: string, advertType: string, entityid: string, price: string, description: string){
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+        console.log(reqUrl);
+        //console.log(JSON.stringify({ id: advertisementid, userid: userid, isselling: isSelling, advertisementtype: advertType, entityid: entityid, price: price, description: description }));
+        request ({
+            url: reqUrl,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ id: advertisementid, userid: userid, isselling: isSelling, advertisementtype: advertType, entityid: entityid, price: price, description: description }),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if (responseCode === 500){
+                const UpdateAdvertisementResultErr = new UpdateAdvertisementResult(500, false, "An internal error has occured");
+                this._currentUpdateAdvertisementResult.next(UpdateAdvertisementResultErr);
+            } else if (responseCode === 200){
+                const result = response.content.toJSON();
+                const UpdateAdvertisementResultSuccess = new UpdateAdvertisementResult(200, result.advertisementupdated, result.message);
+                this._currentUpdateAdvertisementResult.next(UpdateAdvertisementResultSuccess);
+            } else {
+                const UpdateAdvertisementResultErr = new UpdateAdvertisementResult(responseCode, false, "An internal error has occured");
+                this._currentUpdateAdvertisementResult.next(UpdateAdvertisementResultErr);
+            }
+        });
+    }
 
     initializeAdvertisements(isSelling: boolean){
-        this.initializeTextbooks(isSelling);
-        this.initializeAccomodation(isSelling);
-        this.initializeTutors(isSelling);
-        this.initializeNotes(isSelling);
+        this.initializeTextbooks(isSelling,9999999,"","","","","");
+        this.initializeAccomodation(isSelling, 999999, "", "", 999999, "");
+        this.initializeTutors(isSelling, 999999, "", "", "", "", "", "");
+        this.initializeNotes(isSelling, 999999, "");
     }
 
     initializeUserAdvertisements(userID: string, isSelling: boolean){
@@ -379,8 +687,10 @@ export class AdvertService {
         this.initializeUserAdvertNotes(userID, isSelling);
     }
 
-    initializeTextbooks(isSelling: boolean) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling;
+    
+    initializeTextbooks(isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling +
+        "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter ;
         request ({
             url: reqUrl,
             method: "GET",
@@ -412,8 +722,11 @@ export class AdvertService {
         return null;
     }
 
-    initializeAccomodation(isSelling: boolean) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling" + isSelling;
+    initializeAccomodation(isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number, instNameFilter: string) {
+        
+        
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter +
+        "&acdType=" + acdTypeFilter + "&location=" + locationFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
         request ({
             url: reqUrl,
             method: "GET",
@@ -458,8 +771,14 @@ export class AdvertService {
         return null;
     }
 
-    initializeTutors(isSelling: boolean) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling;
+    
+    
+    
+
+    initializeTutors(isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string ) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter +
+        "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&yearcompleted=" + yearCompletedFilter + "&venue=" + venueFilter + "&notes=" + notesincludedFilter + "&terms=" + termsFilter;
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -490,8 +809,8 @@ export class AdvertService {
         return null;
     }
 
-    initializeNotes(isSelling: boolean) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling;
+    initializeNotes(isSelling: boolean, priceFilter: number, modulecodeFilter : string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter;
         request ({
             url: reqUrl,
             method: "GET",
