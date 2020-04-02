@@ -183,12 +183,17 @@
 
 
     <!-- STACKLAYOUT USED TO CAPTURE TUTORS-->
-    <StackLayout *ngIf="tutorCapture" class="input-field">
+    <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*,*" columns="10*,2*" *ngIf="tutorCapture" class="input-field">
         <Label
-        class="label"
-        text="Subject"
+            row="0"
+            col="0"
+            class="label"
+            text="Subject"
         ></Label>
         <TextField
+            row="1"
+            col="0"
+            colspan="2"
             class="input"
             returnKeyType="next"
             required
@@ -199,99 +204,145 @@
         ></TextField>
 
         <Label
-        class="label"
-        text="Year Completed"
-        (tap)="onYearTypeTap()"
+            row="2"
+            col="0"
+            colspan="2"
+            class="label"
+            text="Year Completed"
+            (tap)="onYearTypeTap()"
         ></Label>
         <TextField
-        [text]="yearTypeBind"
-        (tap)="onYearTypeTap()"
-        class="input"
-        returnKeyType="next"()
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="yearType"
-        #yearTypeEl
+            row="3"
+            col="0"
+            colspan="2"
+            [text]="yearTypeBind"
+            (tap)="onYearTypeTap()"
+            class="input"
+            returnKeyType="next"()
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="yearType"
+            #yearTypeEl
+        ></TextField>        
+
+        <Label
+            row="4"
+            col="0"
+            class="label"
+            text="Venue"
+            (tap)="onVenueTypeTap()"
+        ></Label>
+        <TextField
+            row="5"
+            col="0"
+            colspan="2"
+            [text]="venueTypeBind"
+            (tap)="onVenueTypeTap()"
+            class="input"
+            returnKeyType="next"()
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="venueType"
+            #venueTypeEl
         ></TextField>
 
         <Label
-        class="label"
-        text="Venue"
-        (tap)="onVenueTypeTap()"
-        ></Label>
+            row="6"
+            col="0"
+            colspan="2"
+            class="label"
+            text="Terms"
+            (tap)="onTermsTypeTap()"
+        ></Label>        
         <TextField
-        [text]="venueTypeBind"
-        (tap)="onVenueTypeTap()"
-        class="input"
-        returnKeyType="next"()
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="venueType"
-        #venueTypeEl
+            row="7"
+            col="0"
+            [text]="termTypeBind"
+            (tap)="onTermsTypeTap()"
+            class="input"
+            returnKeyType="next"()
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="termType"
+            #termTypeEl
         ></TextField>
+        <Button
+            row="6"
+            col="1"
+            rowspan="2"
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Terms')"
+        ></Button>
+        
 
         <Label
-        class="label"
-        text="Terms"
-        (tap)="onTermsTypeTap()"
+            row="8"
+            col="0"
+            colspan="2"
+            class="label"
+            text="Note Included"
+            (tap)="onNoteTypeTap()"
         ></Label>
         <TextField
-        [text]="termTypeBind"
-        (tap)="onTermsTypeTap()"
-        class="input"
-        returnKeyType="next"()
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="termType"
-        #termTypeEl
+            row="9"
+            col="0"
+            [text]="noteTypeBind"
+            (tap)="onNoteTypeTap()"
+            class="input"
+            returnKeyType="next"()
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="noteType"
+            #noteTypeEl
         ></TextField>
+        <Button
+            row="8"
+            col="1"
+            rowspan="2"
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Notes')"
+        ></Button>
 
         <Label
-        class="label"
-        text="Note Included"
-        (tap)="onNoteTypeTap()"
+            row="10"
+            col="0"
+            colspan="2"
+            class="label"
+            text="Module Code"
+            (tap)="onTutorModuleCodeTypeTap()"
         ></Label>
         <TextField
-        [text]="noteTypeBind"
-        (tap)="onNoteTypeTap()"
-        class="input"
-        returnKeyType="next"()
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="noteType"
-        #noteTypeEl
-        ></TextField>
-
-        <Label
-        class="label"
-        text="Module Code"
-        (tap)="onTutorModuleCodeTypeTap()"
-        ></Label>
-        <TextField
-        [text]="moduleCodeTypeBindTutor"
-        (tap)="onTutorModuleCodeTypeTap()"
-        class="input"
-        returnKeyType="next"()
-        required
-        [autocorrect]="false"
-        autocapitalizationType="none"
-        formControlName="moduleCodeTutorType"
-        #moduleCodeTutorTypeEl
+            row="11"
+            col="0"
+            colspan="2"
+            [text]="moduleCodeTypeBindTutor"
+            (tap)="onTutorModuleCodeTypeTap()"
+            class="input"
+            returnKeyType="next"()
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="moduleCodeTutorType"
+            #moduleCodeTutorTypeEl
         ></TextField>
        
-        <StackLayout>
-            <Button
-            class="btn btn-primary btn-rounded-lg"
-            text="Post"
-            (tap)="onPostTap()"
+        <StackLayout 
+            row="12"
+            col="0"
+            colspan="2">
+            <Button            
+                class="btn btn-primary btn-rounded-lg"
+                text="Post"
+                (tap)="onPostTap()"
             ></Button>
         </StackLayout>
-
-    </StackLayout>
+    </GridLayout>
 
     <!-- STACKLAYOUT USED TO CAPTURE NOTES-->
     <StackLayout *ngIf="noteCapture" class="input-field">
