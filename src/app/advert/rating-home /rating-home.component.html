@@ -1,4 +1,7 @@
 <ns-action-bar [actionBarTitle]="'Outstanding Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+
+<StackLayout orientation="horizontal" class ="MessagesStack">
+</StackLayout>
     <RadListView  *ngIf="ratingsLoaded " [items]="myOutstandingratingArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-outstandingrating="item" >
             <Gridlayout rows="*,*,*,*,*" columns="10*,20*,5*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >

@@ -1,4 +1,6 @@
 <ns-action-bar [actionBarTitle]="'Previous Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout orientation="horizontal" class ="MessagesStack">
+</StackLayout>
     <RadListView  *ngIf="ratingsLoaded " [items]="myPreviousratingArray" class="chatsRadList">
         <ng-template tkListItemTemplate let-previousrating="item" >
             <Gridlayout rows="*,*,*" columns="10*,20*,5*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
