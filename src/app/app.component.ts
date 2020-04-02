@@ -47,14 +47,14 @@ export class AppComponent implements OnInit{
                         this.unreadMessages = true;
                 
                     } else if (this.unreadchats.responseStatusCode === 500){
-                        TNSFancyAlert.showError("Connection error", "An internal error has occured.", "Dismiss");
+                        this.unreadMessages = false;
                     }
                     else if (this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === false){
                         this.unreadMessages = false;
           
                     }
                     else {
-                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support." , "Dismiss");
+                        this.unreadMessages = false;
                     }
                     
                 }

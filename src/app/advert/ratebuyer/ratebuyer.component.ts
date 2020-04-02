@@ -107,7 +107,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                     else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
                         this.advertServ.clearRating();
                         TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
-                        this.router.navigate(['/advert/myadverts'],
+                        this.router.navigate(['/advert/home'],
                   {
                      animated: true,
                      transition: {
