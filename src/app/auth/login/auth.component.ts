@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
-import { AuthService } from "../auth.service";
+import { AuthService, } from "../auth.service";
+import { AdvertService, } from "../../../app/advert/advert.service";
 import { Subscription } from "rxjs";
 import { LoginResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
@@ -39,7 +40,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     loginResultSub: Subscription;
     login: LoginResult;
 
-    constructor(private router: RouterExtensions, private authServ: AuthService) {
+    constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
         console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
@@ -104,6 +105,7 @@ export class AuthComponent implements OnInit, OnDestroy {
                             appSettings.setBoolean("loggedIn", true);
                             this.authServ.clearAllObjects();
                             this.router.navigate(['/advert/home'], {clearHistory: true});
+                            this.advertServ.UnreadChats();
                         }
                         else {
                             TNSFancyAlert.showError("Login Error", "Incorrect username and password combination.", "Dismiss");

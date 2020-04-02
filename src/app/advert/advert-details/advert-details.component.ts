@@ -241,7 +241,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                         //send chatID to chats service
                        this.advertServ.setActivechat(this.startchat.chatID);
                        TNSFancyAlert.showSuccess("Chat Success", this.startchat.message, "Dismiss");
-                       this.router.navigate(['/messagingdetails'],
+                       this.advertServ.clearMessages();
+                       this.router.navigate(['/messaginghome'],
                        {
                            animated: true,
                            transition: {
@@ -254,8 +255,9 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                         TNSFancyAlert.showError("Connection error", this.startchat.message, "Dismiss");
                     }
                     else if (this.startchat.responseStatusCode === 200 && this.startchat.chatposted === false){
-                        TNSFancyAlert.showSuccess("This chat is already active", "You will be redirected to the chat.", "Dismiss");
+                        TNSFancyAlert.showSuccess("This chat is already active", "You will be redirected to your chats.", "Dismiss");
                         this.advertServ.setActivechat(this.startchat.chatID);
+                        this.advertServ.clearMessages();
                         this.router.navigate(['/messagingdetails'],
                         {
                             animated: true,

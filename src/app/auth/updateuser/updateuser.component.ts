@@ -101,36 +101,6 @@ export class UpdateuserComponent implements OnInit {
             this.emailControlIsValid = status === 'VALID';
         });
 
-        this.updateResultSub = this.authServ.currentUpdateUser.subscribe(
-            updateresult => {
-                if(updateresult){
-                    this.isLoading = false;
-                    this.update = updateresult;
- 
-                    if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
-                        TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss").then( t => {
-                       this.router.navigate(['/advert/home'],
-            {
-                animated: true,
-                transition: {
-                    name: "slide",
-                    duration: 200,
-                    curve: "ease"
-                }
-            });
-        });
-                    } else if (this.update.responseStatusCode === 500 ){
-                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
-                    }
-                    else if (this.update.responseStatusCode === 400 ){
-                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
-                    }
-                    else {
-                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
-                    }
-                }
-            }
-        );
 
         //find User from app settings
         this.userFound = false;
@@ -156,14 +126,11 @@ export class UpdateuserComponent implements OnInit {
         this.authServ.GetUser(id);
     }
 
-ngOnDestroy() {
-    if(this.getuserResultSub && this.updateResultSub){
-        this.getuserResultSub.unsubscribe();
-        this.updateResultSub.unsubscribe();
-    }
-    }
 
     onUpdateUser() {
+
+
+
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
@@ -185,5 +152,48 @@ ngOnDestroy() {
             //Verify register Credentials
             this.authServ.UpdateUser(id, username, name, surname, email);
         },100);
+
+        this.updateResultSub = this.authServ.currentUpdateUser.subscribe(
+            updateresult => {
+                if(updateresult){
+                    this.isLoading = false;
+                    this.update = updateresult;
+ 
+                    if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
+                        TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss").then( t => {
+                       this.authServ.clearAllObjects();
+                       this.router.navigate(['/advert/home'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+        });
+                    } else if (this.update.responseStatusCode === 500 ){
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                    }
+                    else if (this.update.responseStatusCode === 400 ){
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                    }
+                }
+            }
+            
+        );
+
     }
+    ngOnDestroy() {
+        if(this.getuserResultSub){
+            this.getuserResultSub.unsubscribe();
+        }
+        
+        if(this.updateResultSub){
+            this.updateResultSub.unsubscribe();
+        }
+        }
  }

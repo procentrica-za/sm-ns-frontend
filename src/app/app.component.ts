@@ -73,7 +73,6 @@ export class AppComponent implements OnInit{
     onRouterOutletActivate(event : any) {
         if(appSettings.getBoolean("loggedIn")) {
             this.isLoggedIn = true;
-            this.advertServ.UnreadChats();
         } else {
             this.isLoggedIn = false;
         }

@@ -78,6 +78,7 @@ export class NewpasswordComponent implements OnInit {
                     if(this.update.responseStatusCode === 200 && this.update.PasswordUpdated === true){
     
                        TNSFancyAlert.showSuccess("Update Success", this.update.Message, "Dismiss").then( t => {
+                        this.authServ.clearUserDetails();
                        this.router.navigate(['/advert/home'],
                        {
                            animated: true,
@@ -87,7 +88,6 @@ export class NewpasswordComponent implements OnInit {
                                curve: "ease"
                            }
                        });
-                       this.authServ.clearAllObjects();
                     });
                     } else if(this.update.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");

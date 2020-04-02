@@ -11,6 +11,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import * as appSettings from "tns-core-modules/application-settings";
 import { ItemEventData } from "tns-core-modules/ui/list-view";
 import { Slider } from "tns-core-modules/ui/slider";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 @Component({
     selector: 'ns-ratebuyer',
     templateUrl: './ratebuyer.component.html',
@@ -68,16 +69,43 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                     this.rate = rateresult;
  
                     if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
-    
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message + " Please delete your advertisement if it is now concluded.", "Dismiss").then( t => {
-                       this.rateResultSub.unsubscribe();
-                       this.router.back();
-                       this.router.back();
+                        this.advertServ.clearRating();
+                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss").then( t => {
+                       dialogs.confirm({
+                        title: "Please Choose an action:",
+                        message: "Would you like to delete this Advertisement now?",
+                        okButtonText: "Yes",
+                        cancelButtonText: "No",
+                    }).then(result => {             
+                        if (result == true) {
+                            const advertisementID = appSettings.getString("advertisementid");
+                            this.advertServ.deleteAdvertisement(advertisementID)
+                            this.router.navigate(['/advert/home'],
+                            {
+                             animated: true,
+                             transition: {
+                             name: "slide",
+                             duration: 200,
+                             curve: "ease"
+                            }
+                            }).then( t => {
+                                TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Deleted!", "Close");
+                               });
+                            
+                        }
+                        else {
+                            this.router.back();
+                            this.router.back();
+                            
+                        }
+                    });
                     });
                     } else if (this.rate.responseStatusCode === 500 ){
+                        this.advertServ.clearRating();
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                     }
                     else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
+                        this.advertServ.clearRating();
                         TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
                         this.router.navigate(['/advert/myadverts'],
                   {
@@ -128,7 +156,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
              const advertisementid = appSettings.getString("advertisementid"); 
              const sellerid = appSettings.getString("sellerid"); 
              const buyerid = appSettings.getString("buyerid"); 
-             this.advertServ.RateBuyer(advertisementid, sellerid, buyerid ,buyerrating, buyercomments);
+             this.advertServ.RateBuyer(advertisementid, buyerid,sellerid ,buyerrating, buyercomments);
          },100);
      }
 }

@@ -388,7 +388,7 @@ ActionBar {
 .messageRadList {
    margin-top: .05%;
    background-color: lightgray;
-   height:90%;
+   height:82%;
 }
 
 .chatPageForm{
@@ -537,9 +537,9 @@ ActionBar {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
     font-weight: 700;
-    font-size: 30em;
-    text-align: right;
-    margin-top: 1%;
+    font-size: 15em;
+    text-align: left;
+  margin-top: 2%;
 }
 
 .FilterLabel {
@@ -548,7 +548,7 @@ ActionBar {
     margin-right: 25;
     text-align: right;
     margin-top: 1%;
-    margin-left: 70%
+    margin-left: 67%
 }
  
 .PasswordLabel {

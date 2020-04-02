@@ -64,22 +64,23 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
          console.log(advertisementtype);
          if (advertisementtype == 'TUT') {
  
-             this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.sellerid, tappedInterestedItem.buyerid, '0', "Tutoring was concluded, a tutor may not rate a student");
+             this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.buyerid,tappedInterestedItem.sellerid, '0', "Tutoring was concluded, a tutor may not rate a student");
              this.rateResultSub = this.advertServ.currentRateBuyer.subscribe( 
                 rateresult => {
                     if(rateresult){
                         this.rate = rateresult;
     
                         if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
-    
+                            this.advertServ.clearRating();
                         TNSFancyAlert.showSuccess("Rating Success", "The Student will now rate you.", "Dismiss").then( t => {
-                           this.rateResultSub.unsubscribe();
                            this.router.back();
                         });
                         } else if (this.rate.responseStatusCode === 500 ){
+                            this.advertServ.clearRating();
                             TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
                         }
                         else if (this.rate.responseStatusCode === 200 && this.rate.ratingid === '00000000-0000-0000-0000-000000000000'){
+                            this.advertServ.clearRating();
                             TNSFancyAlert.showError("Rating Already Completed.", this.rate.message, "Dismiss").then( t => {
                             this.router.navigate(['/advert/myadverts'],
                          {

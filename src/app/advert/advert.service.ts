@@ -1093,7 +1093,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                console.log("inside the 500");
+                
                 const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
@@ -1108,7 +1108,7 @@ export class AdvertService {
                     activechatList.push(element)
                 })
                 const activechatResult = new ActivechatResultList(200, activechatList, "Successfully recieved chats");
-                console.log(activechatResult);
+                
                 this._currentActivechatList.next(activechatResult);
             } else {
                 const activechatlistResult = new ActivechatResultList(responseCode, null,response.content.toString());
@@ -1162,6 +1162,7 @@ export class AdvertService {
     SendMessage(chatid: string, authorid: string, message: string) {
         const reqUrl = getString("sm-service-messages-host") + "/message" ;
         console.log(reqUrl);
+      
         request ({
             url: reqUrl,
             method: "POST",
@@ -1180,7 +1181,6 @@ export class AdvertService {
                 // get the textbooklist.
                 const JSONMessageList = result.messages;
                 const userchat = appSettings.getString("username");
-                console.log(userchat);
                 // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
                 JSONMessageList.forEach(element => {
                     element.responseStatusCode =200;
@@ -1566,14 +1566,14 @@ InterestedBuyers(userid: string, advertisementid: string) {
     });
 }
 
-RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerrating: string, buyercomments: string) {
+RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerrating: string, buyercomments: string) {
     const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        content: JSON.stringify({ advertisementid: advertisementid,  sellerid: sellerid, buyerid: buyerid, buyerrating: buyerrating, buyercomments: buyercomments }),
+        content: JSON.stringify({ advertisementid: advertisementid,  buyerid: buyerid, sellerid: sellerid, buyerrating: buyerrating, buyercomments: buyercomments }),
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1595,5 +1595,20 @@ RateBuyer(advertisementid: string, sellerid: string, buyerid: string, buyerratin
     });
     return null;
 }
+
+clearChat(){
+    this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
+}
+
+clearRating(){
+    this._currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
+}
+
+clearMessages(){
+    this._currentMessage = new BehaviorSubject<MessageResult>(null);
+    this._currentSendMessage = new BehaviorSubject<MessageResult>(null)
+    this._currentStartChat = new BehaviorSubject<StartChatResult>(null);
+}
+
 }
 

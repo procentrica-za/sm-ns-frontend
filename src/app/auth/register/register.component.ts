@@ -110,6 +110,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     if(this.register.responseStatusCode === 200 && this.register.UserCreated === "true"){
 
                        TNSFancyAlert.showSuccess("Registration success", "You have sucessfully registered.", "Dismiss").then( t => {
+                        this.authServ.clearRegistration();
                        this.router.navigate([''], {clearHistory: true});
                        });
                     } else if (this.register.responseStatusCode === 500){

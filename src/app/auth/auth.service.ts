@@ -220,9 +220,20 @@ export class AuthService {
         this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
         this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
     }
+    
+    clearUserDetails(){
+        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
+        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
+    
+    }
 
     clearLoginObject() {
         this._currentLogin = new BehaviorSubject<LoginResult>(null);
+    }
+
+    clearRegistration() {
+        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
+        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
     }
 
 }

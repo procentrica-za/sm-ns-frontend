@@ -49,6 +49,7 @@ export class ForgotpasswordComponent implements OnInit, OnDestroy {
      
                     if(this.forgotpassword.responseStatusCode === 200 && this.forgotpassword.msg != "A new password cannot be granted at this time as an appropriate email address has not been provided"){
                         TNSFancyAlert.showSuccess("Success", this.forgotpassword.msg, "Dismiss").then( t => {
+                       this.authServ.clearRegistration();
                        this.router.navigate([''], {clearHistory: true});
                     });
                     } else if(this.forgotpassword.responseStatusCode === 500) {
