@@ -137,6 +137,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.emailEl.nativeElement.focus();
         this.emailEl.nativeElement.dismissSoftInput();
 
+        
         if(!this.form.valid){
             return;
         }
