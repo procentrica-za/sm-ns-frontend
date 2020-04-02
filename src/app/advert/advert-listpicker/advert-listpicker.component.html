@@ -44,33 +44,34 @@
         <Button *ngIf="!noFilterResults" text="Confirm" (tap)="onModuleTap()" class="btn btn-primary btn-rounded-lg"></Button>
     </StackLayout>
 
-    <RadListView  *ngIf="TextbookType" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
-        <ng-template tkListItemTemplate let-textbook="item" >
-            <Gridlayout rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
-                <Label *ngIf = "textbook" row="0" col="0" colspan="2" [text]="textbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                <StackLayout row="1" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
-                <Label *ngIf = "textbook" row="2" col="0" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "textbook" row="2" col="1" [text]="textbook.author" textWrap="true" class="GridLayoutLabels" ></Label>
-                <StackLayout row="3" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
-                <Label *ngIf = "textbook" row="4" col="0" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "textbook" row="4" col="1" [text]="textbook.edition" textWrap="true" class="GridLayoutLabels" ></Label>
-                <StackLayout row="5" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
-                <Label *ngIf = "textbook" row="6" col="0" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "textbook" row="6" col="1" [text]="textbook.quality" textWrap="true" class="GridLayoutLabels" ></Label>
-                <StackLayout row="7" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
-                <Label *ngIf = "textbook" row="8" col="0" text="For Module: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "textbook" row="8" col="1" [text]="textbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
-                <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
-            </Gridlayout>
-        </ng-template>
-    </RadListView>
-   <!-- public responseCode : number,
-    public modulecode : string,
-    public id : string,
-    public name : string,
-    public edition : string,
-    public quality : string,
-    public author : string-->
+    
+
+
+    <StackLayout *ngIf="TextbookType">
+        <SearchBar hint="Search..."
+            [text]="textbookSearch" (submit)="onTextbookSearchSubmit($event)">
+        </SearchBar>
+        <RadListView  [items]="TextbookFilterArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+            <ng-template tkListItemTemplate let-textbook="item" >
+                <Gridlayout rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+                    <Label *ngIf = "textbook" row="0" col="0" colspan="2" [text]="textbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>
+                    <StackLayout row="1" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                    <Label *ngIf = "textbook" row="2" col="0" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                    <Label *ngIf = "textbook" row="2" col="1" [text]="textbook.author" textWrap="true" class="GridLayoutLabels" ></Label>
+                    <StackLayout row="3" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                    <Label *ngIf = "textbook" row="4" col="0" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                    <Label *ngIf = "textbook" row="4" col="1" [text]="textbook.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+                    <StackLayout row="5" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                    <Label *ngIf = "textbook" row="6" col="0" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                    <Label *ngIf = "textbook" row="6" col="1" [text]="textbook.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+                    <StackLayout row="7" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                    <Label *ngIf = "textbook" row="8" col="0" text="For Module: " textWrap="true" class="GridLayoutStaticLabels"></Label>
+                    <Label *ngIf = "textbook" row="8" col="1" [text]="textbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+                    <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
+                </Gridlayout>
+            </ng-template>
+        </RadListView>
+    </StackLayout>
 </StackLayout>
 
 

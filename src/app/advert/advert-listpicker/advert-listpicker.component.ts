@@ -17,10 +17,10 @@ import { SearchBar } from "tns-core-modules/ui/search-bar"
 })
 
 export class AdvertListPickerComponent implements OnInit, OnDestroy {
-    public moduleSearch: string;
+    public moduleSearch; textbookSearch: string;
     public textbookListSub; moduleCodeSub : Subscription;
     public textbookList : TextbookList;
-    public myTextbookArray : ObservableArray<Textbook>;
+    public myTextbookArray; TextbookFilterArray : ObservableArray<Textbook>;
     public moduleCodeList : ModuleCodeList;
     public moduleCodeTypes; moduleCodeTypesFilter : ObservableArray<string>;
     public  moduleCodeType : string;
@@ -108,6 +108,7 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
                                 textbookResult.Textbooks.forEach( t => {
                                     this.myTextbookArray.push(t);
                                 });
+                                this.TextbookFilterArray = this.myTextbookArray;
                                 this.TextbookType = true;
                             }else {
                                 TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
@@ -170,6 +171,30 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
             this.noFilterResults = false;
         }
     }
+
+    onTextbookSearchSubmit(args: EventData){
+        const searchBar = args.object as SearchBar;
+        searchBar.dismissSoftInput();
+        this.TextbookFilterArray = new ObservableArray(0);
+        this.myTextbookArray.forEach(element => {
+            var name: string;
+            name =  element.name;
+            if(name.toLowerCase().includes(searchBar.text.toLowerCase())){
+                this.TextbookFilterArray.push(element);
+            }
+           
+        });
+
+        //console.log(this.TextbookFilterArray);
+        
+        
+        
+        
+        
+
+    }
+
+
    /* onModuleSearchClear(args){
         const searchBar = args.object as SearchBar;
         console.log(searchBar.text);

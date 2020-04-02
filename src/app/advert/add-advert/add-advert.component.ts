@@ -12,7 +12,7 @@ import * as appSettings from "tns-core-modules/application-settings";
 import * as camera from "nativescript-camera";
 import { Image } from "tns-core-modules/ui/image";
 import * as imagepicker from "nativescript-imagepicker";
-import { ImageSource } from "tns-core-modules/image-source/image-source";
+import { ImageSource, fromFile} from "tns-core-modules/image-source/image-source";
 import { ImageAsset } from "tns-core-modules/image-asset/image-asset";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
@@ -265,6 +265,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
        
     }
 
+
    
     uploadPic(){
         let context = imagepicker.create({
@@ -277,7 +278,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             selection.forEach(selected => {
                 let source = new ImageSource();
                 source.fromAsset(selected).then((imgSource: ImageSource) => {
-                    this.base64ImageString = imgSource.toBase64String("png"); 
+                    this.base64ImageString = imgSource.toBase64String("png");
                     this.myImg = imgSource.toBase64String("png");
                     this.myImg = "data:image/png;base64," + this.myImg;
                 });
@@ -334,11 +335,13 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         const price = this.form.get('price').value;
         const description = this.form.get('description').value;
             if(this.advertType == "ACD"){
-                console.log("Hello There ACD");
+                //console.log("Hello There ACD");
                 this.locationEl.nativeElement.focus();
                 this.distanceEl.nativeElement.focus();
                 this.acdTypeEl.nativeElement.focus();
                 this.instTypeEl.nativeElement.focus();
+                this.instTypeEl.nativeElement.dismissSoftInput();
+
 
                 const location = this.form.get('location').value;
                 const distance = this.form.get('distance').value;
@@ -363,6 +366,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                         break;
                     }
                 }
+
+                if(!location || !distance || !acdType || !instType || !price || !description){
+                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    return;
+                }
+
                 setTimeout(() =>{
                     //Call the service with captured information
                     this.advertServ.AddNewAccomodationAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, acdType, location, distance, instType);
@@ -388,6 +397,11 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 
 
             if(this.advertType == "TXB"){
+                this.descriptionEl.nativeElement.dismissSoftInput();
+                if(!price || !description){
+                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    return;
+                }
                 //console.log("Hello There TXB");;
                 setTimeout(() =>{
                     //Call the service with captured information
@@ -421,6 +435,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 this.noteTypeEl.nativeElement.focus();
                 this.termTypeEl.nativeElement.focus();
                 this.moduleCodeTutorTypeEl.nativeElement.focus();
+                this.moduleCodeTutorTypeEl.nativeElement.dismissSoftInput();
                 
                 const subject = this.form.get('subject').value;
                 const yearType = this.form.get('yearType').value;
@@ -435,6 +450,11 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                     noteType = "False";
                 }
                
+                if(!subject || !yearType || !venueType || !noteType || !termType || !moduleCodeTutorType || !price || !description){
+                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    return;
+                }
+
                 setTimeout(() =>{
                     //Call the service with captured information
                     this.advertServ.AddNewTutorAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, subject, yearType,venueType,noteType,termType,moduleCodeTutorType);
@@ -459,18 +479,38 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             }
             
             if(this.advertType == "NTS"){
-                console.log("Hello There NTS");
+                //console.log("Hello There NTS");
                 this.moduleCodeNoteTypeEl.nativeElement.focus();
+                this.moduleCodeNoteTypeEl.nativeElement.dismissSoftInput();
 
                 const moduleCodeNoteType = this.form.get('moduleCodeNoteType').value;
+
+                if(!moduleCodeNoteType || !price || !description){
+                    TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    return;
+                }
 
                 setTimeout(() =>{
                     //Call the service with captured information
                     this.advertServ.AddNewNoteAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, moduleCodeNoteType);
                 },100);
         
-                //await this.delay(1000);
+                await this.delay(1000);
+                
+                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
+                    advertResult => {
+                        if(advertResult.advertisementposted) {
+                            this.advertPosted = advertResult;
+                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
+                        }else{
+                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
+                        }
+                    }
+                );
         
+                if (this.advertPostedSub){
+                    this.advertPostedSub.unsubscribe();
+                }
     
             }
     }
