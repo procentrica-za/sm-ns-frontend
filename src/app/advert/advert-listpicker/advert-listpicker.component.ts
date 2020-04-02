@@ -26,7 +26,7 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
     public  moduleCodeType : string;
     public accomodationTypes; institutionTypes; yearCompletedTypes; venueTypes; noteTypes; termTypes; qualityTypes : Array<string>;
     public paramReceived; acdType; instType; yearCompletedType; venueType; noteType; termType; qualityType : String;
-    public AccomodationType; InstitutionType; YearCompletedType; VenueType; NoteType; TermType; ModuleCodeType; TextbookType; QualityType; noFilterResults : boolean;
+    public AccomodationType; InstitutionType; YearCompletedType; VenueType; NoteType; TermType; ModuleCodeType; TextbookType; QualityType; noFilterResults; alltextbooksLoaded : boolean;
     constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService){
        
         this.accomodationTypes = new Array<string>("Apartement", "Commune", "House", "Garden Cottage");
@@ -48,6 +48,7 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
         this.TextbookType = false;
         this.QualityType = false;
         this.noFilterResults = false;
+        this.alltextbooksLoaded  = false;
 
     }
 
@@ -108,7 +109,9 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
                                 textbookResult.Textbooks.forEach( t => {
                                     this.myTextbookArray.push(t);
                                 });
+                                this.TextbookFilterArray = new ObservableArray(0);
                                 this.TextbookFilterArray = this.myTextbookArray;
+                                this.alltextbooksLoaded = true;
                                 this.TextbookType = true;
                             }else {
                                 TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
@@ -173,25 +176,30 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
     }
 
     onTextbookSearchSubmit(args: EventData){
+        this.alltextbooksLoaded  = false;
         const searchBar = args.object as SearchBar;
         searchBar.dismissSoftInput();
         this.TextbookFilterArray = new ObservableArray(0);
         this.myTextbookArray.forEach(element => {
             var name: string;
             name =  element.name;
+            if(name == ""){
+                this.TextbookFilterArray = this.myTextbookArray;
+                return;
+            }
             if(name.toLowerCase().includes(searchBar.text.toLowerCase())){
                 this.TextbookFilterArray.push(element);
             }
            
         });
-
+        this.alltextbooksLoaded = true;
         //console.log(this.TextbookFilterArray);
-        
-        
-        
-        
-        
+    }
 
+    onTextbookClear(args: EventData){
+        const searchBar = args.object as SearchBar;
+        searchBar.dismissSoftInput();
+        this.TextbookFilterArray = this.myTextbookArray;
     }
 
 

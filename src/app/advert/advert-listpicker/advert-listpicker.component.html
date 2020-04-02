@@ -46,10 +46,14 @@
 
     
 
-
-    <StackLayout *ngIf="TextbookType">
+    <StackLayout>
+        <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!alltextbooksLoaded">
+            <ActivityIndicator [busy]="!alltextbooksLoaded"></ActivityIndicator>
+        </FlexboxLayout>
+    
+    <StackLayout *ngIf="alltextbooksLoaded">
         <SearchBar hint="Search..."
-            [text]="textbookSearch" (submit)="onTextbookSearchSubmit($event)">
+            [text]="textbookSearch" (submit)="onTextbookSearchSubmit($event)" (clear)="onTextbookClear($event)">
         </SearchBar>
         <RadListView  [items]="TextbookFilterArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-textbook="item" >
@@ -71,7 +75,11 @@
                 </Gridlayout>
             </ng-template>
         </RadListView>
+        
     </StackLayout>
+</StackLayout>
+
+    
 </StackLayout>
 
 
