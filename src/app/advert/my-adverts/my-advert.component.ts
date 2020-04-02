@@ -39,7 +39,7 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
     private userNoteAdvertResultListSub: Subscription;
     public userNoteAdvertResultList: UserAdvertNoteResultList;
 
-    public allImagesLoaded; textbookImagesLoaded; accomodationImagesLoaded; tutorImagesLoaded; noteImagesLoaded; isSelling: boolean;
+    public allImagesLoaded; textbookImagesLoaded; accomodationImagesLoaded; tutorImagesLoaded; noteImagesLoaded; isSelling; textbookListEmpty; accomodationListEmpty; tutorListEmpty; noteListEmpty: boolean;
     
 
     constructor(private router: RouterExtensions, private advertServ: AdvertService){
@@ -81,15 +81,26 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
         this.tutorImagesLoaded = false;
         this.noteImagesLoaded = false; 
         this.allImagesLoaded = false;
+        this.textbookListEmpty = false;
+        this.accomodationListEmpty = false;
+        this.tutorListEmpty = false;
+        this.noteListEmpty= false;
+
 
         this.userTextbookAdvertResultListSub = this.advertServ.currentUserAdvertTextbookList.subscribe(
             textbookResult => {
                 if(textbookResult) {
                     if(textbookResult.responseStatusCode === 200){
                         this.myTextbookArray = new ObservableArray(0);
+                        if (textbookResult.Textbooks[0].advertisementid == ""){
+                            this.textbookListEmpty = true;
+                        }else {
+                            this.textbookListEmpty = false;
+                        }
                         textbookResult.Textbooks.forEach( t => {
                             this.myTextbookArray.push(t);
                         });
+                        console.log(this.myTextbookArray);
                         this.textbookImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
                             this.allImagesLoaded = true;
@@ -107,6 +118,11 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                 if(accomodationResult) {
                     if(accomodationResult.responseStatusCode === 200){
                         this.myAccomodationArray = new ObservableArray(0);
+                        if (accomodationResult.Accomodations[0].advertisementid == ""){
+                            this.accomodationListEmpty = true;
+                        }else {
+                            this.accomodationListEmpty = false;
+                        }
                         accomodationResult.Accomodations.forEach( t => {
                             this.myAccomodationArray.push(t);
                         })
@@ -126,6 +142,11 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
             tutorResult => {
                 if(tutorResult) {
                     if(tutorResult.responseStatusCode === 200){
+                        if (tutorResult.Tutors[0].advertisementid == ""){
+                            this.tutorListEmpty = true;
+                        }else {
+                            this.tutorListEmpty = false;
+                        }
                         this.myTutorArray = new ObservableArray(0);
                         tutorResult.Tutors.forEach( t => {
                         this.myTutorArray.push(t);
@@ -146,6 +167,11 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
             noteResult => {
                 if(noteResult) {
                     if(noteResult.responseStatusCode === 200){
+                        if (noteResult.Notes[0].advertisementid == ""){
+                            this.noteListEmpty = true;
+                        }else {
+                            this.noteListEmpty = false;
+                        }
                         this.myNoteArray = new ObservableArray(0);
                         noteResult.Notes.forEach( t => {
                         this.myNoteArray.push(t);
