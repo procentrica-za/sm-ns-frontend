@@ -39,7 +39,6 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
                             this.myMessageArray.push(t);
                             
                         });
-                        this.advertServ.clearMessages();
                         this.advertServ.initializeActiveChats();
                         this.messagesLoaded = true;
                     } else if(this.messageResultList.responseStatusCode === 500) {

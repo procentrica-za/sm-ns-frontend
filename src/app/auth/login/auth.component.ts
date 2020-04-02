@@ -105,7 +105,6 @@ export class AuthComponent implements OnInit, OnDestroy {
                             appSettings.setBoolean("loggedIn", true);
                             this.authServ.clearAllObjects();
                             this.router.navigate(['/advert/home'], {clearHistory: true});
-                            this.advertServ.UnreadChats();
                         }
                         else {
                             TNSFancyAlert.showError("Login Error", "Incorrect username and password combination.", "Dismiss");
