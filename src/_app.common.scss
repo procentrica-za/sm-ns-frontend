@@ -618,3 +618,14 @@ ActionBar {
     margin-left: 59%;
 
 }
+
+.btn-info {
+    font-family: FontAwesome, fontawesome-webfont;
+    color: $primary;
+    font-weight: 20;
+    font-size: 25em;
+    border-width: 1;
+    border-color: transparent;
+    z-index: 0;
+    height: 10%;
+}
