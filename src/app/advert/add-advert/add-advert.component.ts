@@ -16,7 +16,7 @@ import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { ImageAsset } from "tns-core-modules/image-asset/image-asset";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-import { AddAdvertisementResult, Textbook } from "../advert.model";
+import { AddAdvertisementResult, Textbook, ImageUploadedResult } from "../advert.model";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 @Component({
     selector: 'ns-add-advert',
@@ -30,11 +30,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     form: FormGroup;
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
-    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType: boolean;
+    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType : boolean;
     public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; yearTypeBind; venueTypeBind; noteTypeBind; termTypeBind; moduleCodeTypeBindTutor; moduleCodeTypeBindNote; myImg; base64ImageString: string;
-    public advertPostedSub; textbookSub : Subscription;
+    public advertPostedSub; textbookSub; imageUploadedSub : Subscription;
     public addTextbook : Textbook;
     private advertPosted: AddAdvertisementResult;
+    public imageUploadedResult : ImageUploadedResult;
     
 
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
@@ -205,6 +206,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 }
             )
         });
+
+
+
             /*this.form.get('description').statusChanges.subscribe(status => {
                 //this.usernameControlIsValid = status === 'VALID';
             });
@@ -220,11 +224,43 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             this.form.get('advertType').statusChanges.subscribe(status => {
                 //this.passwordControlIsValid = status === 'VALID';
             });*/
+
+            this.imageUploadedSub = this.advertServ.currentImageUploaded.subscribe(
+                imageResult => {
+                    if(imageResult){
+                        this.imageUploadedResult = imageResult;
+
+                        if(this.imageUploadedResult.ImageInserted){
+                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
+                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
+                                this.router.backToPreviousPage(),
+                                {
+                                    animated: true,
+                                    transition: {
+                                        name: "slide",
+                                        duration: 200,
+                                        curve: "ease"  
+                                    }
+                                }
+                                }
+                            );
+
+                            this.advertServ.clearImageUploaded();
+                        } 
+
+                    }
+
+                }
+                
+            )
     }
 
     ngOnDestroy(){
         if(this.advertPostedSub){
             this.advertPostedSub.unsubscribe();
+        }
+        if(this.imageUploadedSub){
+            this.imageUploadedSub.unsubscribe();
         }
        
     }
@@ -289,7 +325,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     }
 
     async onPostTap() {
-        
+
         this.priceEl.nativeElement.focus();
         this.descriptionEl.nativeElement.focus();
 
@@ -333,25 +369,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 },100);
         
                 await this.delay(1000);
-        
+
                 this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
                     advertResult => {
                         if(advertResult.advertisementposted) {
                             this.advertPosted = advertResult;
                             this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
-                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
-                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
-                                this.router.backToPreviousPage(),
-                                {
-                                    animated: true,
-                                    transition: {
-                                        name: "slide",
-                                        duration: 200,
-                                        curve: "ease"  
-                                    }
-                                }
-                                }
-                            );
                         }else{
                             TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
                         }
@@ -378,19 +401,6 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                         if(advertResult.advertisementposted) {
                             this.advertPosted = advertResult;
                             this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
-                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
-                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
-                                this.router.backToPreviousPage(),
-                                {
-                                    animated: true,
-                                    transition: {
-                                        name: "slide",
-                                        duration: 200,
-                                        curve: "ease"  
-                                    }
-                                }
-                                }
-                            );
                         }else{
                             TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
                         }
@@ -437,19 +447,6 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                         if(advertResult.advertisementposted) {
                             this.advertPosted = advertResult;
                             this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
-                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
-                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
-                                this.router.backToPreviousPage(),
-                                {
-                                    animated: true,
-                                    transition: {
-                                        name: "slide",
-                                        duration: 200,
-                                        curve: "ease"  
-                                    }
-                                }
-                                }
-                            );
                         }else{
                             TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
                         }
@@ -472,35 +469,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                     this.advertServ.AddNewNoteAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, moduleCodeNoteType);
                 },100);
         
-                await this.delay(1000);
+                //await this.delay(1000);
         
-                this.advertPostedSub = this.advertServ.currentAddAdvertisement.subscribe(
-                    advertResult => {
-                        if(advertResult.advertisementposted) {
-                            this.advertPosted = advertResult;
-                            this.advertServ.AddNewImage(this.advertPosted.id, true, this.base64ImageString);
-                            TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
-                                this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
-                                this.router.backToPreviousPage(),
-                                {
-                                    animated: true,
-                                    transition: {
-                                        name: "slide",
-                                        duration: 200,
-                                        curve: "ease"  
-                                    }
-                                }
-                                }
-                            );
-                        }else{
-                            TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n Message: " + advertResult.message,"Close");
-                        }
-                    }
-                );
-        
-                if (this.advertPostedSub){
-                    this.advertPostedSub.unsubscribe();
-                }
+    
             }
     }
 

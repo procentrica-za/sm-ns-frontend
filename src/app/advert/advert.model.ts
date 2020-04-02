@@ -1,5 +1,10 @@
 
-
+export class ImageUploadedResult {
+    constructor(
+    public  ImageInserted: boolean,  
+    public  Message:       string 
+    ){}
+}
 export class AddAccomodationResult {
     constructor (
         public responseStatusCode: number,
