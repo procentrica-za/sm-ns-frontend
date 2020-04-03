@@ -104,6 +104,8 @@ export class AuthComponent implements OnInit, OnDestroy {
                             appSettings.setBoolean("rememberme", this.rememberMe);
                             appSettings.setBoolean("loggedIn", true);
                             this.authServ.clearAllObjects();
+                            this.advertServ.UnreadChats();
+                            this.advertServ.OutstandingRatings();
                             this.router.navigate(['/advert/home'], {clearHistory: true});
                         }
                         else {

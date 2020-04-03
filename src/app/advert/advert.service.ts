@@ -42,7 +42,8 @@ import {    TextbookResult,
             ModuleCode,
             UnreadChatsResult,
             DeleteChatResult,
-            ImageUploadedResult} from './advert.model'
+            ImageUploadedResult,
+            OutstandingRatingResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -136,6 +137,8 @@ export class AdvertService {
     private _currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
     private _currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
 
+    private _currentOutstandingRating = new BehaviorSubject<OutstandingRatingResult>(null);
+
     get currentImageUploaded(){
         return this._currentImageUploaded.asObservable();
     }
@@ -188,6 +191,10 @@ export class AdvertService {
     //Rate seller
     get currentRateSeller() {
         return this._currentRateSeller.asObservable();
+    }
+
+    get currentOutstandingRating() {
+        return this._currentOutstandingRating.asObservable();
     }
 
     get currentAccomodationList() {
@@ -1568,7 +1575,7 @@ InterestedBuyers(userid: string, advertisementid: string) {
 }
 
 RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerrating: string, buyercomments: string) {
-    const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
+    const reqUrl = getString("sm-service-ratings-host") + "/rate";
     console.log(reqUrl);
     request ({
         url: reqUrl,
@@ -1597,12 +1604,44 @@ RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerratin
     return null;
 }
 
+OutstandingRatings() {
+    const userid = appSettings.getString("userid");
+    const reqUrl = getString("sm-service-ratings-host") + "/rating" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const OutstandingRatingResultErr = new OutstandingRatingResult(500, false,);
+            this._currentOutstandingRating.next(OutstandingRatingResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const OutstandingRatingsuccessResult = new OutstandingRatingResult(200, result.outstandingratings);
+            this._currentOutstandingRating.next(OutstandingRatingsuccessResult);   
+        } else {
+            const OutstandingRatingsuccessResult = new OutstandingRatingResult(responseCode, false);
+            this._currentOutstandingRating.next(OutstandingRatingsuccessResult); 
+        }
+    }, (e) => {
+
+        const OutstandingRatingsuccessResult = new OutstandingRatingResult(400, false);
+            this._currentOutstandingRating.next(OutstandingRatingsuccessResult); 
+    });
+    return null;
+} 
+
 clearChat(){
     this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
+    this._currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
 }
 
 clearRating(){
-    this._currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
+    this._currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null);
+    this._currentOutstandingRating = new BehaviorSubject<OutstandingRatingResult>(null);
 }
 
 clearSellerRating(){

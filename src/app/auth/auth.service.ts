@@ -190,7 +190,7 @@ export class AuthService {
             const UpdatesuccessResult = new UpdateUserResult(400, false, "An Error has been recieved, please contact support.");
             this._currentUpdateUser.next(UpdatesuccessResult);
         });
-        return null;
+
     }
 
     UpdatePassword(id: string, password: string ) {
@@ -218,27 +218,7 @@ export class AuthService {
             const UpdatesuccessResult = new UpdatePasswordResult(400, false, "An Error has been recieved, please contact support.");
             this._currentUpdatePassword.next(UpdatesuccessResult); 
         });
-        return null;
-    }
-    
-    //This method clears all results
-    clearAllObjects(){
-        this._currentLogin = new BehaviorSubject<LoginResult>(null);
-    }
-    
-    clearUserDetails(){
-        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
-        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
-    
-    }
 
-    clearLoginObject() {
-        this._currentLogin = new BehaviorSubject<LoginResult>(null);
-    }
-
-    clearRegistration() {
-        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
-        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
     }
 
     initializeInstitutionNameList(){
@@ -267,8 +247,27 @@ export class AuthService {
         }, (e) => {
             console.log(e);
         });
-        return null;
+
+    }
+    
+    //This method clears all results
+    clearAllObjects(){
+        this._currentLogin = new BehaviorSubject<LoginResult>(null);
+    }
+    
+    clearUserDetails(){
+        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
+        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
+    
     }
 
+    clearLoginObject() {
+        this._currentLogin = new BehaviorSubject<LoginResult>(null);
+    }
+
+    clearRegistration() {
+        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
+        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
+    }
 
 }

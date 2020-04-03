@@ -9,8 +9,10 @@
                 <Button *ngIf="isLoggedIn" class="btn-sidedrawer-message" text="Messages" (tap)="Messagehome()"></Button>
                 <Label  *ngIf="unreadMessages" text="&#xf0f3;" class="Homeunread" textWrap="true" ></Label>
                 <Label  *ngIf="unreadMessages == false" text="&#xf1f6;" class="Homeread" textWrap="true" ></Label>
-            </StackLayout>
-            <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Outstanding Ratings" (tap)="Ratinghome()"></Button>
+            <Button *ngIf="isLoggedIn" class="btn-sidedrawer-message" text="Outstanding Ratings" (tap)="Ratinghome()"></Button>
+            <Label  *ngIf="outstandingRatings" text="&#xf0f3;" class="Homeunread" textWrap="true" ></Label>
+            <Label  *ngIf="outstandingRatings == false" text="&#xf1f6;" class="Homeread" textWrap="true" ></Label>
+        </StackLayout>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Ratings From Purchasing" (tap)="Buyerhome()"></Button>
             <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Ratings From Selling" (tap)="Sellerhome()"></Button>
         </FlexboxLayout>

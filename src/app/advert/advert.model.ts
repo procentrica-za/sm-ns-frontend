@@ -435,6 +435,13 @@ export class DeleteChatResult {
     ){}
 }
 
+export class OutstandingRatingResult {
+    constructor (
+        public responseStatusCode: number,
+        public outstandingratings: boolean, 
+    ){}
+}
+
 
 
 
