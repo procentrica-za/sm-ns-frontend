@@ -214,11 +214,6 @@ export class AuthService {
     //This method clears all results
     clearAllObjects(){
         this._currentLogin = new BehaviorSubject<LoginResult>(null);
-        this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
-        this._currentRegister = new BehaviorSubject<RegisterResult>(null)
-        this._currentGetUser = new BehaviorSubject<GetUserResult>(null)
-        this._currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
-        this._currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
     }
     
     clearUserDetails(){

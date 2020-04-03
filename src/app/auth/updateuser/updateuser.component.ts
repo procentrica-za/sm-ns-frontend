@@ -161,7 +161,7 @@ export class UpdateuserComponent implements OnInit {
  
                     if(this.update.responseStatusCode === 200 && this.update.UserUpdated === true){
                         TNSFancyAlert.showSuccess("Update Success", "Your details have been updated", "Dismiss").then( t => {
-                       this.authServ.clearAllObjects();
+                       this.authServ.clearUserDetails();
                        this.router.navigate(['/advert/home'],
             {
                 animated: true,
@@ -174,9 +174,11 @@ export class UpdateuserComponent implements OnInit {
         });
                     } else if (this.update.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                        this.authServ.clearUserDetails();
                     }
                     else if (this.update.responseStatusCode === 400 ){
                         TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");
+                        this.authServ.clearUserDetails();
                     }
                     else {
                         TNSFancyAlert.showError("Error Updating", this.update.Message, "Dismiss");

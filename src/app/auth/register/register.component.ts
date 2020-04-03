@@ -115,12 +115,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
                        });
                     } else if (this.register.responseStatusCode === 500){
                         TNSFancyAlert.showError("Connection error", this.register.Message, "Dismiss");
+                        this.authServ.clearRegistration();
                     }
                     else if (this.register.responseStatusCode === 400){
                         TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
+                        this.authServ.clearRegistration();
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
+                        this.authServ.clearRegistration();
                     }
                     
                 }

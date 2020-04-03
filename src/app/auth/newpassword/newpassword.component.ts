@@ -91,12 +91,15 @@ export class NewpasswordComponent implements OnInit {
                     });
                     } else if(this.update.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
+                        this.authServ.clearUserDetails();
                     }
                     else if(this.update.responseStatusCode === 400) {
                         TNSFancyAlert.showError("Connection error", this.update.Message, "Dismiss");
+                        this.authServ.clearUserDetails();
                     }
                     else {
                         TNSFancyAlert.showError("Connection error", this.update.Message, "Dismiss");
+                        this.authServ.clearUserDetails();
                     }
                 }
             }

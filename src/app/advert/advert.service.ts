@@ -1605,6 +1605,10 @@ clearRating(){
     this._currentRateBuyer = new BehaviorSubject<RateBuyerResult>(null)
 }
 
+clearSellerRating(){
+    this._currentRateSeller = new BehaviorSubject<RateSellerResult>(null)
+}
+
 clearMessages(){
     this._currentMessage = new BehaviorSubject<MessageResult>(null);
     this._currentSendMessage = new BehaviorSubject<MessageResult>(null)
