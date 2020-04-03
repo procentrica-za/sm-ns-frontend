@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList} from './auth.model';
 
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
@@ -16,6 +16,8 @@ export class AuthService {
     private _currentGetUser = new BehaviorSubject<GetUserResult>(null)
     private _currentUpdateUser = new BehaviorSubject<UpdateUserResult>(null)
     private _currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
+    private _currentInstitutionName = new BehaviorSubject<InstitutionName>(null);
+    private _currentInstitutionNameList = new BehaviorSubject<InstitutionNameList>(null);
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -40,11 +42,19 @@ export class AuthService {
     get currentUpdatePassword() {
         return this._currentUpdatePassword.asObservable();
     }
+
+    get currentInstitutionName(){
+        return this._currentInstitutionName.asObservable();
+    }
+
+    get currentInstitutionNameList(){
+        return this._currentInstitutionNameList.asObservable();
+    }
    
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.56:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.174:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -98,13 +108,13 @@ export class AuthService {
         });
     }
 
-    RegisterNewUser(username: string, password: string, name: string, surname: string, email: string) {
+    RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
         request ({
             url: reqUrl,
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email }),
+            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -230,5 +240,35 @@ export class AuthService {
         this._currentRegister = new BehaviorSubject<RegisterResult>(null)
         this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
     }
+
+    initializeInstitutionNameList(){
+        const reqUrl = getString("sm-service-advert-manager-host") + "/institution"
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500){
+                const modulecodeErr = new InstitutionName(500, null);
+            }else if(responseCode === 200){
+                const result = response.content.toJSON();
+                let modulecodeList: InstitutionName[] = [];
+                const JSONInstitutionNameList = result.modulecodes;
+                JSONInstitutionNameList.forEach(element => {
+                    element.responseStatusCode = 200;
+                    modulecodeList.push(element);
+                });
+                const toNextList = new InstitutionNameList(200, modulecodeList);
+                this._currentInstitutionNameList.next(toNextList);
+            }else {
+                console.log("in the else");
+            }
+        }, (e) => {
+            console.log(e);
+        });
+        return null;
+    }
+
 
 }

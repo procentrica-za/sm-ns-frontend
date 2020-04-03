@@ -67,3 +67,17 @@ export class UpdatePasswordResult {
          
     ){}
 }
+
+export class InstitutionName {
+    constructor(
+        public responseStatusCode : number,
+        public institutionname : string
+    ){}
+}
+
+export class InstitutionNameList {
+    constructor(
+        public responseStatusCode : number,
+        public InstitutionNames : InstitutionName[]
+    ){}
+}
