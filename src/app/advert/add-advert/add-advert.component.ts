@@ -30,7 +30,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     form: FormGroup;
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
-    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType : boolean;
+    public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType; advertPostedLoading : boolean;
     public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; yearTypeBind; venueTypeBind; noteTypeBind; termTypeBind; moduleCodeTypeBindTutor; moduleCodeTypeBindNote; myImg; base64ImageString: string;
     public advertPostedSub; textbookSub; imageUploadedSub : Subscription;
     public addTextbook : Textbook;
@@ -58,6 +58,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         this.accomodationCapture = false;
         this.tutorCapture = false;
         this.noteCapture = false;
+        this.advertPostedLoading = false;
     }
 
     @ViewChild('priceEl', {static:false}) priceEl: ElementRef<TextField>;
@@ -231,6 +232,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                         this.imageUploadedResult = imageResult;
 
                         if(this.imageUploadedResult.ImageInserted){
+                            this.advertPostedLoading = false;
                             TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Posted!", "Close").then( t => {
                                 this.advertServ.initializeUserAdvertisements(appSettings.getString("userid"), appSettings.getBoolean("myAdvertsSelling"));
                                 this.router.backToPreviousPage(),
@@ -326,7 +328,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     }
 
     async onPostTap() {
-
+        this.advertPostedLoading = true;
         this.priceEl.nativeElement.focus();
         this.descriptionEl.nativeElement.focus();
 
@@ -368,7 +370,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 }
 
                 if(!location || !distance || !acdType || !instType || !price || !description){
+                    this.advertPostedLoading = false;
                     TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    
                     return;
                 }
 
@@ -399,7 +403,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             if(this.advertType == "TXB"){
                 this.descriptionEl.nativeElement.dismissSoftInput();
                 if(!price || !description){
+                    this.advertPostedLoading = false;
                     TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
+                    
                     return;
                 }
                 //console.log("Hello There TXB");;
@@ -428,7 +434,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 
            
             if(this.advertType == "TUT"){
-                console.log("Hello There TUT");
+               // console.log("Hello There TUT");
                 this.subjectEl.nativeElement.focus();
                 this.yearTypeEl.nativeElement.focus();
                 this.venueTypeEl.nativeElement.focus();
@@ -451,6 +457,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 }
                
                 if(!subject || !yearType || !venueType || !noteType || !termType || !moduleCodeTutorType || !price || !description){
+                    this.advertPostedLoading = false;
                     TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
                     return;
                 }
@@ -486,6 +493,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 const moduleCodeNoteType = this.form.get('moduleCodeNoteType').value;
 
                 if(!moduleCodeNoteType || !price || !description){
+                    this.advertPostedLoading = false;
                     TNSFancyAlert.showError("Error!", "Advertisement Could not be Posted\n You are missing required fields.","Close");
                     return;
                 }

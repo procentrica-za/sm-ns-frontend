@@ -13,7 +13,9 @@
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded" style="margin-top: 7%;">
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
-    <Label *ngIf="textbookListEmpty" text="It seems you don't have any advertisements here.."></Label>
+    <Gridlayout *ngIf="textbookListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+        <Label *ngIf="textbookListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
+    </Gridlayout>
     <RadListView  *ngIf="!textbookListEmpty" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -34,7 +36,9 @@
 
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
     <StackLayout *tabItem="{title: '&#xf015;'}" class="tab-fa">
-        <Label *ngIf="accomodationListEmpty" text="It seems you don't have any advertisements here.."></Label>
+        <Gridlayout *ngIf="accomodationListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+            <Label *ngIf="accomodationListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
+        </Gridlayout>
         <RadListView  *ngIf="!accomodationListEmpty" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -59,7 +63,9 @@
 
     <!-- TAB AND RADLIST USED FOR TUTOR -->    
     <StackLayout *tabItem="{title: '&#xf19d;'}" class="tab-fa">
-        <Label *ngIf="tutorListEmpty" text="It seems you don't have any advertisements here.."></Label>
+        <Gridlayout *ngIf="tutorListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+            <Label *ngIf="tutorListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
+        </Gridlayout>
         <RadListView  *ngIf="!tutorListEmpty" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
@@ -80,7 +86,9 @@
 
      <!-- TAB AND RADLIST USED FOR NOTE --> 
     <StackLayout *tabItem="{title: '&#xf249;'}" class="tab-fa">
-        <Label *ngIf="noteListEmpty" text="It seems you don't have any advertisements here.."></Label>
+        <Gridlayout *ngIf="noteListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
+            <Label *ngIf="noteListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
+        </Gridlayout>
         <RadListView  *ngIf="!noteListEmpty" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
