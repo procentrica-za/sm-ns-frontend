@@ -17,17 +17,16 @@ import { SearchBar } from "tns-core-modules/ui/search-bar"
 })
 
 export class InstitutionListPickerComponent implements OnInit, OnDestroy {
-    public moduleSearch; textbookSearch: string;
-    public textbookListSub; institutionNameSub : Subscription;
+    public institutionSearch;
+    public institutionNameSub : Subscription;
     public institutionNameList : InstitutionNameList;
     public institutionNameTypes; institutionNameTypesFilter : ObservableArray<string>;
     public  institutionNameType : string;
-    public institutionTypes; yearCompletedTypes; venueTypes; noteTypes; termTypes; qualityTypes : Array<string>;
-    public paramReceived; acdType; instType; yearCompletedType; venueType; noteType; termType; qualityType : String;
-    public AccomodationType; InstitutionType; YearCompletedType; VenueType; NoteType; TermType; InstitutionNameType; TextbookType; QualityType; noFilterResults; alltextbooksLoaded : boolean;
+   
+    public instType;
+    public  InstitutionNameType; noFilterResults; 
     constructor(private modalParams: ModalDialogParams, private authServ: AuthService){
        
-        //this.institutionTypes = new Array<string>("University of Pretoria","University of Johannesburg");
    
         this.InstitutionNameType = false;
 
@@ -38,11 +37,11 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
     ngOnInit(){
                 this.authServ.initializeInstitutionNameList();
                 this.institutionNameSub = this.authServ.currentInstitutionNameList.subscribe(
-                    modulecodeListResult => {
-                        if (modulecodeListResult){
-                            if(modulecodeListResult.responseStatusCode === 200){
+                    institutionnameListResult => {
+                        if (institutionnameListResult){
+                            if(institutionnameListResult.responseStatusCode === 200){
                                 this.institutionNameTypes = new ObservableArray(0);
-                                modulecodeListResult.InstitutionNames.forEach( t => {
+                                institutionnameListResult.InstitutionNames.forEach( t => {
                                     this.institutionNameTypes.push(t.institutionname);
                                 });
                                 this.institutionNameTypesFilter = new ObservableArray(0);
@@ -81,7 +80,6 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
             onSelectedIndexInstitutionTypeChanged(args: EventData){
                 const picker = <ListPicker>args.object;
                 this.institutionNameType = this.institutionNameTypes.getItem(picker.selectedIndex);
-                console.log(this.institutionNameType);
             }
 
    
@@ -113,17 +111,6 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
 
  
 
-    onSelectedIndexInstTypeChanged(args: EventData){
-        const picker = <ListPicker>args.object;
-        switch (picker.selectedIndex){
-            case 0:
-                this.instType = this.institutionTypes[0];
-                break;
-            case 1:
-                this.instType = this.institutionTypes[1];
-                break;
-        }
-    }
 
 
 

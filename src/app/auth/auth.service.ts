@@ -243,7 +243,6 @@ export class AuthService {
 
     initializeInstitutionNameList(){
         const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -256,7 +255,6 @@ export class AuthService {
                 const result = response.content.toJSON();
                 let institutionnameList: InstitutionName[] = [];
                 const JSONInstitutionNameList = result.institutionnames;
-                console.log(result.institutionnames)
                 JSONInstitutionNameList.forEach(element => {
                     element.responseStatusCode = 200;
                     institutionnameList.push(element);
