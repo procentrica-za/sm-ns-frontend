@@ -121,7 +121,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                     
                     else {
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        console.log(this.rate.buyerrated)
+                        this.advertServ.clearRating();
                     }
                 }
             }

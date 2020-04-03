@@ -87,7 +87,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                     this.rate = rateresult;
                     if(this.rate.responseStatusCode === 200 && this.rate.sellerrated === true){
                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss");
-                       //Save user details and rememberme info
+                      this.advertServ.clearSellerRating();
                        this.router.navigate(['/advert/home'],
             {
                 animated: true,
@@ -97,18 +97,17 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                     curve: "ease"
                 }
             });
-                       this.rateResultSub.unsubscribe();
                     } else if (this.rate.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        this.rateResultSub.unsubscribe();
+                        this.advertServ.clearSellerRating();
                     }
                     else if (this.rate.responseStatusCode === 400 ){
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        this.rateResultSub.unsubscribe();
+                        this.advertServ.clearSellerRating();
                     }
                     else {
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
-                        this.rateResultSub.unsubscribe();
+                        this.advertServ.clearSellerRating();
 
                     }
                 }
