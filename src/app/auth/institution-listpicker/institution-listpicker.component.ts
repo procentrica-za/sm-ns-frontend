@@ -58,7 +58,31 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
             }
         
 
-    
+            onInstitutionSearchChanged(args: EventData){
+                const searchBar = args.object as SearchBar;
+                var newList = this.institutionNameTypes.filter(function(value, index, array){
+                    var code = value.toLowerCase();
+                    if(code.indexOf(searchBar.text.toLowerCase()) > -1){
+                        return value;
+                    } else {
+                        return null;
+                    }
+                });
+        
+                if(newList[0] == null){
+                    this.noFilterResults = true;
+                    this.institutionNameTypesFilter = null;
+                }else{
+                    this.institutionNameTypesFilter = newList;
+                    this.noFilterResults = false;
+                }
+            }
+
+            onSelectedIndexInstitutionTypeChanged(args: EventData){
+                const picker = <ListPicker>args.object;
+                this.institutionNameType = this.institutionNameTypes.getItem(picker.selectedIndex);
+                console.log(this.institutionNameType);
+            }
 
    
     onInstitutionTap(){
@@ -67,25 +91,7 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
     
 
    
-    onInstitutionSearchChanged(args: EventData){
-        const searchBar = args.object as SearchBar;
-        var newList = this.institutionNameTypes.filter(function(value, index, array){
-            var code = value.toLowerCase();
-            if(code.indexOf(searchBar.text.toLowerCase()) > -1){
-                return value;
-            } else {
-                return null;
-            }
-        });
-
-        if(newList[0] == null){
-            this.noFilterResults = true;
-            this.institutionNameTypesFilter = null;
-        }else{
-            this.institutionNameTypesFilter = newList;
-            this.noFilterResults = false;
-        }
-    }
+    
 
 
 
@@ -121,10 +127,6 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
 
 
 
-    onSelectedIndexInstitutionTypeChanged(args: EventData){
-        const picker = <ListPicker>args.object;
-        this.institutionNameType = this.institutionNameTypes.getItem(picker.selectedIndex);
-        console.log(this.institutionNameType);
-    }
+    
     
 }

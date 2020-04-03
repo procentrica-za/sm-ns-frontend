@@ -242,7 +242,8 @@ export class AuthService {
     }
 
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-advert-manager-host") + "/institution"
+        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -250,16 +251,17 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500){
-                const modulecodeErr = new InstitutionName(500, null);
+                const institutionnameErr = new InstitutionName(500, null);
             }else if(responseCode === 200){
                 const result = response.content.toJSON();
-                let modulecodeList: InstitutionName[] = [];
-                const JSONInstitutionNameList = result.modulecodes;
+                let institutionnameList: InstitutionName[] = [];
+                const JSONInstitutionNameList = result.institutionnames;
+                console.log(result.institutionnames)
                 JSONInstitutionNameList.forEach(element => {
                     element.responseStatusCode = 200;
-                    modulecodeList.push(element);
+                    institutionnameList.push(element);
                 });
-                const toNextList = new InstitutionNameList(200, modulecodeList);
+                const toNextList = new InstitutionNameList(200, institutionnameList);
                 this._currentInstitutionNameList.next(toNextList);
             }else {
                 console.log("in the else");

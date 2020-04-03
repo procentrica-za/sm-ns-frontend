@@ -38,6 +38,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     constructor(private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService,  private vcRef: ViewContainerRef) {
         this.institutionNameBind = "";
+
     }
     ngOnInit() {
         this.form = new FormGroup({

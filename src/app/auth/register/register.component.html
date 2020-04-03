@@ -105,18 +105,18 @@
     <StackLayout class="input-field">
         <Label
         class="label"
-        text="Module Code"
+        text="Institution Name"
         (tap)="onInstitutionNameTap()"
         ></Label>
         <TextField
-        [text]="moduleCodeTypeBindNote"
+        [text]="institutionNameBind"
         (tap)="onInstitutionNameTap()"
         class="input"
         returnKeyType="done"
         required
         [autocorrect]="false"
         autocapitalizationType="none"
-        formControlName="moduleCodeNoteType"
+        formControlName="institutionname"
         #institutionnameEl
         ></TextField>
     </StackLayout>

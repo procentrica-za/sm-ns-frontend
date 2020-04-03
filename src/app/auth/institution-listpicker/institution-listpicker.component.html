@@ -1,0 +1,7 @@
+<StackLayout>
+    <SearchBar hint="Search..."
+        [text]="moduleSearch" (textChange)="onInstitutionSearchChanged($event)">
+    </SearchBar>
+    <ListPicker [items]="institutionNameTypesFilter" selectedIndex="0" (selectedIndexChange)="onSelectedIndexInstitutionTypeChanged($event)"></ListPicker>
+    <Button *ngIf="!noFilterResults" text="Confirm" (tap)="onInstitutionTap()" class="btn btn-primary btn-rounded-lg"></Button>
+</StackLayout>
