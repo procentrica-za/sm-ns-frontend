@@ -38,9 +38,7 @@ export class AppComponent implements OnInit{
         private changeDetectionRef: ChangeDetectorRef,
         private advertServ: AdvertService){}
 
-    ngOnInit(
-    
-    ){
+    ngOnInit(){
 
         this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
             unreadchatsresult => {
@@ -49,15 +47,15 @@ export class AppComponent implements OnInit{
  
                     if(this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === true){
                         this.unreadMessages = true;
-                        this.advertServ.clearChat();
+                  
                 
                     } else if (this.unreadchats.responseStatusCode === 500){
                         this.unreadMessages = false;
-                        this.advertServ.clearChat();
+              
                     }
                     else if (this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === false){
                         this.unreadMessages = false;
-                        this.advertServ.clearChat();
+              
                     }
                     else {
                         this.unreadMessages = false;
@@ -74,15 +72,15 @@ export class AppComponent implements OnInit{
  
                     if(this.outstandingratings.responseStatusCode === 200 && this.outstandingratings.outstandingratings === true){
                         this.outstandingRatings = true;
-                        this.advertServ.clearRating();
+                  
                 
                     } else if (this.outstandingratings.responseStatusCode === 500){
                         this.outstandingRatings = false;
-                        this.advertServ.clearRating();
+                   
                     }
-                    else if (this.outstandingratings.responseStatusCode === 200 && this.outstandingratings.outstandingratings === false){
+                    else if (this.outstandingratings.responseStatusCode === 200 && this.outstandingratings.outstandingratings === false){                       
                         this.outstandingRatings = false;
-                        this.advertServ.clearRating();
+              
                     }
                     else {
                         this.outstandingRatings = false;
@@ -112,6 +110,7 @@ export class AppComponent implements OnInit{
     advertHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/advert']);
+        
 
     }
 

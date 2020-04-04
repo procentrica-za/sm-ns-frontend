@@ -1606,7 +1606,7 @@ RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerratin
 
 OutstandingRatings() {
     const userid = appSettings.getString("userid");
-    const reqUrl = getString("sm-service-ratings-host") + "/rating" + userid;
+    const reqUrl = getString("sm-service-ratings-host") + "/rating?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
