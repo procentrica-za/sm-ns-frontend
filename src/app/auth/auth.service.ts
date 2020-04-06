@@ -147,30 +147,30 @@ export class AuthService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const getuserResultErr = new GetUserResult(500, "00000000-0000-0000-0000-000000000000", "Unable to retrieve username","Unable to retrieve name", "Unable to retrieve surname", "Unable to retrieve email address", "Error whilst trying to recieve user details.", false);
+                const getuserResultErr = new GetUserResult(500, "00000000-0000-0000-0000-000000000000", "Unable to retrieve username","Unable to retrieve name", "Unable to retrieve surname", "Unable to retrieve email address", "Unable to retireve institution", "Error whilst trying to recieve user details.", false);
                 this._currentGetUser.next(getuserResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.message, result.gotuser);
+                const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.institutionname, result.message, result.gotuser);
                 this._currentGetUser.next(getuserResult);                
             } else {
-                const getuserResult = new GetUserResult(responseCode, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", response.content.toString(), false);
+                const getuserResult = new GetUserResult(responseCode, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", "none", response.content.toString(), false);
                 this._currentGetUser.next(getuserResult); 
             }
         }, (e) => {
 
-            const getuserResult = new GetUserResult(400, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", "An Error has been recieved, please contact support.", false);
+            const getuserResult = new GetUserResult(400, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", "none", "An Error has been recieved, please contact support.", false);
             this._currentGetUser.next(getuserResult); 
         });
     }
 
-    UpdateUser(id: string, username: string, name: string, surname: string, email: string) {
+    UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
         request ({
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ id: id,  username: username, name: name , surname: surname, email: email }),
+            content: JSON.stringify({ id: id,  username: username, name: name , surname: surname, email: email, institutionname: institutionname }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;

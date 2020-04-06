@@ -44,6 +44,7 @@ export class GetUserResult {
         public Name:        string,
         public Surname:     string,
         public Email:       string,
+        public Institutionname: string,
         public Message:     string,
         public GotUser:     boolean, 
     ){}
