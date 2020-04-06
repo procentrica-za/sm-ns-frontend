@@ -32,6 +32,7 @@ import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
+import { InstitutionListPickerComponent } from "././auth/institution-listpicker/institution-listpicker.component"
 @NgModule({
     bootstrap: [
         AppComponent
@@ -65,10 +66,12 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
         BuyerratingsComponent,
         SellerratingsComponent,
         RatebuyerHomeComponent,
-        RatebuyerComponent
+        RatebuyerComponent,
+        InstitutionListPickerComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
-    ]
+    ],
+    entryComponents: [InstitutionListPickerComponent]
 })
 export class AppModule { }

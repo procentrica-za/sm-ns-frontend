@@ -61,7 +61,7 @@ export class RatebuyerHomeComponent implements OnInit, OnDestroy {
         appSettings.setString("buyerid", tappedInterestedItem.buyerid);
          //get to see if the advertisement is for a tutor
          const advertisementtype = tappedInterestedItem.advertisementtype;
-         console.log(advertisementtype);
+
          if (advertisementtype == 'TUT') {
  
              this.advertServ.RateBuyer(tappedInterestedItem.advertisementid, tappedInterestedItem.buyerid,tappedInterestedItem.sellerid, '0', "Tutoring was concluded, a tutor may not rate a student");

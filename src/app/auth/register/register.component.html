@@ -102,6 +102,25 @@
             text="Please enter a valid email address."
         ></Label>
     </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+        class="label"
+        text="Institution Name"
+        (tap)="onInstitutionNameTap()"
+        ></Label>
+        <TextField
+        [text]="institutionNameBind"
+        (tap)="onInstitutionNameTap()"
+        class="input"
+        returnKeyType="done"
+        required
+        [autocorrect]="false"
+        autocapitalizationType="none"
+        formControlName="institutionname"
+        #institutionnameEl
+        ></TextField>
+    </StackLayout>
+
     <Button
         class="btn btn-primary btn-rounded-lg"
         text="Register"

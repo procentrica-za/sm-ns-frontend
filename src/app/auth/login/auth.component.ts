@@ -52,6 +52,8 @@ export class AuthComponent implements OnInit, OnDestroy {
 
         //Check if remember me was enabled, if so, navigate to appropriate page
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
+            this.advertServ.UnreadChats();
+            this.advertServ.OutstandingRatings();
             
             this.router.navigate(['/advert/home'], {clearHistory: true});
         } 
@@ -104,6 +106,8 @@ export class AuthComponent implements OnInit, OnDestroy {
                             appSettings.setBoolean("rememberme", this.rememberMe);
                             appSettings.setBoolean("loggedIn", true);
                             this.authServ.clearAllObjects();
+                            this.advertServ.UnreadChats();
+                            this.advertServ.OutstandingRatings();
                             this.router.navigate(['/advert/home'], {clearHistory: true});
                         }
                         else {

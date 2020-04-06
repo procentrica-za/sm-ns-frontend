@@ -376,3 +376,7 @@
     
 </StackLayout>
 </ScrollView>
+
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="advertPostedLoading">
+    <ActivityIndicator [busy]="advertPostedLoading"></ActivityIndicator>
+</FlexboxLayout>

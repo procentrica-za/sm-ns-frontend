@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
@@ -6,7 +6,8 @@ import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
 import { RegisterResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-
+import { InstitutionListPickerComponent } from "../institution-listpicker/institution-listpicker.component";
+import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 
 @Component({
     selector: 'ns-register',
@@ -22,6 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     surnameControlIsValid = true;
     emailControlIsValid = true;
     isLoading = false;
+    public institutionNameBind;
  
 
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
@@ -29,12 +31,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     @ViewChild('nameEl', {static:false}) nameEl: ElementRef<TextField>;
     @ViewChild('surnameEl', {static:false}) surnameEl: ElementRef<TextField>;
     @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
+    @ViewChild('institutionnameEl', {static:false}) institutionnameEl: ElementRef<TextField>;
 
     registerResultSub: Subscription;
     register: RegisterResult;
 
-    constructor(private router: RouterExtensions, private authServ: AuthService) {
-  
+    constructor(private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService,  private vcRef: ViewContainerRef) {
+        this.institutionNameBind = "";
+
     }
     ngOnInit() {
         this.form = new FormGroup({
@@ -82,6 +86,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     validators: [
                         Validators.required
                     ]
+                }
+            ),
+            institutionname: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                   
                 }
             )
         });
@@ -131,6 +145,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
         );
     }
 
+    onInstitutionNameTap(){
+        this.modalDialog.showModal(InstitutionListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "ModuleCodeType" } }).then((selection:string) => {
+                this.institutionNameBind=selection;
+            });      
+    }
+
   
     onRegisterUser() {
         this.usernameEl.nativeElement.focus();
@@ -138,7 +161,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
         this.emailEl.nativeElement.focus();
-        this.emailEl.nativeElement.dismissSoftInput();
+        this.institutionnameEl.nativeElement.focus();
+        this.institutionnameEl.nativeElement.dismissSoftInput();
 
         
         if(!this.form.valid){
@@ -149,12 +173,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const name = this.form.get('name').value;
         const surname = this.form.get('surname').value;
         const email = this.form.get('email').value;
+        //institutions
+        const institutionname = this.form.get('institutionname').value;
 
         this.isLoading = true;
         //Timeout to give loading bar time to appear
         setTimeout(() =>{
             //Verify register Credentials
-            this.authServ.RegisterNewUser(username, password, name, surname, email);
+            this.authServ.RegisterNewUser(username, password, name, surname, email, institutionname);
         },100);
     }
 

@@ -40,6 +40,7 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
                             
                         });
                         this.advertServ.initializeActiveChats();
+                        this.advertServ.UnreadChats();
                         this.messagesLoaded = true;
                     } else if(this.messageResultList.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");

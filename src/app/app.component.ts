@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { AdvertService } from "../app/advert/advert.service";
-import { UnreadChatsResult} from '../app/advert/advert.model';
+import { UnreadChatsResult, OutstandingRatingResult} from '../app/advert/advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -28,15 +28,17 @@ export class AppComponent implements OnInit{
      unreadchats: UnreadChatsResult;
      unreadMessages : boolean;
 
+     //Outstanding ratings
+     outstandingratingsResultSub: Subscription;
+     outstandingratings: OutstandingRatingResult;
+     outstandingRatings : boolean;
     constructor(
         private router: RouterExtensions,
         private uiService: UIService,
         private changeDetectionRef: ChangeDetectorRef,
         private advertServ: AdvertService){}
 
-    ngOnInit(
-    
-    ){
+    ngOnInit(){
 
         this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
             unreadchatsresult => {
@@ -45,16 +47,43 @@ export class AppComponent implements OnInit{
  
                     if(this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === true){
                         this.unreadMessages = true;
+                  
                 
                     } else if (this.unreadchats.responseStatusCode === 500){
                         this.unreadMessages = false;
+              
                     }
                     else if (this.unreadchats.responseStatusCode === 200 && this.unreadchats.unreadmessages === false){
                         this.unreadMessages = false;
-          
+              
                     }
                     else {
                         this.unreadMessages = false;
+                    }
+                    
+                }
+            }
+        );
+
+        this.outstandingratingsResultSub = this.advertServ.currentOutstandingRating.subscribe(
+            outstandingratingsresult => {
+                if(outstandingratingsresult){
+                    this.outstandingratings = outstandingratingsresult;
+ 
+                    if(this.outstandingratings.responseStatusCode === 200 && this.outstandingratings.outstandingratings === true){
+                        this.outstandingRatings = true;
+                  
+                
+                    } else if (this.outstandingratings.responseStatusCode === 500){
+                        this.outstandingRatings = false;
+                   
+                    }
+                    else if (this.outstandingratings.responseStatusCode === 200 && this.outstandingratings.outstandingratings === false){                       
+                        this.outstandingRatings = false;
+              
+                    }
+                    else {
+                        this.outstandingRatings = false;
                     }
                     
                 }
@@ -73,7 +102,6 @@ export class AppComponent implements OnInit{
     onRouterOutletActivate(event : any) {
         if(appSettings.getBoolean("loggedIn")) {
             this.isLoggedIn = true;
-            this.advertServ.UnreadChats();
         } else {
             this.isLoggedIn = false;
         }
@@ -82,6 +110,7 @@ export class AppComponent implements OnInit{
     advertHome(){
         this.drawerComponent.sideDrawer.closeDrawer();
         this.router.navigate(['/advert']);
+        
 
     }
 
@@ -153,6 +182,9 @@ export class AppComponent implements OnInit{
         }
         if(this.unreadchatsResultSub){
             this.unreadchatsResultSub.unsubscribe();
+        }
+        if(this.outstandingratingsResultSub){
+            this.outstandingratingsResultSub.unsubscribe();
         }
     }
 }

@@ -88,6 +88,7 @@ export class RatesellerComponent implements OnInit, OnDestroy {
                     if(this.rate.responseStatusCode === 200 && this.rate.sellerrated === true){
                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss");
                       this.advertServ.clearSellerRating();
+                      this.advertServ.OutstandingRatings();
                        this.router.navigate(['/advert/home'],
             {
                 animated: true,
