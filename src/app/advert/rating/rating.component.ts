@@ -77,17 +77,17 @@ export class RatingComponent implements OnInit, OnDestroy {
                 if(averageresult){
                     this.average = averageresult;
  
-                    if(this.average.responseStatusCode === 200 && this.average.average != ""){
+                    if(this.average.responseStatusCode === 200 && this.average.average != "You have not been rated as a buyer yet"){
                         TNSFancyAlert.showInfo("Buying Average", "Your average from purchasing on this platform is " + this.average.average, "Dismiss")
                         this.advertServ.clearAverage();
                         console.log(this.average.average);
                 
-                    } else if (this.average.responseStatusCode === 500){
-                        TNSFancyAlert.showInfo("No Average", "You do not have any ratings as yet", "Dismiss")
+                    } else if (this.average.responseStatusCode === 200 && this.average.average != "You have not been rated as a buyer yet"){
+                        TNSFancyAlert.showInfo("No Average", this.average.average, "Dismiss")
                         this.advertServ.clearAverage();
                     }
                     else {
-                       
+                        TNSFancyAlert.showError("Connection Error", "There has been an issue whilst trying to connect, please contact support", "Dismiss");
                     }
                     
                 }
@@ -102,13 +102,13 @@ export class RatingComponent implements OnInit, OnDestroy {
                 if(averageresult){
                     this.average = averageresult;
  
-                    if(this.average.responseStatusCode === 200 && this.average.average != ""){
+                    if( this.average.responseStatusCode === 200 && this.average.average != "You have not been rated as a seller yet"){
                         TNSFancyAlert.showInfo("Selling Average", "Your average from selling on this platform is " + this.average.average , "Dismiss")
                         this.advertServ.clearAverage();
                   console.log(this.average.average);
                 
-                    } else if (this.average.responseStatusCode === 500){
-                        TNSFancyAlert.showInfo("No Average", "You do not have any ratings as yet", "Dismiss")
+                    } else if ( this.average.responseStatusCode === 200 && this.average.average == "You have not been rated as a seller yet"){
+                        TNSFancyAlert.showInfo("No Average", this.average.average, "Dismiss")
                         this.advertServ.clearAverage();
               
                     }
