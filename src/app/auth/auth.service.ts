@@ -193,13 +193,14 @@ export class AuthService {
 
     }
 
-    UpdatePassword(id: string, password: string ) {
+    UpdatePassword(id: string, currentpassword: string, password: string ) {
         const reqUrl = getString("sm-service-cred-manager-host") + "/userpassword" ;
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ id: id,  password: password }),
+            content: JSON.stringify({ id: id, currentpassword: currentpassword, password: password }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
