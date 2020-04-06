@@ -1,0 +1,62 @@
+<ns-action-bar [actionBarTitle]="'Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout orientation="horizontal">
+<Label
+            text="&#xf1ec;"
+            class="AverageLabel"
+            (tap)="showBuyerAverage()"
+ ></Label>
+
+ <Label
+            text="&#xf1ec;"
+            class="AverageLabel"
+            (tap)="showSellerAverage()"
+ ></Label>
+</StackLayout>
+<StackLayout orientation="horizontal">
+<Label
+            text="Average from Purchasing"
+            class="Average"
+            (tap)="showBuyerAverage()"
+ ></Label>
+
+ <Label
+            text="Average from Selling"
+            class="Average"
+            (tap)="showSellerAverage()"
+ ></Label>
+</StackLayout>
+
+<StackLayout orientation="horizontal">
+    <Label
+                text="&#xf27a;"
+                class="PreviousLabel"
+                (tap)="onBuyerRatings()"
+     ></Label>
+    
+     <Label
+                text="&#xf27a;" 
+                class="PreviousLabel"
+                (tap)="onSellerRatings()"
+     ></Label>
+    </StackLayout>
+    <StackLayout orientation="horizontal">
+    <Label
+                text="Previous Buying Ratings"
+                class="Previous"
+                (tap)="onBuyerRatings()"
+     ></Label>
+    
+     <Label
+                text="Previous Sold Ratings"
+                class="Previous"
+                (tap)="onSellerRatings()"
+     ></Label>
+    </StackLayout>
+
+<StackLayout orientation="horizontal">
+    <Button
+    class="btn btn-primary btn-rounded-lg"
+    text="Outstanding Ratings"
+    (tap)="onOutstandingRatings()"
+></Button>
+    </StackLayout>

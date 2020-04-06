@@ -442,6 +442,15 @@ export class OutstandingRatingResult {
     ){}
 }
 
+export class AverageResult {
+    constructor(
+        public responseStatusCode : number,
+        public average : string
+    ){}
+}
+
+
+
 
 
 

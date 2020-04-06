@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
         private advertServ: AdvertService){}
 
     ngOnInit(){
-
+ 
         this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
             unreadchatsresult => {
                 if(unreadchatsresult){
@@ -140,7 +140,7 @@ export class AppComponent implements OnInit{
 
     Ratinghome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['ratinghome']);
+        this.router.navigate(['rating']);
        
     }
 

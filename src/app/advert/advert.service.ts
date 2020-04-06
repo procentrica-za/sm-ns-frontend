@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult} from './advert.model'
+            OutstandingRatingResult, AverageResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -139,6 +139,10 @@ export class AdvertService {
 
     private _currentOutstandingRating = new BehaviorSubject<OutstandingRatingResult>(null);
 
+    private _currentBuyingAverage = new BehaviorSubject<AverageResult>(null);
+    private _currentSellingAverage = new BehaviorSubject<AverageResult>(null);
+
+
     get currentImageUploaded(){
         return this._currentImageUploaded.asObservable();
     }
@@ -195,6 +199,14 @@ export class AdvertService {
 
     get currentOutstandingRating() {
         return this._currentOutstandingRating.asObservable();
+    }
+
+    get currentBuyingAverage() {
+        return this._currentBuyingAverage.asObservable();
+    }
+
+    get currentSellingAverage() {
+        return this._currentSellingAverage.asObservable();
     }
 
     get currentAccomodationList() {
@@ -1634,6 +1646,64 @@ OutstandingRatings() {
     return null;
 } 
 
+Buyingdashboard() {
+    const userid = appSettings.getString("userid");
+    const reqUrl = getString("sm-service-ratings-host") + "/buyer?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const BuyingAverageResultErr = new AverageResult(500, "You do not have any ratings as yet");
+            this._currentBuyingAverage.next(BuyingAverageResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const BuyingAveragesuccessResult = new AverageResult(200, result.average);
+            this._currentBuyingAverage.next(BuyingAveragesuccessResult);   
+        } else {
+            const BuyingAveragesuccessResult = new AverageResult(responseCode,response.content.toString());
+            this._currentBuyingAverage.next(BuyingAveragesuccessResult); 
+        }
+    }, (e) => {
+
+        const BuyingAveragesuccessResult = new AverageResult(400, "An Error has been recieved, please contact support.");
+            this._currentBuyingAverage.next(BuyingAveragesuccessResult); 
+    });
+}
+
+Sellingdashboard() {
+    const userid = appSettings.getString("userid");
+    const reqUrl = getString("sm-service-ratings-host") + "/seller?userid=" + userid;
+    console.log(reqUrl);
+    request ({
+        url: reqUrl,
+        method: "GET",
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const SellingAverageResultErr = new AverageResult(500, "You do not have any ratings as yet");
+            this._currentSellingAverage.next(SellingAverageResultErr);
+        } else if (responseCode === 200) {
+
+            const result = response.content.toJSON();
+            const SellingAveragesuccessResult = new AverageResult(200, result.average);
+            this._currentSellingAverage.next(SellingAveragesuccessResult);   
+        } else {
+            const SellingAveragesuccessResult = new AverageResult(responseCode,response.content.toString());
+            this._currentSellingAverage.next(SellingAveragesuccessResult); 
+        }
+    }, (e) => {
+
+        const SellingAveragesuccessResult = new AverageResult(400, "An Error has been recieved, please contact support.");
+            this._currentSellingAverage.next(SellingAveragesuccessResult); 
+    });
+}
+
 clearChat(){
     this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
     this._currentUnreadChats = new BehaviorSubject<UnreadChatsResult>(null);
@@ -1652,6 +1722,11 @@ clearMessages(){
     this._currentMessage = new BehaviorSubject<MessageResult>(null);
     this._currentSendMessage = new BehaviorSubject<MessageResult>(null)
     this._currentStartChat = new BehaviorSubject<StartChatResult>(null);
+}
+
+clearAverage(){
+    this._currentBuyingAverage = new BehaviorSubject<AverageResult>(null);
+    this._currentSellingAverage = new BehaviorSubject<AverageResult>(null);
 }
 
 }
