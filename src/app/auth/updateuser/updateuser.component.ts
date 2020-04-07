@@ -129,7 +129,6 @@ export class UpdateuserComponent implements OnInit {
                 this.getuser = userResult
                 if(this.getuser.responseStatusCode === 200){
                     this.userFound = true;
-                    console.log(this.getuser);
                 } else {
                     TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                  }
