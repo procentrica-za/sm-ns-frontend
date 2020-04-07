@@ -1,16 +1,26 @@
 <ns-action-bar [actionBarTitle]="'Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
-<StackLayout orientation="horizontal">
-<Label
-            text="&#xf1ec;"
-            class="AverageLabel"
-            (tap)="showBuyerAverage()"
- ></Label>
+<StackLayout  orientation="horizontal">
+    <Label
+    
+    returnKeyType="next"
+    required
+    [autocorrect]="false"
+    autocapitalizationType="none"
+    class="Ratingdashboard"
+    [text]="buyingaverage.average" *ngIf="buyingFound"
+    #buyingEl
+></Label>
 
- <Label
-            text="&#xf1ec;"
-            class="AverageLabel"
-            (tap)="showSellerAverage()"
- ></Label>
+<Label
+
+returnKeyType="next"
+required
+[autocorrect]="false"
+autocapitalizationType="none"
+class="Ratingdashboard"
+[text]="sellingaverage.average" *ngIf="sellingFound"
+#sellingEl
+></Label>
 </StackLayout>
 <StackLayout orientation="horizontal">
 <Label
@@ -52,11 +62,10 @@
                 (tap)="onSellerRatings()"
      ></Label>
     </StackLayout>
-
-<StackLayout orientation="horizontal">
-    <Button
-    class="btn btn-primary btn-rounded-lg"
-    text="Outstanding Ratings"
-    (tap)="onOutstandingRatings()"
-></Button>
-    </StackLayout>
+    <StackLayout orientation="horizontal">
+        <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Outstanding Ratings"
+        (tap)="onOutstandingRatings()"
+        ></Button>
+     </StackLayout>

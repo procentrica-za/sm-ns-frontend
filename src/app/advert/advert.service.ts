@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult, AverageResult} from './advert.model'
+            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -139,8 +139,8 @@ export class AdvertService {
 
     private _currentOutstandingRating = new BehaviorSubject<OutstandingRatingResult>(null);
 
-    private _currentBuyingAverage = new BehaviorSubject<AverageResult>(null);
-    private _currentSellingAverage = new BehaviorSubject<AverageResult>(null);
+    private _currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
+    private _currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
 
 
     get currentImageUploaded(){
@@ -1657,20 +1657,20 @@ Buyingdashboard() {
     }).then((response) => {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
-            const BuyingAverageResultErr = new AverageResult(500, "You do not have any ratings as yet");
+            const BuyingAverageResultErr = new BuyingAverageResult(500, "You do not have any ratings as yet");
             this._currentBuyingAverage.next(BuyingAverageResultErr);
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
-            const BuyingAveragesuccessResult = new AverageResult(200, result.average);
+            const BuyingAveragesuccessResult = new BuyingAverageResult(200, result.average);
             this._currentBuyingAverage.next(BuyingAveragesuccessResult);   
         } else {
-            const BuyingAveragesuccessResult = new AverageResult(responseCode,response.content.toString());
+            const BuyingAveragesuccessResult = new BuyingAverageResult(responseCode,response.content.toString());
             this._currentBuyingAverage.next(BuyingAveragesuccessResult); 
         }
     }, (e) => {
 
-        const BuyingAveragesuccessResult = new AverageResult(400, "An Error has been recieved, please contact support.");
+        const BuyingAveragesuccessResult = new BuyingAverageResult(400, "An Error has been recieved, please contact support.");
             this._currentBuyingAverage.next(BuyingAveragesuccessResult); 
     });
 }
@@ -1686,20 +1686,20 @@ Sellingdashboard() {
     }).then((response) => {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
-            const SellingAverageResultErr = new AverageResult(500, "You do not have any ratings as yet");
+            const SellingAverageResultErr = new SellingAverageResult(500, "You do not have any ratings as yet");
             this._currentSellingAverage.next(SellingAverageResultErr);
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
-            const SellingAveragesuccessResult = new AverageResult(200, result.average);
+            const SellingAveragesuccessResult = new SellingAverageResult(200, result.average);
             this._currentSellingAverage.next(SellingAveragesuccessResult);   
         } else {
-            const SellingAveragesuccessResult = new AverageResult(responseCode,response.content.toString());
+            const SellingAveragesuccessResult = new SellingAverageResult(responseCode,response.content.toString());
             this._currentSellingAverage.next(SellingAveragesuccessResult); 
         }
     }, (e) => {
 
-        const SellingAveragesuccessResult = new AverageResult(400, "An Error has been recieved, please contact support.");
+        const SellingAveragesuccessResult = new SellingAverageResult(400, "An Error has been recieved, please contact support.");
             this._currentSellingAverage.next(SellingAveragesuccessResult); 
     });
 }
@@ -1725,8 +1725,8 @@ clearMessages(){
 }
 
 clearAverage(){
-    this._currentBuyingAverage = new BehaviorSubject<AverageResult>(null);
-    this._currentSellingAverage = new BehaviorSubject<AverageResult>(null);
+    this._currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
+    this._currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
 }
 
 }

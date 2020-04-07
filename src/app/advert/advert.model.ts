@@ -442,12 +442,19 @@ export class OutstandingRatingResult {
     ){}
 }
 
-export class AverageResult {
+export class BuyingAverageResult {
     constructor(
         public responseStatusCode : number,
         public average : string
     ){}
 }
+export class SellingAverageResult {
+    constructor(
+        public responseStatusCode : number,
+        public average : string
+    ){}
+}
+
 
 
 
