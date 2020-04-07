@@ -129,6 +129,7 @@ export class UpdateuserComponent implements OnInit {
                 this.getuser = userResult
                 if(this.getuser.responseStatusCode === 200){
                     this.userFound = true;
+                    console.log(this.getuser);
                 } else {
                     TNSFancyAlert.showError("Data Retrieval", "Unable to retrieve data.");
                  }
@@ -149,11 +150,20 @@ export class UpdateuserComponent implements OnInit {
             });      
     }
 
+    onPassword(): void {
+        this.router.navigate(['/newpassword'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+
+    }
 
     onUpdateUser() {
-
-
-
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();

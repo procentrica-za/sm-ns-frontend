@@ -45,6 +45,7 @@ export class GetUserResult {
         public Surname:     string,
         public Email:       string,
         public Institutionname: string,
+        public AdsRemaining: string,
         public Message:     string,
         public GotUser:     boolean, 
     ){}

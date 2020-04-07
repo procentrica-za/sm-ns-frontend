@@ -52,8 +52,10 @@ export class RatingComponent implements OnInit, OnDestroy {
             }
         );
 
-
-        this.advertServ.Sellingdashboard();
+        setTimeout(() =>{
+            //Call the service with captured information
+            this.advertServ.Sellingdashboard();
+        },100);
         this.sellingaverageResultSub = this.advertServ.currentSellingAverage.subscribe(
             sellingresult => {
                 if(sellingresult){
