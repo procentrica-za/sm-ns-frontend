@@ -29,10 +29,12 @@ export class NewpasswordComponent implements OnInit {
 
     //form
     form: FormGroup;
+    currentpasswordControlIsValid = true;
     password1ControlIsValid = true;
     passwordControlIsValid = true;
     isLoading = false;
  
+    @ViewChild('currentpasswordEl', {static:false}) currentpasswordEl: ElementRef<TextField>;
     @ViewChild('password1El', {static:false}) password1El: ElementRef<TextField>;
     @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
 
@@ -43,6 +45,15 @@ export class NewpasswordComponent implements OnInit {
     ngOnInit() {
 //form controls
         this.form = new FormGroup({
+            currentpassword: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
             password1: new FormControl(
                 null,
                 {
@@ -61,6 +72,9 @@ export class NewpasswordComponent implements OnInit {
                     ]
                 }
             )
+        });
+        this.form.get('currentpassword').statusChanges.subscribe(status => {
+            this.currentpasswordControlIsValid = status === 'VALID';
         });
         this.form.get('password1').statusChanges.subscribe(status => {
             this.password1ControlIsValid = status === 'VALID';
@@ -89,12 +103,13 @@ export class NewpasswordComponent implements OnInit {
                            }
                        });
                     });
-                    } else if(this.update.responseStatusCode === 500) {
-                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
-                        this.authServ.clearUserDetails();
                     }
-                    else if(this.update.responseStatusCode === 400) {
-                        TNSFancyAlert.showError("Connection error", this.update.Message, "Dismiss");
+                     else if(this.update.responseStatusCode === 200 && this.update.PasswordUpdated === false) {
+                        TNSFancyAlert.showError("Password Error", this.update.Message, "Dismiss");
+                        
+                    }
+                    else if(this.update.responseStatusCode === 500) {
+                        TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
                         this.authServ.clearUserDetails();
                     }
                     else {
@@ -141,6 +156,7 @@ ngOnDestroy() {
     }
 
     onUpdatePassword() {
+         this.currentpasswordEl.nativeElement.focus();
         this.password1El.nativeElement.focus();
         this.passwordEl.nativeElement.focus();
         this.passwordEl.nativeElement.dismissSoftInput();
@@ -151,7 +167,7 @@ ngOnDestroy() {
             return;
         }
         const id = appSettings.getString("userid");
-        const password1 = this.form.get('password1').value;
+        const currentpassword = this.form.get('currentpassword').value;
         const password = this.form.get('password').value;
 
 
@@ -163,7 +179,7 @@ ngOnDestroy() {
         //Timeout to give loading bar time to appear
         setTimeout(() =>{
             //Update Password
-            this.authServ.UpdatePassword(id, password);
+            this.authServ.UpdatePassword(id, currentpassword, password);
         },100);
              }
     }

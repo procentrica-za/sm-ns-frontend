@@ -29,6 +29,7 @@ import { BuyerratingsComponent } from "./advert/buyerratings/buyerratings.compon
 import { SellerratingsComponent } from "./advert/sellerratings/sellerratings.component";
 import { RatebuyerHomeComponent } from "./advert/ratebuyer-home/ratebuyer-home.component";
 import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
+import { RatingComponent } from "./advert/rating/rating.component";
 
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
@@ -67,7 +68,8 @@ import { InstitutionListPickerComponent } from "././auth/institution-listpicker/
         SellerratingsComponent,
         RatebuyerHomeComponent,
         RatebuyerComponent,
-        InstitutionListPickerComponent
+        InstitutionListPickerComponent,
+        RatingComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

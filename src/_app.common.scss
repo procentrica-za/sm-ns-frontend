@@ -147,7 +147,7 @@ ActionBar {
 }
 
 .btn-sidedrawer-message {
-    width: 85%;
+    width: 92%;
     height: 9%;
     border-bottom-style: solid;
     border-left-color: transparent;
@@ -610,7 +610,7 @@ ActionBar {
     font-weight: 100;
     font-size: 20em;
     color: $secondary;
-    width: 17%;
+    width: 8%;
     height: 9%;
     border-bottom-style: solid;
     border-left-color: transparent;
@@ -618,10 +618,7 @@ ActionBar {
     z-index: 0;
     border-bottom-width: 1;
     border-bottom-color: white;
-    padding-top: 15%;
-    padding-left: 8;
-    
-
+    padding-top: 15%; 
 }
 
 .Deletechat {
@@ -666,7 +663,7 @@ ActionBar {
   
 }
 
-.Sidedrawer {
+.Sidedrawer { 
     flex-direction: column;
     justify-content: center;
     align-items: center; 
@@ -676,7 +673,7 @@ ActionBar {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
     font-size: 20em;
-    width: 17%;
+    width: 8%;
     height: 9%;
     border-bottom-style: solid;
     border-left-color: transparent;
@@ -685,5 +682,127 @@ ActionBar {
     border-bottom-width: 1;
     border-bottom-color: white;
     padding-top: 15%;
-    padding-left: 8;
 }
+
+.AverageLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 50em;
+    color: $secondary;
+    margin-left: 25%;
+  
+}
+.BuyingAverage {
+   
+    font-weight: 500;
+    font-size: 13em;
+    color: $primary;
+    margin-left: 12%;
+    margin-top: 10%;
+  
+}
+
+.PreviousLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 50em;
+    color: $secondary;
+    margin-left: 35%;
+    margin-top: 10%;
+  
+}
+
+.Previous {
+   
+    font-weight: 500;
+    font-size: 13em;
+    color: $primary;
+    margin-left: 5%;
+    margin-top: 10%;
+  
+}
+
+.PreviousSold {
+   
+    font-weight: 500;
+    font-size: 13em;
+    color: $primary;
+    margin-left: 10%;
+    margin-top: 10%;
+  
+}
+
+.Outstanding {
+   
+    font-weight: 500;
+    font-size: 13em;
+    color: $primary;
+    margin-left: 14%;
+    margin-top: 10%;
+  
+}
+.Ratingdashboard {
+margin-left: 29%;
+font-weight: 500;
+font-size: 50em;
+color: $secondary;
+}
+
+.GridLayoutBuyerRatingdash {
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightblue;
+    border-color: #efeeee;
+    border-radius: 5;
+    margin-bottom: 68%;
+    margin-left: 3%;
+    margin-right:52%;
+    margin-top: 7%;
+} 
+.GridLayoutSellerRatingdash {
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightblue;
+    border-color: #efeeee;
+    border-radius: 5;
+    margin-bottom: 68%;
+    margin-left: 52%;
+    margin-right:3%;
+    margin-top: 7%;
+} 
+
+.GridLayoutPreviousBought {
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightblue;
+    border-color: #efeeee;
+    border-radius: 5;
+    margin-left: 3%;
+    margin-right:52%;
+    margin-top: 29%;
+    margin-bottom: 46%;
+} 
+
+.GridLayoutPreviousSold {
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightblue;
+    border-color: #efeeee;
+    border-radius: 5;
+    margin-left: 52%;
+    margin-right:3%;
+    margin-top: 29%;
+    margin-bottom: 46%;
+} 
+
+.GridLayoutOutstanding {
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightblue;
+    border-color: #efeeee;
+    border-radius: 5;
+    margin-left: 25%;
+    margin-right:25%;
+    margin-top: 51%;
+    margin-bottom: 24%;
+} 

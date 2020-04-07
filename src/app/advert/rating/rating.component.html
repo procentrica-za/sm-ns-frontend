@@ -1,0 +1,27 @@
+<ns-action-bar [actionBarTitle]="'Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout orientation="horizontal" class ="MessagesStack">
+</StackLayout>
+<Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutBuyerRatingdash" shadow="6" >
+    <Label row="0" col="0" class="Ratingdashboard" [text]="buyingaverage.average" *ngIf="buyingFound" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Average from Buying" class="BuyingAverage" textWrap="true"  ></Label>  
+</Gridlayout>
+
+<Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutSellerRatingdash" shadow="6" >
+    <Label row="0" col="0" class="Ratingdashboard" [text]="sellingaverage.average" *ngIf="sellingFound" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Average from Selling" class="BuyingAverage" textWrap="true"  ></Label>  
+</Gridlayout>
+
+<Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutPreviousBought" shadow="6" >
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onBuyerRatings()" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Previous Bought Ratings" class="Previous"(tap)="onBuyerRatings()" textWrap="true"  ></Label>  
+</Gridlayout>
+
+<Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutPreviousSold" shadow="6" >
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onSellerRatings()" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Previous Sold Ratings" class="PreviousSold"(tap)="onSellerRatings()" textWrap="true"  ></Label>  
+</Gridlayout>
+
+<Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutOutstanding" shadow="6" >
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf0cb;" class="PreviousLabel"(tap)="onOutstandingRatings()" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Outstanding Ratings" class="Outstanding"(tap)="onOutstandingRatings()" textWrap="true"  ></Label>  
+</Gridlayout>

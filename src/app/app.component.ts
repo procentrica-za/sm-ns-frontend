@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
         private advertServ: AdvertService){}
 
     ngOnInit(){
-
+ 
         this.unreadchatsResultSub = this.advertServ.currentUnreadMessages.subscribe(
             unreadchatsresult => {
                 if(unreadchatsresult){
@@ -126,11 +126,6 @@ export class AppComponent implements OnInit{
         
     }
 
-    PasswordUpdate(){
-        this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['/newpassword']);
-        
-    }
 
     Messagehome(){
         this.drawerComponent.sideDrawer.closeDrawer();
@@ -140,21 +135,10 @@ export class AppComponent implements OnInit{
 
     Ratinghome(){
         this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['ratinghome']);
+        this.router.navigate(['/rating']);
        
     }
 
-    Buyerhome(){
-        this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['buyerrating']);
-        
-    }
-    
-    Sellerhome(){
-        this.drawerComponent.sideDrawer.closeDrawer();
-        this.router.navigate(['sellerrating']);
-    
-    }
 
     logOut() {
         this.drawerComponent.sideDrawer.closeDrawer();
