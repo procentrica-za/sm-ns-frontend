@@ -122,8 +122,9 @@ export class UpdateAdvertComponent implements OnInit, OnDestroy {
     }
 
     async onUpdateTap(){
-        this.priceEl.nativeElement.focus();
         this.descriptionEl.nativeElement.focus();
+        this.priceEl.nativeElement.focus();
+        
 
         if(!this.form.valid){
             return;

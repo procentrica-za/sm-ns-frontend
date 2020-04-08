@@ -176,7 +176,18 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                 }
             }
         );
-        this.advertServ.initializeAdvertisements(this.isSelling);
+        var instType : string;
+        instType = appSettings.getString("defaultInstitution")
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
+        
+        this.advertServ.initializeAdvertisements(true, instType);
 
 
     }

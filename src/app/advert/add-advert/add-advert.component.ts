@@ -31,7 +31,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
     public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType; advertPostedLoading : boolean;
-    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; yearTypeBind; venueTypeBind; noteTypeBind; termTypeBind; moduleCodeTypeBindTutor; moduleCodeTypeBindNote; myImg; base64ImageString: string;
+    public advertType; accomodationType; institutionType; acdTypeBind; instTypeBind; yearTypeBind; venueTypeBind; noteTypeBind; termTypeBind; moduleCodeTypeBindTutor; moduleCodeTypeBindNote; myImg; base64ImageString; defaultInstition: string;
     public advertPostedSub; textbookSub; imageUploadedSub : Subscription;
     public addTextbook : Textbook;
     private advertPosted: AddAdvertisementResult;
@@ -39,7 +39,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     
 
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
-        
+        this.defaultInstition = appSettings.getString("defaultInstitution");
         this.TextbookType = false;
         this.myImg = "";
         this.acdTypeBind = "";
@@ -411,7 +411,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 //console.log("Hello There TXB");;
                 setTimeout(() =>{
                     //Call the service with captured information
-                    this.advertServ.AddNewTextbookAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, this.addTextbook.ID);
+                    this.advertServ.AddNewTextbookAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, this.defaultInstition, this.addTextbook.ID);
                 },100);
         
                 await this.delay(1000);
@@ -464,7 +464,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
 
                 setTimeout(() =>{
                     //Call the service with captured information
-                    this.advertServ.AddNewTutorAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, subject, yearType,venueType,noteType,termType,moduleCodeTutorType);
+                    this.advertServ.AddNewTutorAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, this.defaultInstition, entityID, subject, yearType,venueType,noteType,termType,moduleCodeTutorType);
                 },100);
         
                 await this.delay(1000);
@@ -500,7 +500,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
 
                 setTimeout(() =>{
                     //Call the service with captured information
-                    this.advertServ.AddNewNoteAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, entityID, moduleCodeNoteType);
+                    this.advertServ.AddNewNoteAdvertisement(userid, this.isSelling.toString(), this.advertType, price, description, this.defaultInstition, entityID, moduleCodeNoteType);
                 },100);
         
                 await this.delay(1000);

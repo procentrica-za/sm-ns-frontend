@@ -12,7 +12,7 @@ import { TextbookResult,
          StartChatResult,
          DeleteAdvertisementResult} from '../advert.model';
 import { Subscription } from "rxjs";
-import { TNSFancyAlert } from "nativescript-fancyalert";
+import { TNSFancyAlert, TNSFancyAlertButton } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 
 import * as appSettings from "tns-core-modules/application-settings";
@@ -307,9 +307,17 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         });
         this.notrated = false;
     }
-    deleteAdvertisement(advertisementID: string){
-        this.advertServ.deleteAdvertisement(advertisementID);
 
+    delay(ms: number) { 
+        return new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired")); 
+    }
+
+    async deleteAdvertisement(advertisementID: string){
+        TNSFancyAlert.showColorDialog("Delete Confirmation", "Are you sure you want to delete this advertisement?","Yes","No").then( t =>  {
+            this.advertServ.deleteAdvertisement(advertisementID);
+        })
+
+        await this.delay(1000);
         this.deleteAdvertisementResultSub = this.advertServ.currentDeleteAdvertisementResult.subscribe(
             advert => {
                 if(advert){
@@ -326,17 +334,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                                     curve: "ease"  
                                 }
                             }
-                            /*this.router.navigate(['/advert/myadverts'],
-                                {
-                                    animated: true,
-                                    transition: {
-                                        name: "slide",
-                                        duration: 200,
-                                        curve: "ease"
-                                    }
-                                });*/
-                            }
-                        );
+                        });
                     }else{
                         TNSFancyAlert.showError("Error!", "Advertisement Could not be deleted \n" + this.deleteAdvertisementResult.message,"Close");
                     }
@@ -347,6 +345,8 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
         if(this.deleteAdvertisementResultSub){
             this.deleteAdvertisementResultSub.unsubscribe();
         }
+        
+       
         
     }
 
@@ -362,7 +362,7 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
                 duration: 200,
                 curve: "ease"
             }
-        });
+        }); 
     }
 
     ngOnDestroy() {
