@@ -90,7 +90,7 @@
         ></Label>
         <TextField
             class="input"
-            returnKeyType="next"
+            returnKeyType="done"
             required
             [autocorrect]="false"
             autocapitalizationType="none"
@@ -109,6 +109,7 @@
         (tap)="onInstitutionNameTap()"
         ></Label>
         <TextField
+        editable= "false" 
         [text]="institutionNameBind"
         (tap)="onInstitutionNameTap()"
         class="input"

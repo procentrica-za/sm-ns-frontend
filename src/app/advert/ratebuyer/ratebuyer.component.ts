@@ -29,6 +29,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
     //result of user rating
     rateResultSub: Subscription;
     rate: RateBuyerResult;
+
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     onSliderValueChange(args) {
@@ -70,14 +71,26 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
  
                     if(this.rate.responseStatusCode === 200 && this.rate.buyerrated === true){
                         this.advertServ.clearRating();
-                       TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss").then( t => {
-                       dialogs.confirm({
-                        title: "Please Choose an action:",
-                        message: "Would you like to delete this Advertisement now?",
-                        okButtonText: "Yes",
-                        cancelButtonText: "No",
-                    }).then(result => {             
-                        if (result == true) {
+                        TNSFancyAlert.showSuccess("Rating Success", this.rate.message, "Dismiss").then( t => {
+
+                        this.router.back();
+                        this.router.back();
+
+                        TNSFancyAlert.showColorDialog(
+                            "Please Choose an action:",
+                            "Would you like to delete this Advertisement now?",
+                            "Yes",
+                            "No", 
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            ).then(result => { 
+                                    
+                         if (result == true) {
+                             
+                         }
+                         else {                       
                             const advertisementID = appSettings.getString("advertisementid");
                             this.advertServ.deleteAdvertisement(advertisementID)
                             this.router.navigate(['/advert/home'],
@@ -92,14 +105,10 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
                                 TNSFancyAlert.showSuccess("Success!", "Advertisement Successfully Deleted!", "Close");
                                });
                             
-                        }
-                        else {
-                            this.router.back();
-                            this.router.back();
-                            
-                        }
-                    });
-                    });
+                         }
+                     });
+                     });
+
                     } else if (this.rate.responseStatusCode === 500 ){
                         this.advertServ.clearRating();
                         TNSFancyAlert.showError("Error Rating", this.rate.message, "Dismiss");
@@ -140,7 +149,7 @@ export class RatebuyerComponent implements OnInit, OnDestroy {
 
     
 //Send message function
-    onRateBuyer(args :ListViewEventData): void {
+    onRateBuyer(args :ListViewEventData): void { 
         this.buyerratingEl.nativeElement.focus();
         this.buyercommentsEl.nativeElement.focus();
         this.buyercommentsEl.nativeElement.dismissSoftInput();

@@ -91,6 +91,7 @@
         (tap)="onInstitutionNameTap()"
         ></Label>
         <TextField
+        editable= "false" 
         [text]="institutionNameBind" *ngIf="userFound"
         [text]="getuser.Institutionname"
         (tap)="onInstitutionNameTap()"
