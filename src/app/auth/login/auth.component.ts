@@ -101,6 +101,7 @@ export class AuthComponent implements OnInit, OnDestroy {
                         if(this.login.loginUser.id != ""){
                             //Save user details and rememberme info
                             appSettings.setString("userid", this.login.loginUser.id);
+                            appSettings.setString("defaultInstitution", this.login.loginUser.defaultInstitution);
                             //Save username for messaging purposes
                             appSettings.setString("username", this.login.loginUser.username);
                             appSettings.setBoolean("rememberme", this.rememberMe);

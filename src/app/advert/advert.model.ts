@@ -102,6 +102,7 @@ export class TextbookResult {
         public edition : string,
         public quality : string,
         public author : string,
+        public institution: string,
         public imagebytes : string
     ){}
 }
@@ -154,6 +155,7 @@ export class TutorResult {
         public notesincluded : string,
         public terms: string,
         public modulecode: string,
+        public institution: string,
         public imagebytes : string
     ){}
 }
@@ -176,6 +178,7 @@ export class NoteResult {
         public description : string,
         public noteid : string,
         public modulecode: string,
+        public institution: string,
         public imagebytes : string
     ){}
 }

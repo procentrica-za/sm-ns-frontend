@@ -44,8 +44,6 @@
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
                     <StackLayout row="0" col="1" orientation="horizontal">
-                        <Label *ngIf="accomodation"  [text]="accomodation.accomodationtypecode" textWrap="true" class="GridLayoutLabelHeading" ></Label>
-                        <Label *ngIf="accomodation"  text="-" textWrap="true" class="GridLayoutLabelHeading" ></Label>
                         <Label *ngIf="accomodation"  [text]="accomodation.location" textWrap="true" class="GridLayoutLabelHeading" ></Label>
                     </StackLayout>
                     <ScrollView row="1" col="1">

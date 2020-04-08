@@ -44,13 +44,6 @@
         <Button *ngIf="!noFilterResults" text="Confirm" (tap)="onModuleTap()" class="btn btn-primary btn-rounded-lg"></Button>
     </StackLayout>
 
-    
-
-    <StackLayout>
-        <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="!alltextbooksLoaded">
-            <ActivityIndicator [busy]="!alltextbooksLoaded"></ActivityIndicator>
-        </FlexboxLayout>
-    
     <StackLayout *ngIf="alltextbooksLoaded">
         <SearchBar hint="Search..."
             [text]="textbookSearch" (submit)="onTextbookSearchSubmit($event)" (clear)="onTextbookClear($event)">
@@ -77,7 +70,7 @@
         </RadListView>
         
     </StackLayout>
-</StackLayout>
+
 
     
 </StackLayout>

@@ -34,6 +34,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     public textbookFilter; accomodationFilter; tutorFilter; noteFilter; isSelling : boolean;
 
     constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef){
+        this.instTypeBind = appSettings.getString("defaultInstitution");
         this.textbookFilter = false;
         this.accomodationFilter = false;
         this.tutorFilter = false;
@@ -255,8 +256,9 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
             this.authorEl.nativeElement.focus();
             this.moduleCodeEl.nativeElement.focus();
             this.priceEl.nativeElement.focus();
+            this.instTypeEl.nativeElement.focus();
 
-
+            var instType = this.form.get("instType").value;
             var name = this.form.get('name').value;
             var edition = this.form.get('edition').value;
             var quality = this.form.get('quality').value;
@@ -282,8 +284,20 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
             if(price == null || !price){
                 price = 999999;
             }
+            if(instType == null || !instType){
+                instType = "";
+            }
  
-            this.advertServ.initializeTextbooks(this.isSelling,price,code,name,edition,quality,author);
+            switch(instType){
+                case "University of Pretoria":
+                    instType = "Pretoria";
+                    break;
+                case "University of Johannesburg":
+                    instType = "Johannesburg";
+                    break;
+            }
+
+            this.advertServ.initializeTextbooks(instType,this.isSelling,price,code,name,edition,quality,author);
             
             await this.delay(1500);
 
@@ -308,7 +322,21 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     }
 
     async onTextbookCancelTap(){
-        this.advertServ.initializeTextbooks(true,999999,"","","","","");
+        this.instTypeEl.nativeElement.focus();
+
+        var instType = this.instTypeBind;
+        if(instType == null || !instType){
+            instType = "";
+        }
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
+        this.advertServ.initializeTextbooks(instType,true,999999,"","","","","");
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -361,7 +389,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeAccomodation(this.isSelling,price,acdType,"",distance,instType);
+        this.advertServ.initializeAccomodation(instType,this.isSelling,price,acdType,"",distance);
         
         await this.delay(1500);
 
@@ -387,7 +415,21 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     }
 
     async onAccomodationCancelTap(){
-        this.advertServ.initializeAccomodation(true,999999,"","",999999,"",);
+        this.instTypeEl.nativeElement.focus();
+
+        var instType = this.instTypeBind;
+        if(instType == null || !instType){
+            instType = "";
+        }
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
+        this.advertServ.initializeAccomodation(instType,true,999999,"","",999999);
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -399,7 +441,8 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         this.noteTypeEl.nativeElement.focus();
         this.moduleCodeEl.nativeElement.focus();
         this.priceEl.nativeElement.focus();
-
+        this.instTypeEl.nativeElement.focus();
+        var instType = this.form.get("instType").value;
         var subject = this.form.get('subject').value;
         var term = this.form.get('termType').value;
         var venue = this.form.get('venueType').value;
@@ -426,6 +469,9 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         if(price == null || !price){
             price = 999999;
         }
+        if(instType == null || !instType){
+            instType = "";
+        }
 
         if(note == "Yes"){
             note = "true";
@@ -433,16 +479,16 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
             note = "false";
         }
 
-        console.log(this.isSelling)
-        console.log(price)
-        console.log(subject)
-        console.log("")
-        console.log(venue)
-        console.log(note)
-        console.log(term)
-        console.log(code)
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
 
-        this.advertServ.initializeTutors(this.isSelling,price,subject,"",venue,note,term,code);
+        this.advertServ.initializeTutors(instType, this.isSelling,price,subject,"",venue,note,term,code);
         
         await this.delay(1500);
 
@@ -467,7 +513,21 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     }
 
     async onTutorCancelTap(){
-        this.advertServ.initializeTutors(true,999999,"","","","","","");
+        this.instTypeEl.nativeElement.focus();
+
+        var instType = this.instTypeBind;
+        if(instType == null || !instType){
+            instType = "";
+        }
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
+        this.advertServ.initializeTutors(instType,true,999999,"","","","","","");
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -477,10 +537,10 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
        
         this.moduleCodeEl.nativeElement.focus();
         this.priceEl.nativeElement.focus();
-
+        this.instTypeEl.nativeElement.focus();
         var code = this.form.get('moduleCode').value;
         var price = this.form.get('price').value;
-
+        var instType = this.form.get("instType").value;
 
         if(code == null || !code){
             code = "";
@@ -488,14 +548,20 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         if(price == null || !price){
             price = 999999;
         }
+        if(instType == null || !instType){
+            instType = "";
+        }
 
-       
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
 
-        console.log(this.isSelling)
-        console.log(price)
-        console.log(code)
-
-        this.advertServ.initializeNotes(this.isSelling,price,code)
+        this.advertServ.initializeNotes(instType,this.isSelling,price,code)
         
         await this.delay(1500);
 
@@ -520,7 +586,22 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     }
 
     async onNoteCancelTap(){
-        this.advertServ.initializeNotes(true,999999,"");
+        this.instTypeEl.nativeElement.focus();
+
+        var instType = this.instTypeBind;
+        console.log(instType);
+        if(instType == null || !instType){
+            instType = "";
+        }
+        switch(instType){
+            case "University of Pretoria":
+                instType = "Pretoria";
+                break;
+            case "University of Johannesburg":
+                instType = "Johannesburg";
+                break;
+        }
+        this.advertServ.initializeNotes(instType,true,999999,"");
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }

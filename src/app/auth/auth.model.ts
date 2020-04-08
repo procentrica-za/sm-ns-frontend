@@ -10,7 +10,8 @@ export class LoginUser {
     constructor (
         public id: string,
         public username: string,
-        public loggedIn: boolean,
+        public defaultInstitution: string,
+        public loggedIn: boolean
     ){}
 }
 

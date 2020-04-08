@@ -100,6 +100,7 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
                 );
                 break;  
             case "TextbookType":
+                this.alltextbooksLoaded  = true;
                 this.advertServ.initializeAddTextbookList();
                 this.textbookListSub= this.advertServ.currentAddTextbookList.subscribe(
                     textbookResult => {

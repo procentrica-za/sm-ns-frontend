@@ -328,10 +328,10 @@ export class AdvertService {
     }
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.174:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.174:9955");
-        setString("sm-service-messages-host", "http://192.168.1.174:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.56:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.56:9955");
+        setString("sm-service-messages-host", "http://192.168.1.56:9956");
     }
     
     initializeModuleCodeList(){
@@ -458,15 +458,14 @@ export class AdvertService {
         });
     }
 
-    AddNewTextbookAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string){
+    AddNewTextbookAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string){
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
-        console.log(reqUrl);
        
         request ({
             url: reqUrl,
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+            content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -490,7 +489,6 @@ export class AdvertService {
 
     AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/accomodation" ;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
@@ -517,7 +515,7 @@ export class AdvertService {
                     url: reqUrl,
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description }),
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description, institution: instName }),
                     timeout: 5000
                 }).then((response) => {
                     const responseCode = response.statusCode;
@@ -560,9 +558,8 @@ export class AdvertService {
 
    
 
-    AddNewTutorAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string, subject: string, yearcompleted: string, venue: string, notesincluded: string, terms: string, moduleCode: string) {
+    AddNewTutorAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string, subject: string, yearcompleted: string, venue: string, notesincluded: string, terms: string, moduleCode: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/tutor" ;
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
@@ -583,13 +580,13 @@ export class AdvertService {
                 ==================================================================================================
                 ================================================================================================*/
                 const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
-                console.log(reqUrl);
-               
+                //console.log(reqUrl);
+                //console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }))
                 request ({
                     url: reqUrl,
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
                     timeout: 5000
                 }).then((response) => {
                     const responseCode = response.statusCode;
@@ -630,9 +627,9 @@ export class AdvertService {
 
 
 
-    AddNewNoteAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, entityID: string, moduleCode: string) {
+    AddNewNoteAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string, moduleCode: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/note" ;
-        console.log(reqUrl);
+        //console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
@@ -653,13 +650,13 @@ export class AdvertService {
                 ==================================================================================================
                 ================================================================================================*/
                 const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
-                console.log(reqUrl);
-               
+                //console.log(reqUrl);
+                //console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }));
                 request ({
                     url: reqUrl,
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description }),
+                    content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
                     timeout: 5000
                 }).then((response) => {
                     const responseCode = response.statusCode;
@@ -728,11 +725,11 @@ export class AdvertService {
         });
     }
 
-    initializeAdvertisements(isSelling: boolean){
-        this.initializeTextbooks(isSelling,9999999,"","","","","");
-        this.initializeAccomodation(isSelling, 999999, "", "", 999999, "");
-        this.initializeTutors(isSelling, 999999, "", "", "", "", "", "");
-        this.initializeNotes(isSelling, 999999, "");
+    initializeAdvertisements(isSelling: boolean, defaultInstitution: string){
+        this.initializeTextbooks(defaultInstitution,isSelling,9999999,"","","","","");
+        this.initializeAccomodation(defaultInstitution,isSelling, 999999, "", "", 999999);
+        this.initializeTutors(defaultInstitution,isSelling, 999999, "", "", "", "", "", "");
+        this.initializeNotes(defaultInstitution,isSelling, 999999, "");
     }
 
     initializeUserAdvertisements(userID: string, isSelling: boolean){
@@ -750,9 +747,10 @@ export class AdvertService {
     }
 
     
-    initializeTextbooks(isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string) {
+    initializeTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling +
-        "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter ;
+        "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter + "&institution=" + institution ;
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
@@ -760,7 +758,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null);
+                const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null, null);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let textbookList: TextbookResult[] = [];
@@ -784,7 +782,7 @@ export class AdvertService {
         return null;
     }
 
-    initializeAccomodation(isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number, instNameFilter: string) {
+    initializeAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number) {
         
         
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter +
@@ -837,9 +835,10 @@ export class AdvertService {
     
     
 
-    initializeTutors(isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string ) {
+    initializeTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string ) {
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter +
-        "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&yearcompleted=" + yearCompletedFilter + "&venue=" + venueFilter + "&notes=" + notesincludedFilter + "&terms=" + termsFilter;
+        "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&yearcompleted=" + yearCompletedFilter + "&venue=" + venueFilter + "&notes=" +
+        notesincludedFilter + "&terms=" + termsFilter + "&institution=" + institution;
         console.log(reqUrl);
         request ({
             url: reqUrl,
@@ -848,7 +847,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null);
+                const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let tutorList: TutorResult[] = [];
@@ -871,8 +870,8 @@ export class AdvertService {
         return null;
     }
 
-    initializeNotes(isSelling: boolean, priceFilter: number, modulecodeFilter : string) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter;
+    initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution;
         request ({
             url: reqUrl,
             method: "GET",
@@ -880,7 +879,7 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null);
+                const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let noteList: NoteResult[] = [];

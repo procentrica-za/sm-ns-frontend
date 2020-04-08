@@ -3,6 +3,25 @@
         <Label text="Filters" class="label1"></Label>
     </StackLayout>
     <StackLayout *ngIf="textbookFilter" class="input-field">
+
+        <StackLayout class="input-field">
+            <Label
+            class="label"
+            text="Institution"
+            (tap)="onInstitutionTypeTap()"
+            ></Label>
+            <TextField
+            [text]="instTypeBind"
+            (tap)="onInstitutionTypeTap()"
+            class="input"
+            returnKeyType="done"
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="instType"
+            #instTypeEl
+            ></TextField>
+        </StackLayout>  
+
         <StackLayout class="input-field">
             <Label
                 class="label"
@@ -116,6 +135,24 @@
         <StackLayout class="input-field">
             <Label
             class="label"
+            text="Institution"
+            (tap)="onInstitutionTypeTap()"
+            ></Label>
+            <TextField
+            [text]="instTypeBind"
+            (tap)="onInstitutionTypeTap()"
+            class="input"
+            returnKeyType="done"
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="instType"
+            #instTypeEl
+            ></TextField>
+        </StackLayout>  
+
+        <StackLayout class="input-field">
+            <Label
+            class="label"
             text="Accomodation Type"
             (tap)="onAccomodationTypeTap()"
             ></Label>
@@ -131,23 +168,6 @@
             ></TextField>
         </StackLayout>
 
-        <StackLayout class="input-field">
-            <Label
-            class="label"
-            text="Institution"
-            (tap)="onInstitutionTypeTap()"
-            ></Label>
-            <TextField
-            [text]="instTypeBind"
-            (tap)="onInstitutionTypeTap()"
-            class="input"
-            returnKeyType="done"
-            [autocorrect]="false"
-            autocapitalizationType="none"
-            formControlName="instType"
-            #instTypeEl
-            ></TextField>
-        </StackLayout>  
         <StackLayout class="input-field">
             <Label
                 class="label"
@@ -192,6 +212,24 @@
 
 
     <StackLayout *ngIf="tutorFilter" class="input-field">
+
+        <StackLayout class="input-field">
+            <Label
+            class="label"
+            text="Institution"
+            (tap)="onInstitutionTypeTap()"
+            ></Label>
+            <TextField
+            [text]="instTypeBind"
+            (tap)="onInstitutionTypeTap()"
+            class="input"
+            returnKeyType="done"
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="instType"
+            #instTypeEl
+            ></TextField>
+        </StackLayout>  
 
         <StackLayout class="input-field" >
             <Label
@@ -318,6 +356,25 @@
 
 
     <StackLayout *ngIf="noteFilter" class="input-field">
+
+        <StackLayout class="input-field">
+            <Label
+            class="label"
+            text="Institution"
+            (tap)="onInstitutionTypeTap()"
+            ></Label>
+            <TextField
+            [text]="instTypeBind"
+            (tap)="onInstitutionTypeTap()"
+            class="input"
+            returnKeyType="done"
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="instType"
+            #instTypeEl
+            ></TextField>
+        </StackLayout>  
+
         <StackLayout class="input-field" >
             <Label
             class="label"

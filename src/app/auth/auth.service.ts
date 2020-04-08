@@ -54,7 +54,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.174:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.56:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -70,7 +70,7 @@ export class AuthService {
                 this._currentLogin.next(loginResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.userloggedin));
+                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin));
                 this._currentLogin.next(loginResult);                
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
@@ -80,6 +80,7 @@ export class AuthService {
             // TODO : Handle error
             console.log(e);
         });
+
     }
 
     ResetPassword(email: string) {

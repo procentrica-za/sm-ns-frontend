@@ -100,7 +100,6 @@ export class MyAdvertComponent implements OnInit, OnDestroy {
                         textbookResult.Textbooks.forEach( t => {
                             this.myTextbookArray.push(t);
                         });
-                        console.log(this.myTextbookArray);
                         this.textbookImagesLoaded = true;
                         if(this.textbookImagesLoaded && this.accomodationImagesLoaded && this.tutorImagesLoaded && this.noteImagesLoaded){
                             this.allImagesLoaded = true;
