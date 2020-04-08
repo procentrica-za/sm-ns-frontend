@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetBookResult} from './auth.model';
 
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
@@ -18,6 +18,8 @@ export class AuthService {
     private _currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
     private _currentInstitutionName = new BehaviorSubject<InstitutionName>(null);
     private _currentInstitutionNameList = new BehaviorSubject<InstitutionNameList>(null);
+
+    private _currentGetBook = new BehaviorSubject<GetBookResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -49,6 +51,10 @@ export class AuthService {
 
     get currentInstitutionNameList(){
         return this._currentInstitutionNameList.asObservable();
+    }
+
+    get currentGetBook() {
+        return this._currentGetBook.asObservable();
     }
    
 
@@ -250,6 +256,34 @@ export class AuthService {
             console.log(e);
         });
 
+    }
+
+    //Test for book ISBN
+    GetBook(isbn: string) {
+        const reqUrl = "https://api.altmetric.com/v1/isbn/" + isbn
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getbookResultErr = new GetBookResult(500, "00000000-0000-0000-0000-000000000000");
+                this._currentGetBook.next(getbookResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getbookResult = new GetBookResult(200, result.title);
+                this._currentGetBook.next(getbookResult);                
+            } else {
+                const getbookResult = new GetBookResult(responseCode, '00000000-0000-0000-0000-000000000000');
+                this._currentGetBook.next(getbookResult); 
+            }
+        }, (e) => {
+
+            const getbookResult = new GetBookResult(400, '00000000-0000-0000-0000-000000000000');
+            this._currentGetBook.next(getbookResult); 
+        });
     }
     
     //This method clears all results

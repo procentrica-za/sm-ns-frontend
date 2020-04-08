@@ -83,3 +83,10 @@ export class InstitutionNameList {
         public InstitutionNames : InstitutionName[]
     ){}
 }
+
+export class GetBookResult {
+    constructor(
+        public responseStatusCode : number,
+        public Title : string,
+    ){}
+}

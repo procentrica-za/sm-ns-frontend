@@ -4,10 +4,11 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
-import { RegisterResult } from "../auth.model";
+import { RegisterResult, GetBookResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { InstitutionListPickerComponent } from "../institution-listpicker/institution-listpicker.component";
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
+import { BarcodeScanner } from 'nativescript-barcodescanner';
 
 @Component({
     selector: 'ns-register',
@@ -17,32 +18,27 @@ import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
     form: FormGroup;
-    usernameControlIsValid = true;
-    passwordControlIsValid = true;
-    nameControlIsValid = true;
-    surnameControlIsValid = true;
-    emailControlIsValid = true;
+    isbnControlIsValid = true;
+    titleControlIsValid = true;
     isLoading = false;
     public institutionNameBind;
+    public Gotbook: boolean;
  
 
-    @ViewChild('passwordEl', {static:false}) passwordEl: ElementRef<TextField>;
-    @ViewChild('usernameEl', {static:false}) usernameEl: ElementRef<TextField>;
-    @ViewChild('nameEl', {static:false}) nameEl: ElementRef<TextField>;
-    @ViewChild('surnameEl', {static:false}) surnameEl: ElementRef<TextField>;
-    @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
-    @ViewChild('institutionnameEl', {static:false}) institutionnameEl: ElementRef<TextField>;
 
-    registerResultSub: Subscription;
-    register: RegisterResult;
+    @ViewChild('isbnEl', {static:false}) isbnEl: ElementRef<TextField>;
+    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
 
-    constructor(private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService,  private vcRef: ViewContainerRef) {
+    bookResultSub: Subscription;
+    book: GetBookResult;
+
+    constructor(private router: RouterExtensions, private authServ: AuthService, private barcodeScanner: BarcodeScanner) {
         this.institutionNameBind = "";
 
     }
     ngOnInit() {
         this.form = new FormGroup({
-            username: new FormControl(
+            isbn: new FormControl(
                 null,
                 {
                     updateOn: 'blur',
@@ -51,92 +47,33 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     ]
                 }
             ),
-            password: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required,
-                        Validators.minLength(6)
-                    ]
-                }
-            ),
-            name: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
-            surname: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
-            email: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
-            institutionname: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                   
-                }
-            )
-        });
-        this.form.get('username').statusChanges.subscribe(status => {
-            this.usernameControlIsValid = status === 'VALID';
-        });
-        this.form.get('password').statusChanges.subscribe(status => {
-            this.passwordControlIsValid = status === 'VALID';
-        });
-        this.form.get('name').statusChanges.subscribe(status => {
-            this.nameControlIsValid = status === 'VALID';
-        });
-        this.form.get('surname').statusChanges.subscribe(status => {
-            this.surnameControlIsValid = status === 'VALID';
-        });
-        this.form.get('email').statusChanges.subscribe(status => {
-            this.emailControlIsValid = status === 'VALID';
-        });
-        
-        this.registerResultSub = this.authServ.currentRegister.subscribe(
-            registerresult => {
-                if(registerresult){
-                    this.isLoading = false;
-                    this.register = registerresult;
- 
-                    if(this.register.responseStatusCode === 200 && this.register.UserCreated === "true"){
 
-                       TNSFancyAlert.showSuccess("Registration success", "You have sucessfully registered.", "Dismiss").then( t => {
-                        this.authServ.clearRegistration();
-                       this.router.navigate([''], {clearHistory: true});
-                       });
-                    } else if (this.register.responseStatusCode === 500){
-                        TNSFancyAlert.showError("Connection error", this.register.Message, "Dismiss");
+        });
+        this.form.get('isbn').statusChanges.subscribe(status => {
+            this.isbnControlIsValid = status === 'VALID';
+        });
+
+        
+        this.bookResultSub = this.authServ.currentGetBook.subscribe(
+            bookresult => {
+                if(bookresult){
+                    this.isLoading = false;
+                    this.book = bookresult;
+ 
+                    if(this.book.responseStatusCode === 200 && this.book.Title != ""){
+                        this.Gotbook = true;                  
+                       
+                    
+                    } else if (this.book.responseStatusCode === 200 && this.book.Title == ""){
+                        TNSFancyAlert.showError("No Book", "We unfortunately could not find the book you are looking for", "Dismiss");
                         this.authServ.clearRegistration();
                     }
-                    else if (this.register.responseStatusCode === 400){
-                        TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
+                    else if (this.book.responseStatusCode === 400){
+                        TNSFancyAlert.showError("Error", "this.book.Message", "Dismiss");
                         this.authServ.clearRegistration();
                     }
                     else {
-                        TNSFancyAlert.showError("Error", this.register.Message, "Dismiss");
+                        TNSFancyAlert.showError("Error", "this.book.Message", "Dismiss");
                         this.authServ.clearRegistration();
                     }
                     
@@ -145,48 +82,49 @@ export class RegisterComponent implements OnInit, OnDestroy {
         );
     }
 
-    onInstitutionNameTap(){
-        this.modalDialog.showModal(InstitutionListPickerComponent, {viewContainerRef: this.vcRef,
-            animated: true,
-            fullscreen: true,
-            context: {string: "ModuleCodeType" } }).then((selection:string) => {
-                this.institutionNameBind=selection;
-            });      
-    }
 
+    public onScan() {
+        this.barcodeScanner.scan({
+            formats: "QR_CODE, EAN_13",
+            showFlipCameraButton: true,   
+            preferFrontCamera: false,     
+            showTorchButton: true,        
+            beepOnScan: true,             
+            torchOn: false,               
+            resultDisplayDuration: 500,       
+            openSettingsIfPermissionWasPreviouslyDenied: true //ios only 
+        }).then((result) => {
+            alert({
+                title: "You Scanned ",
+                message: "Format: " + result.format + ",\nContent: " + result.text,
+                okButtonText: "OK"
+            });
+            }, (errorMessage) => {
+                console.log("Error when scanning " + errorMessage);
+            }
+        );
+    }
   
     onRegisterUser() {
-        this.usernameEl.nativeElement.focus();
-        this.passwordEl.nativeElement.focus();
-        this.nameEl.nativeElement.focus();
-        this.surnameEl.nativeElement.focus();
-        this.emailEl.nativeElement.focus();
-        this.institutionnameEl.nativeElement.focus();
-        this.institutionnameEl.nativeElement.dismissSoftInput();
-
+        this.hiddenEl.nativeElement.focus();
+        this.isbnEl.nativeElement.focus();
+        this.isbnEl.nativeElement.dismissSoftInput();
         
         if(!this.form.valid){
             return;
         }
-        const username = this.form.get('username').value;
-        const password = this.form.get('password').value;
-        const name = this.form.get('name').value;
-        const surname = this.form.get('surname').value;
-        const email = this.form.get('email').value;
-        //institutions
-        const institutionname = this.form.get('institutionname').value;
+        const isbn = this.form.get('isbn').value;
 
-        this.isLoading = true;
         //Timeout to give loading bar time to appear
-        setTimeout(() =>{
-            //Verify register Credentials
-            this.authServ.RegisterNewUser(username, password, name, surname, email, institutionname);
-        },100);
+        this.authServ.GetBook(isbn);
+            //Verify book Credentials
+            
+
     }
 
       ngOnDestroy() {
-        if(this.registerResultSub){
-            this.registerResultSub.unsubscribe();
+        if(this.bookResultSub){
+            this.bookResultSub.unsubscribe();
         }
     }
 }
