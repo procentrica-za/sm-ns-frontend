@@ -16,6 +16,7 @@ import * as dialogs from "tns-core-modules/ui/dialogs";
     moduleId: module.id
 })
 export class MessagingHomeComponent implements OnInit, OnDestroy {
+    
     userid = "";
     chatid = "";
     private activechatResultListSub: Subscription; 
@@ -24,12 +25,14 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
     public chatsLoaded : boolean;
     public showDetails : boolean;
     public deleteChat : boolean;
+    
      //unread messages
      deletechatResultSub: Subscription;
      deletechat: DeleteChatResult;
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
     }
     ngOnInit() {
+        
         this.chatsLoaded = false;
         this.showDetails = false;
         this.deleteChat = false;
@@ -54,6 +57,7 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         this.advertServ.initializeActiveChats();
     }
     onItemSelected(args :ListViewEventData): void {
+        
         if(this.deleteChat == true){
             this.deletechatResultSub = this.advertServ.currentDeleteChatResult.subscribe(
                 deletechatresult => {
@@ -61,8 +65,8 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
                         this.deletechat = deletechatresult;
      
                         if(this.deletechat.responseStatusCode === 200 && this.deletechat.chatposted === true){
-                            this.advertServ.clearChat();
                             TNSFancyAlert.showSuccess("Success!", "Chat Successfully Deleted!", "Close")
+                            this.advertServ.clearChat();
                             this.advertServ.initializeActiveChats();
                             this.deleteChat = false;
                         } else if (this.deletechat.responseStatusCode === 500){
@@ -81,19 +85,23 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             );
             
             const tappedActivechatItem = args.view.bindingContext;
-            dialogs.confirm({
-                title: "Please confirm deletion",
-                message: "Are you sure that you wish to delete this chat?",
-                okButtonText: "Yes",
-                cancelButtonText: "No",
-            }).then(result => {             
-                if (result == true) {
-                    this.advertServ.deleteChat(tappedActivechatItem.chatid);
-                    
-                }
-                else {
-                    this.deleteChat = false;
-                }
+            TNSFancyAlert.showColorDialog(
+            "Confirm Deletion",
+            "Are you sure that you wish to delete this chat?",
+            "Yes",
+            "Cancel", 
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            ).then(result => {
+            if (result) {
+            this.deleteChat = false;
+            }
+            else {
+            this.deleteChat = false;
+            this.advertServ.deleteChat(tappedActivechatItem.chatid);
+            }
             });
             
         

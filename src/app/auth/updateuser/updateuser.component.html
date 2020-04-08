@@ -91,6 +91,7 @@
         (tap)="onInstitutionNameTap()"
         ></Label>
         <TextField
+        editable= "false" 
         [text]="institutionNameBind" *ngIf="userFound"
         [text]="getuser.Institutionname"
         (tap)="onInstitutionNameTap()"
@@ -110,7 +111,7 @@
             ></Label>
         <TextField
         editable= "false" 
-        [text]="getuser.Message" *ngIf="userFound"
+        [text]="getuser.AdsRemaining" *ngIf="userFound"
             class="input"
             returnKeyType="next"
             required
