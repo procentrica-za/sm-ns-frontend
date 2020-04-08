@@ -112,6 +112,15 @@ export class TextbookResultList {
     ){}
 }
 
+export class UploadTextbookResult {
+    constructor (
+        public responseStatusCode : number,
+        public textbookadded : boolean,
+        public textbookid : string,
+        public message : string,
+    ){}
+}
+
 export class AccomodationResult {
     constructor (
         public responseStatusCode : number,

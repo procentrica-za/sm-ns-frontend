@@ -28,6 +28,11 @@ import { PageRoute, RouterExtensions } from "nativescript-angular/router";
 
 export class AddAdvertComponent implements OnInit, OnDestroy {
     form: FormGroup;
+    //new textbook
+    nameControlIsValid = true;
+    editionControlIsValid = true;
+    qualityControlIsValid = true;
+    authorControlIsValid = true;
     public advertTypes; accomodationTypes; institutionTypes : Array<string>;
     public selectedIndex = 0;
     public isSelling; textbookCapture; accomodationCapture; tutorCapture; noteCapture; TextbookType; advertPostedLoading : boolean;
@@ -36,10 +41,14 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     public addTextbook : Textbook;
     private advertPosted: AddAdvertisementResult;
     public imageUploadedResult : ImageUploadedResult;
+    public Addnewtextbook : boolean;
     
 
+
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
-        
+
+        //Add new textbook
+        this.Addnewtextbook = false;
         this.TextbookType = false;
         this.myImg = "";
         this.acdTypeBind = "";
@@ -74,6 +83,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('termTypeEl', {static:false}) termTypeEl: ElementRef<TextField>;
     @ViewChild('moduleCodeTutorTypeEl', {static:false}) moduleCodeTutorTypeEl: ElementRef<TextField>;
     @ViewChild('moduleCodeNoteTypeEl', {static:false}) moduleCodeNoteTypeEl: ElementRef<TextField>;
+     //Add new textbook
+     @ViewChild('nameEl', {static:false}) nameEl: ElementRef<TextField>;
+     @ViewChild('modulecodeEl', {static:false}) modulecodeEl: ElementRef<TextField>;
+     @ViewChild('editionEl', {static:false}) editionEl: ElementRef<TextField>;
+     @ViewChild('qualityEl', {static:false}) qualityEl: ElementRef<TextField>;
+     @ViewChild('authorEl', {static:false}) authorEl: ElementRef<TextField>;
    
     ngOnInit(){   
         this.form = new FormGroup({
@@ -206,6 +221,64 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                    
                 }
             )
+        });this.form = new FormGroup({
+            modulecode: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
+            name: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required,
+                    ]
+                }
+            ),
+            edition: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
+            quality: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
+            author: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
+        });
+        this.form.get('name').statusChanges.subscribe(status => {
+            this.nameControlIsValid = status === 'VALID';
+        });
+        this.form.get('edition').statusChanges.subscribe(status => {
+            this.editionControlIsValid = status === 'VALID';
+        });
+        this.form.get('quality').statusChanges.subscribe(status => {
+            this.qualityControlIsValid = status === 'VALID';
+        });
+        this.form.get('author').statusChanges.subscribe(status => {
+            this.authorControlIsValid = status === 'VALID';
         });
 
 
@@ -660,6 +733,43 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         } else if(messageType == "Notes"){
             TNSFancyAlert.showInfo("Information", "Specifies if the notes for this course are included.", "Dismiss");
         }
+    }
+
+
+    onAddNewTextbook() {
+        this.Addnewtextbook = true;
+    }
+    onTextbookModuleCodeTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "ModuleCodeType" } }).then((selection:string) => {
+                this.moduleCodeTypeBindNote=selection;
+            });      
+    }
+
+    onPostNewTextbook () {
+        this.modulecodeEl.nativeElement.focus();
+        this.nameEl.nativeElement.focus();
+        this.editionEl.nativeElement.focus();
+        this.qualityEl.nativeElement.focus();
+        this.authorEl.nativeElement.focus();
+        this.authorEl.nativeElement.dismissSoftInput();
+
+        
+        if(!this.form.valid){
+            return;
+        }
+        const modulecode = this.form.get('modulecode').value;
+        const name = this.form.get('name').value;
+        const edition = this.form.get('edition').value;
+        const quality = this.form.get('quuality').value;
+        const author = this.form.get('author').value;
+
+        
+        //Timeout to give loading bar time to appear
+            this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
+
     }
 
 }

@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult} from './advert.model'
+            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -66,6 +66,8 @@ export class AdvertService {
 
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
+
+    private _currentUploadTextbook = new BehaviorSubject<UploadTextbookResult>(null);
 
     private _currentAccomodationList = new BehaviorSubject<AccomodationResultList>(null);
     private _currentAccomodation = new BehaviorSubject<AccomodationResult>(null);
@@ -406,6 +408,37 @@ export class AdvertService {
     setAddTextbook(textbook: Textbook){
         this._currentAddTextbook.next(textbook);
     }
+
+    UploadNewTextbook(modulecode: string, name: string, edition: string, quality: string, author: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/textbook"
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ modulecode: modulecode, name: name, edition: edition , quality: quality, author: author}),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const UploadTextbookResultErr = new UploadTextbookResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentUploadTextbook.next(UploadTextbookResultErr);
+            } else if (responseCode === 200) {
+
+                const result = response.content.toJSON();
+                const RegistersuccessResult = new UploadTextbookResult(200, result.textbookadded, result.id, result.message);
+                this._currentUploadTextbook.next(RegistersuccessResult);   
+            } else {
+                const RegistersuccessResult = new UploadTextbookResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentUploadTextbook.next(RegistersuccessResult); 
+            }
+        }, (e) => {
+
+            const RegistersuccessResult = new UploadTextbookResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentUploadTextbook.next(RegistersuccessResult); 
+        });
+        return null;
+    }  
 
     deleteAdvertisement(advertisementID: string){
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement?id=" + advertisementID;
