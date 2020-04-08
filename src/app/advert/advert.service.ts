@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult} from './advert.model'
+            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult, GetBookResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -143,7 +143,8 @@ export class AdvertService {
 
     private _currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
     private _currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
-
+   
+    private _currentGetBook = new BehaviorSubject<GetBookResult>(null)
 
     get currentImageUploaded(){
         return this._currentImageUploaded.asObservable();
@@ -329,6 +330,11 @@ export class AdvertService {
         return this._currentUpdateAdvertisementResult.asObservable();
     }
 
+    get currentGetBook() {
+        return this._currentGetBook.asObservable();
+    }
+   
+
     constructor(private http: HttpClient){
         setString("sm-service-ratings-host", "http://192.168.1.174:9957");
         setString("sm-service-advert-manager-host", "http://192.168.1.174:9953");
@@ -407,6 +413,34 @@ export class AdvertService {
 
     setAddTextbook(textbook: Textbook){
         this._currentAddTextbook.next(textbook);
+    }
+
+    GetBook(isbn: string) {
+        const reqUrl = "https://api.altmetric.com/v1/isbn/" + isbn
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getbookResultErr = new GetBookResult(500, 'Please enter Title', 'Please enter author(s)');
+                this._currentGetBook.next(getbookResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getbookResult = new GetBookResult(200, result.title, result.authors);
+                this._currentGetBook.next(getbookResult);    
+                console.log(getbookResult);            
+            } else {
+                const getbookResult = new GetBookResult(responseCode,'Please enter Title', 'Please enter author(s)');
+                this._currentGetBook.next(getbookResult); 
+            }
+        }, (e) => {
+
+            const getbookResult = new GetBookResult(400, 'Please enter Title', 'Please enter author(s)');
+            this._currentGetBook.next(getbookResult); 
+        });
     }
 
     UploadNewTextbook(modulecode: string, name: string, edition: string, quality: string, author: string) {

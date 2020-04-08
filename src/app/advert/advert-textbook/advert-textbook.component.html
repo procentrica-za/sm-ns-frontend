@@ -1,0 +1,142 @@
+<ns-action-bar [actionBarTitle]="'Add Textbook'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
+<StackLayout class="form" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="ISBN"
+            [ngClass]="{ invalid: !isbnControlIsValid }"
+        ></Label>
+        <TextField
+        [text]="ISBN"
+            class="input"
+            returnKeyType="next"
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="isbn"
+            #isbnEl
+        ></TextField>
+        <Label
+            *ngIf="!isbnControlIsValid"
+            text="Please enter a valid isbn."
+        ></Label>
+    </StackLayout>
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Search Textbook"
+        (tap)="onISBN()"
+    ></Button>
+    <StackLayout class="p-20">
+        <Button text="Scan Barcode" (tap)="onScan()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+    <TextField 
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
+        #hiddenEl
+    ></TextField>
+</StackLayout>
+    <StackLayout class="form" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Module Code"
+            (tap)="onTextbookModuleCodeTypeTap()"
+        ></Label>
+        <TextField
+        (tap)="onTextbookModuleCodeTypeTap()"
+        [text]="moduleCodeTypeBindNote"
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="modulecode"
+            #modulecodeEl
+        ></TextField>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Textbook Title"
+            [ngClass]="{ invalid: !nameControlIsValid }"
+        ></Label>
+        <TextField
+        [text]="book.Title" *ngIf="Gotbook"
+            class="input"
+            returnKeyType="done"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="name"
+            #nameEl
+        ></TextField>
+        <Label
+            *ngIf="!nameControlIsValid"
+            text="Please enter a valid name."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Edition"
+            [ngClass]="{ invalid: !editionControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="edition"
+            #editionEl
+        ></TextField>
+        <Label
+            *ngIf="!editionControlIsValid"
+            text="Please enter a valid book edition."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Book Quality"
+            [ngClass]="{ invalid: !qualityControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="quality"
+            #qualityEl
+        ></TextField>
+        <Label
+            *ngIf="!qualityControlIsValid"
+            text="Please enter a valid quality."
+        ></Label>
+    </StackLayout>
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Author"
+            [ngClass]="{ invalid: !authorControlIsValid }"
+        ></Label>
+        <TextField
+        [text]="book.Author" *ngIf="Gotbook"
+            class="input"
+            returnKeyType="done"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="author"
+            #authorEl
+        ></TextField>
+        <Label
+            *ngIf="!authorControlIsValid"
+            text="Please enter a valid author address."
+        ></Label>
+    </StackLayout>     
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Add Textbook"
+        (tap)="onPostNewTextbook()"
+    ></Button>
+</StackLayout>

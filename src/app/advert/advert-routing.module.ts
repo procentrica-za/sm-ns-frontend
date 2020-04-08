@@ -6,13 +6,15 @@ import { AdvertDetailsComponent } from "./advert-details/advert-details.componen
 import { MyAdvertComponent } from "./my-adverts/my-advert.component";
 import { AddAdvertComponent } from "./add-advert/add-advert.component"
 import { UpdateAdvertComponent } from "./update-advert/update-advert.component";
+import { AdvertTextbookComponent } from "./advert-textbook/advert-textbook.component";
 const routes: Routes = [
     { path: 'home', component: AdvertHomeComponent},
     { path: '', redirectTo: '/advert/home', pathMatch:'full'},
     { path: 'details', component: AdvertDetailsComponent, pathMatch:'full'},
     { path: 'myadverts', component: MyAdvertComponent, pathMatch:'full'},
     { path: 'addadvert', component: AddAdvertComponent, pathMatch:'full'},
-    { path: 'updateadvert', component: UpdateAdvertComponent, pathMatch:'full'}
+    { path: 'updateadvert', component: UpdateAdvertComponent, pathMatch:'full'},
+    { path: 'textbook', component: AdvertTextbookComponent, pathMatch:'full'}
 ]
 
 @NgModule({

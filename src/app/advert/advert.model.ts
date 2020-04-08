@@ -464,6 +464,14 @@ export class SellingAverageResult {
     ){}
 }
 
+export class GetBookResult {
+    constructor(
+        public responseStatusCode : number,
+        public Title : string,
+        public Author : string
+    ){}
+}
+
 
 
 
