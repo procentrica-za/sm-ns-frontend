@@ -433,9 +433,8 @@ export class AdvertService {
                 this._currentGetBook.next(getbookResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const getbookResult = new GetBookResult(200, result.title, result.authors);
-                this._currentGetBook.next(getbookResult);    
-                console.log(getbookResult);            
+                const getbookResult = new GetBookResult(200, result.title, result.authors || result.authors_or_editors);
+                this._currentGetBook.next(getbookResult);             
             } else {
                 const getbookResult = new GetBookResult(responseCode,'Please enter Title', 'Please enter author(s)');
                 this._currentGetBook.next(getbookResult); 
@@ -462,18 +461,17 @@ export class AdvertService {
                 const UploadTextbookResultErr = new UploadTextbookResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentUploadTextbook.next(UploadTextbookResultErr);
             } else if (responseCode === 200) {
-
                 const result = response.content.toJSON();
-                const RegistersuccessResult = new UploadTextbookResult(200, result.textbookadded, result.id, result.message);
-                this._currentUploadTextbook.next(RegistersuccessResult);   
+                const UploadsuccessResult = new UploadTextbookResult(200, result.textbookadded, result.id, result.message);
+                this._currentUploadTextbook.next(UploadsuccessResult);   
             } else {
-                const RegistersuccessResult = new UploadTextbookResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
-                this._currentUploadTextbook.next(RegistersuccessResult); 
+                const UploadsuccessResult = new UploadTextbookResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentUploadTextbook.next(UploadsuccessResult); 
             }
         }, (e) => {
 
-            const RegistersuccessResult = new UploadTextbookResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
-                this._currentUploadTextbook.next(RegistersuccessResult); 
+            const UploadsuccessResult = new UploadTextbookResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentUploadTextbook.next(UploadsuccessResult); 
         });
         return null;
     }  
@@ -1799,6 +1797,12 @@ clearAverage(){
     this._currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
     this._currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
 }
+
+clearBook(){
+    this._currentGetBook = new BehaviorSubject<GetBookResult>(null)
+}
+
+
 
 }
 

@@ -15,6 +15,7 @@ import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 
 import { TextField } from 'tns-core-modules/ui/text-field';
+import { AuthService } from "~/app/auth/auth.service";
 @Component({
     selector: 'ns-advert-textbook',
     templateUrl: './advert-textbook.component.html',
@@ -59,7 +60,25 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
        
     ngOnInit() {
         
-
+        TNSFancyAlert.showColorDialog(
+            "Add Textbook",
+            "Are you able to scan the barcode of the textbook?",
+            "Yes",
+            "Cancel", 
+            "blue",
+            undefined,
+            undefined,
+            undefined,
+            ).then(result => {
+            if (result) {
+            }
+            else {
+            this.onScan();
+            }
+            });
+            
+        
+        
         
         this.bookResultSub = this.advertServ.currentGetBook.subscribe(
             bookresult => {
@@ -68,12 +87,15 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     this.book = bookresult;
  
                     if(this.book.responseStatusCode === 200 && this.book.Title != ""){
-                        this.Gotbook = true;                  
-                       
+                        this.Gotbook = true;    
+                        console.log(this.book.Author);              
+                       this.advertServ.clearBook();
+                       this.router.back();
                     
                     } else if (this.book.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("No Book", "We unfortunately could not find the book you are looking for", "Dismiss");
                         this.Gotbook = true;
+                      
       
                     }
                     else if (this.book.responseStatusCode === 400){
@@ -84,6 +106,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     else {
                         TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
                         this.Gotbook = true;
+                        this.advertServ.clearBook();
    
                     }
                     
@@ -94,25 +117,24 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
         this.uploadResultSub = this.advertServ.currentUploadTextbook.subscribe(
             uploadresult => {
                 if(uploadresult){
-
                     this.upload = uploadresult;
  
                     if(this.upload.responseStatusCode === 200 && this.upload.textbookadded == true){
-                               
+                    TNSFancyAlert.showSuccess("Book success", this.upload.message + " Please select your textbook now.", "Dismiss");
                        
                     
                     } else if (this.upload.responseStatusCode === 500 ){
-                        TNSFancyAlert.showError("No Book", "We unfortunately could not find the upload you are looking for", "Dismiss");
+                        TNSFancyAlert.showError("Connection Error", this.upload.message, "Dismiss");
                  
       
                     }
                     else if (this.upload.responseStatusCode === 400){
-                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textupload", "Dismiss");
+                        TNSFancyAlert.showError("Error", this.upload.message, "Dismiss");
               
               
                     }
                     else {
-                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textupload", "Dismiss");
+                        TNSFancyAlert.showError("Error", this.upload.message, "Dismiss");
              
    
                     }
@@ -122,15 +144,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
         );
 
         this.form = new FormGroup({
-            isbn: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
             modulecode: new FormControl(
                 null,
                 {
@@ -176,9 +189,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     ]
                 }
             ),
-        });
-        this.form.get('isbn').statusChanges.subscribe(status => {
-            this.isbnControlIsValid = status === 'VALID';
         });
         this.form.get('name').statusChanges.subscribe(status => {
             this.nameControlIsValid = status === 'VALID';
@@ -258,26 +268,29 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
         this.authorEl.nativeElement.focus();
         this.authorEl.nativeElement.dismissSoftInput();
 
-        
         if(!this.form.valid){
             return;
         }
-        const modulecode = this.form.get('modulecode').value;
  
+        const modulecode = this.form.get('modulecode').value;
         const name = this.form.get('name').value;
         const edition = this.form.get('edition').value;
         const quality = this.form.get('quality').value;
         const author = this.form.get('author').value;
 
-
-            this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
-
+console.log(modulecode, name, edition, quality, author);
+        this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
     }
 
   
 
     ngOnDestroy() {
-       
+        if(this.bookResultSub){
+            this.bookResultSub.unsubscribe();
+        }
+        if(this.uploadResultSub){
+            this.uploadResultSub.unsubscribe();
+        }
         }
     }
 
