@@ -27,6 +27,7 @@
             [ngClass]="{ invalid: !nameControlIsValid }"
         ></Label>
         <TextField
+        (tap)="onTitle()"
             class="input"
             returnKeyType="next"
             required
@@ -34,7 +35,7 @@
             autocapitalizationType="none"
             formControlName="name"
             #nameEl
-            [text]="book.Title" *ngIf="Gotbook"
+            [text]="Title" 
             hint="Texbook title as displayed on the cover"
         ></TextField>
         <Label
@@ -99,7 +100,7 @@
             autocapitalizationType="none"
             formControlName="author"
             #authorEl
-            [text]="book.Author" *ngIf="Gotbook"
+            [text]="Author" 
             hint="Author name(s)"
         ></TextField>
         <Label

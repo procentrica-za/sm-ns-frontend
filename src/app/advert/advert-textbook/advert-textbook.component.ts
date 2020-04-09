@@ -14,6 +14,7 @@ import * as appSettings from "tns-core-modules/application-settings";
 import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 
+
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { AuthService } from "~/app/auth/auth.service";
 @Component({
@@ -41,7 +42,8 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
     public Gotbook: boolean;
     public GotScan: boolean;
-    public ISBN: string;
+    public Author: string;
+    public Title: string;
     //Add new textbook
 @ViewChild('nameEl', {static:false}) nameEl: ElementRef<TextField>;
 @ViewChild('modulecodeEl', {static:false}) modulecodeEl: ElementRef<TextField>;
@@ -59,25 +61,9 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
        
     ngOnInit() {
-        
-        TNSFancyAlert.showColorDialog(
-            "Add Textbook",
-            "Are you able to scan the barcode of the textbook?",
-            "Yes",
-            "Cancel", 
-            "blue",
-            undefined,
-            undefined,
-            undefined,
-            ).then(result => {
-            if (result) {
-            }
-            else {
-            this.onScan();
-            }
-            });
             
-        
+        this.Author = "";
+        this.Title = "";
         
         
         this.bookResultSub = this.advertServ.currentGetBook.subscribe(
@@ -87,10 +73,13 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     this.book = bookresult;
  
                     if(this.book.responseStatusCode === 200 && this.book.Title != ""){
-                        this.Gotbook = true;    
-                        console.log(this.book.Author);              
+                    this.Gotbook = true;    
+
+                    var oldstr = this.book.Author;
+                    var newstr =oldstr.toString().replace("["," ");
+                    this.Author = newstr.toString().replace("]"," ");    
+                    this.Title = this.book.Title;
                        this.advertServ.clearBook();
-                       this.router.back();
                     
                     } else if (this.book.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("No Book", "We unfortunately could not find the book you are looking for", "Dismiss");
@@ -106,6 +95,8 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     else {
                         TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
                         this.Gotbook = true;
+                        this.Title = this.book.Title;
+                        this.Author = this.book.Author;  
                         this.advertServ.clearBook();
    
                     }
@@ -121,6 +112,8 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
  
                     if(this.upload.responseStatusCode === 200 && this.upload.textbookadded == true){
                     TNSFancyAlert.showSuccess("Book success", this.upload.message + " Please select your textbook now.", "Dismiss");
+                    this.advertServ.clearUpload();
+                    this.router.back();
                        
                     
                     } else if (this.upload.responseStatusCode === 500 ){
@@ -135,6 +128,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.upload.message, "Dismiss");
+                        this.advertServ.clearUpload();
              
    
                     }
@@ -209,6 +203,25 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
 
     }
+
+    onTitle() {
+        TNSFancyAlert.showColorDialog(
+            "Add Textbook",
+            "Are you able to scan the barcode of the textbook?",
+            "Yes",
+            "No", 
+            "blue",
+            undefined,
+            undefined,
+            undefined,
+            ).then(result => {
+            if (result) {
+            }
+            else {
+            this.onScan();
+            }
+            });
+    }
     
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
@@ -278,7 +291,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
         const quality = this.form.get('quality').value;
         const author = this.form.get('author').value;
 
-console.log(modulecode, name, edition, quality, author);
         this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
     }
 

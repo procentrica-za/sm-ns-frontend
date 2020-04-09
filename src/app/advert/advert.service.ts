@@ -1802,6 +1802,10 @@ clearBook(){
     this._currentGetBook = new BehaviorSubject<GetBookResult>(null)
 }
 
+clearUpload(){
+    this._currentUploadTextbook = new BehaviorSubject<UploadTextbookResult>(null);
+}
+
 
 
 }
