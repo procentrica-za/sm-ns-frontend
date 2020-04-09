@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { AdvertListPickerComponent } from "./advert-listpicker/advert-listpicker.component"
 import { AdvertFilterComponent } from "./advert-filter-modal/advert-filter.component"
 import { UpdateAdvertComponent } from "./update-advert/update-advert.component";
+import { AdvertTextbookComponent } from "./advert-textbook/advert-textbook.component";
 @NgModule({
     declarations: [
         AdvertHomeComponent,
@@ -23,6 +24,7 @@ import { UpdateAdvertComponent } from "./update-advert/update-advert.component";
         AddAdvertComponent,
         AdvertListPickerComponent,
         UpdateAdvertComponent,
+        AdvertTextbookComponent,
         AdvertFilterComponent
     ],
     imports: [NativeScriptCommonModule,

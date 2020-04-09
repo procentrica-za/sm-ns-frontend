@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult} from './advert.model'
+            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult, GetBookResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -66,6 +66,8 @@ export class AdvertService {
 
     private _currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
     private _currentTextbook = new BehaviorSubject<TextbookResult>(null);
+
+    private _currentUploadTextbook = new BehaviorSubject<UploadTextbookResult>(null);
 
     private _currentAccomodationList = new BehaviorSubject<AccomodationResultList>(null);
     private _currentAccomodation = new BehaviorSubject<AccomodationResult>(null);
@@ -141,7 +143,8 @@ export class AdvertService {
 
     private _currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
     private _currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
-
+   
+    private _currentGetBook = new BehaviorSubject<GetBookResult>(null)
 
     get currentImageUploaded(){
         return this._currentImageUploaded.asObservable();
@@ -327,6 +330,15 @@ export class AdvertService {
         return this._currentUpdateAdvertisementResult.asObservable();
     }
 
+    get currentGetBook() {
+        return this._currentGetBook.asObservable();
+    }
+
+    get currentUploadTextbook() {
+        return this._currentUploadTextbook.asObservable();
+    }
+   
+
     constructor(private http: HttpClient){
         setString("sm-service-ratings-host", "http://192.168.1.56:9957");
         setString("sm-service-advert-manager-host", "http://192.168.1.56:9953");
@@ -406,6 +418,63 @@ export class AdvertService {
     setAddTextbook(textbook: Textbook){
         this._currentAddTextbook.next(textbook);
     }
+
+    GetBook(isbn: string) {
+        const reqUrl = "https://api.altmetric.com/v1/isbn/" + isbn
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getbookResultErr = new GetBookResult(500, 'Please enter Title', 'Please enter author(s)');
+                this._currentGetBook.next(getbookResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getbookResult = new GetBookResult(200, result.title, result.authors || result.authors_or_editors);
+                this._currentGetBook.next(getbookResult);             
+            } else {
+                const getbookResult = new GetBookResult(responseCode,'Please enter Title', 'Please enter author(s)');
+                this._currentGetBook.next(getbookResult); 
+            }
+        }, (e) => {
+
+            const getbookResult = new GetBookResult(400, 'Please enter Title', 'Please enter author(s)');
+            this._currentGetBook.next(getbookResult); 
+        });
+    }
+
+    UploadNewTextbook(modulecode: string, name: string, edition: string, quality: string, author: string) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/textbook"
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ modulecode: modulecode, name: name, edition: edition , quality: quality, author: author}),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const UploadTextbookResultErr = new UploadTextbookResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentUploadTextbook.next(UploadTextbookResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const UploadsuccessResult = new UploadTextbookResult(200, result.textbookadded, result.id, result.message);
+                this._currentUploadTextbook.next(UploadsuccessResult);   
+            } else {
+                const UploadsuccessResult = new UploadTextbookResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+                this._currentUploadTextbook.next(UploadsuccessResult); 
+            }
+        }, (e) => {
+
+            const UploadsuccessResult = new UploadTextbookResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+                this._currentUploadTextbook.next(UploadsuccessResult); 
+        });
+        return null;
+    }  
 
     deleteAdvertisement(advertisementID: string){
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement?id=" + advertisementID;
@@ -1727,6 +1796,16 @@ clearAverage(){
     this._currentBuyingAverage = new BehaviorSubject<BuyingAverageResult>(null);
     this._currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
 }
+
+clearBook(){
+    this._currentGetBook = new BehaviorSubject<GetBookResult>(null)
+}
+
+clearUpload(){
+    this._currentUploadTextbook = new BehaviorSubject<UploadTextbookResult>(null);
+}
+
+
 
 }
 

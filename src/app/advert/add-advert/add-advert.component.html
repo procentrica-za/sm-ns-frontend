@@ -74,10 +74,11 @@
 
     
     <!-- STACKLAYOUT USED TO CAPTURE TEXTBOOKS-->
-    <StackLayout *ngIf="textbookCapture" class="input-field">
+    <StackLayout *ngIf="textbookCapture" class="input-field"> 
         <StackLayout>
             <Label *ngIf="!addTextbook" class="label" text="Select" (tap)="onTextbookSelectTap()" ></Label>
             <Label *ngIf="addTextbook" class="label" text="Re-Select" (tap)="onTextbookSelectTap()" ></Label>
+            <Label *ngIf="!addTextbook" class="label" text="Add New" (tap)="onAddNewTextbook()" ></Label>
         </StackLayout>
         <StackLayout>
             <Gridlayout *ngIf="addTextbook" rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle">
@@ -96,14 +97,6 @@
                 <Label *ngIf = "addTextbook" row="8" col="1" [text]="addTextbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
                 <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
             </Gridlayout>
-        </StackLayout>
-        <StackLayout>
-            <Button
-            *ngIf="addTextbook"
-            class="btn btn-primary btn-rounded-lg"
-            text="Post"
-            (tap)="onPostTap()"
-            ></Button>
         </StackLayout>
     </StackLayout>
 

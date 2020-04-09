@@ -18,7 +18,7 @@ import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 export class RegisterComponent implements OnInit, OnDestroy {
     form: FormGroup;
     usernameControlIsValid = true;
-    passwordControlIsValid = true;
+    passwordControlIsValid = true; 
     nameControlIsValid = true;
     surnameControlIsValid = true;
     emailControlIsValid = true;

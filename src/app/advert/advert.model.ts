@@ -113,6 +113,15 @@ export class TextbookResultList {
     ){}
 }
 
+export class UploadTextbookResult {
+    constructor (
+        public responseStatusCode : number,
+        public textbookadded : boolean,
+        public textbookid : string,
+        public message : string,
+    ){}
+}
+
 export class AccomodationResult {
     constructor (
         public responseStatusCode : number,
@@ -455,6 +464,14 @@ export class SellingAverageResult {
     constructor(
         public responseStatusCode : number,
         public average : string
+    ){}
+}
+
+export class GetBookResult {
+    constructor(
+        public responseStatusCode : number,
+        public Title : string,
+        public Author : string
     ){}
 }
 

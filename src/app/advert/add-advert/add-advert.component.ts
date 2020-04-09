@@ -38,6 +38,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     public imageUploadedResult : ImageUploadedResult;
     
 
+
     constructor(private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private advertServ : AdvertService, private router: RouterExtensions) {
         this.defaultInstition = appSettings.getString("defaultInstitution");
         this.TextbookType = false;
@@ -74,6 +75,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('termTypeEl', {static:false}) termTypeEl: ElementRef<TextField>;
     @ViewChild('moduleCodeTutorTypeEl', {static:false}) moduleCodeTutorTypeEl: ElementRef<TextField>;
     @ViewChild('moduleCodeNoteTypeEl', {static:false}) moduleCodeNoteTypeEl: ElementRef<TextField>;
+
    
     ngOnInit(){   
         this.form = new FormGroup({
@@ -661,5 +663,18 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             TNSFancyAlert.showInfo("Information", "Specifies if the notes for this course are included.", "Dismiss");
         }
     }
+    onAddNewTextbook() {
+        this.router.navigate(['/advert/textbook'],
+        {
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        }); 
+    }
+
+    
 
 }
