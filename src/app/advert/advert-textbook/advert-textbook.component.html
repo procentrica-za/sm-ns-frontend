@@ -3,40 +3,6 @@
     <StackLayout class="input-field">
         <Label
             class="label"
-            text="ISBN"
-            [ngClass]="{ invalid: !isbnControlIsValid }"
-        ></Label>
-        <TextField
-        [text]="ISBN"
-            class="input"
-            returnKeyType="next"
-            [autocorrect]="false"
-            autocapitalizationType="none"
-            formControlName="isbn"
-            #isbnEl
-        ></TextField>
-        <Label
-            *ngIf="!isbnControlIsValid"
-            text="Please enter a valid isbn."
-        ></Label>
-    </StackLayout>
-    <Button
-        class="btn btn-primary btn-rounded-lg"
-        text="Search Textbook"
-        (tap)="onISBN()"
-    ></Button>
-    <StackLayout class="p-20">
-        <Button text="Scan Barcode" (tap)="onScan()" class="btn btn-primary btn-rounded-lg"></Button>
-    </StackLayout>
-    <TextField 
-        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
-        #hiddenEl
-    ></TextField>
-</StackLayout>
-    <StackLayout class="form" [formGroup]="form">
-    <StackLayout class="input-field">
-        <Label
-            class="label"
             text="Module Code"
             (tap)="onTextbookModuleCodeTypeTap()"
         ></Label>
@@ -133,7 +99,10 @@
             *ngIf="!authorControlIsValid"
             text="Please enter a valid author address."
         ></Label>
-    </StackLayout>     
+    </StackLayout> 
+    <StackLayout>
+        <Button text="Scan Barcode" (tap)="onScan()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>    
     <Button
         class="btn btn-primary btn-rounded-lg"
         text="Add Textbook"

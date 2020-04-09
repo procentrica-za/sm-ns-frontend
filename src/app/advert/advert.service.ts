@@ -333,6 +333,10 @@ export class AdvertService {
     get currentGetBook() {
         return this._currentGetBook.asObservable();
     }
+
+    get currentUploadTextbook() {
+        return this._currentUploadTextbook.asObservable();
+    }
    
 
     constructor(private http: HttpClient){

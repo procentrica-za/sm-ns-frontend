@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AdvertService } from "../advert.service";
-import { GetBookResult} from '../advert.model';
+import { GetBookResult, UploadTextbookResult} from '../advert.model';
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { AdvertListPickerComponent } from "../advert-listpicker/advert-listpicker.component";
@@ -35,6 +35,9 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
     bookResultSub: Subscription;
     book: GetBookResult;
 
+    uploadResultSub: Subscription;
+    upload: UploadTextbookResult;
+
     public Gotbook: boolean;
     public GotScan: boolean;
     public ISBN: string;
@@ -55,21 +58,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
        
     ngOnInit() {
-        this.form = new FormGroup({
-            isbn: new FormControl(
-                null,
-                {
-                    updateOn: 'blur',
-                    validators: [
-                        Validators.required
-                    ]
-                }
-            ),
-
-        });
-        this.form.get('isbn').statusChanges.subscribe(status => {
-            this.isbnControlIsValid = status === 'VALID';
-        });
+        
 
         
         this.bookResultSub = this.advertServ.currentGetBook.subscribe(
@@ -101,7 +90,47 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                 }
             }
         );
+
+        this.uploadResultSub = this.advertServ.currentUploadTextbook.subscribe(
+            uploadresult => {
+                if(uploadresult){
+
+                    this.upload = uploadresult;
+ 
+                    if(this.upload.responseStatusCode === 200 && this.upload.textbookadded == true){
+                               
+                       
+                    
+                    } else if (this.upload.responseStatusCode === 500 ){
+                        TNSFancyAlert.showError("No Book", "We unfortunately could not find the upload you are looking for", "Dismiss");
+                 
+      
+                    }
+                    else if (this.upload.responseStatusCode === 400){
+                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textupload", "Dismiss");
+              
+              
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textupload", "Dismiss");
+             
+   
+                    }
+                    
+                }
+            }
+        );
+
         this.form = new FormGroup({
+            isbn: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                        Validators.required
+                    ]
+                }
+            ),
             modulecode: new FormControl(
                 null,
                 {
@@ -147,6 +176,9 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     ]
                 }
             ),
+        });
+        this.form.get('isbn').statusChanges.subscribe(status => {
+            this.isbnControlIsValid = status === 'VALID';
         });
         this.form.get('name').statusChanges.subscribe(status => {
             this.nameControlIsValid = status === 'VALID';
@@ -210,8 +242,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                 message: "Format: " + result.format + ",\nContent: " + result.text,
                 okButtonText: "OK"
             });
-            this.ISBN = result.text
-            this.onISBN();
+            this.advertServ.GetBook(result.text);
 
             }, (errorMessage) => {
                 console.log("Error when scanning " + errorMessage);
@@ -232,33 +263,18 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
             return;
         }
         const modulecode = this.form.get('modulecode').value;
+ 
         const name = this.form.get('name').value;
         const edition = this.form.get('edition').value;
         const quality = this.form.get('quality').value;
         const author = this.form.get('author').value;
 
-        
-        //Timeout to give loading bar time to appear
+
             this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
 
     }
 
-    onISBN() {
-        this.hiddenEl.nativeElement.focus();
-        this.isbnEl.nativeElement.focus();
-        this.isbnEl.nativeElement.dismissSoftInput();
-        
-        if(!this.form.valid){
-            return;
-        }
-        const isbn = this.form.get('isbn').value;
-
-        //Timeout to give loading bar time to appear
-        this.advertServ.GetBook(isbn);
-            //Verify book Credentials
-            
-
-    }
+  
 
     ngOnDestroy() {
        
