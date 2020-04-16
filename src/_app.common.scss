@@ -806,3 +806,20 @@ color: $secondary;
     margin-top: 51%;
     margin-bottom: 24%;
 } 
+
+.ScanLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
+    font-size: 30em;
+    margin-left: 45%;
+    color: $primary;
+}
+
+.Textbooklabel{
+    color:$primary;
+    font-size: 16;
+    font-weight: bold;
+    font-family: 'Oswald', 'Oswald-Regular', 'Oswald-Bold';
+    margin-left: 3%;
+    font-size: 39em;
+}
