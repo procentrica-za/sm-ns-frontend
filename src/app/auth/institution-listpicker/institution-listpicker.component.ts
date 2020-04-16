@@ -87,24 +87,6 @@ export class InstitutionListPickerComponent implements OnInit, OnDestroy {
         this.modalParams.closeCallback(this.institutionNameType);    
     }
     
-
-   
-    
-
-
-
-   /* onModuleSearchClear(args){
-        const searchBar = args.object as SearchBar;
-        console.log(searchBar.text);
-    }
-
-    onModuleSearchSubmit(args){
-        const searchBar = args.object as SearchBar;
-        console.log(searchBar.text);
-    }*/
-
-     
-
     ngOnDestroy(){
 
     }
