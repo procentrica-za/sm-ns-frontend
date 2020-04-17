@@ -9,6 +9,7 @@ import { TNSFancyAlert } from "nativescript-fancyalert";
 import { InstitutionListPickerComponent } from "../institution-listpicker/institution-listpicker.component";
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 
+
 @Component({
     selector: 'ns-register',
     templateUrl: './register.component.html',
