@@ -203,25 +203,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
 
     }
-
-    onTitle() {
-        TNSFancyAlert.showColorDialog(
-            "Add Textbook",
-            "Are you able to scan the barcode of the textbook?",
-            "Yes",
-            "No", 
-            "blue",
-            undefined,
-            undefined,
-            undefined,
-            ).then(result => {
-            if (result) {
-            }
-            else {
-            this.onScan();
-            }
-            });
-    }
     
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
