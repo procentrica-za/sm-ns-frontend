@@ -37,7 +37,7 @@ export class RatingComponent implements OnInit, OnDestroy {
  
                     if(this.buyingaverage.responseStatusCode === 200 ){
    
-                        console.log(this.buyingaverage.average);
+                        
                         this.buyingFound = true;
                 
                     } else if (this.buyingaverage.responseStatusCode === 200 && this.buyingaverage.average != "You have not been rated as a buyer yet"){
@@ -63,7 +63,7 @@ export class RatingComponent implements OnInit, OnDestroy {
  
                     if( this.sellingaverage.responseStatusCode === 200 ){
             
-                  console.log(this.sellingaverage.average);
+                
                         this.sellingFound = true;
                 
                     } else if ( this.sellingaverage.responseStatusCode === 200 && this.sellingaverage.average == "You have not been rated as a seller yet"){
