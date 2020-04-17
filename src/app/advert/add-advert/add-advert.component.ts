@@ -58,7 +58,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         this.textbookCapture = false;
         this.accomodationCapture = false;
         this.tutorCapture = false;
-        this.noteCapture = false;
+        this.noteCapture = false; 
         this.advertPostedLoading = false;
     }
 

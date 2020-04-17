@@ -29,13 +29,13 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
     public AccomodationType; InstitutionType; YearCompletedType; VenueType; NoteType; TermType; ModuleCodeType; TextbookType; QualityType; noFilterResults; alltextbooksLoaded : boolean;
     constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService){
        
-        this.accomodationTypes = new Array<string>("Apartement", "Commune", "House", "Garden Cottage");
+        this.accomodationTypes = new Array<string>("Apartment", "Commune", "House", "Garden Cottage");
         this.institutionTypes = new Array<string>("University of Pretoria","University of Johannesburg");
         this.yearCompletedTypes = new Array<string>("2012","2013","2014","2015","2016","2017","2018","2019");
         this.venueTypes = new Array<string>("On Campus","At my Home","Other - Contact for more details");
         this.noteTypes = new Array<string>("Yes","No");
         this.termTypes = new Array<string>("Pay per Lesson","Pay for Package Lessons","Other - Contact for more details");
-        this.qualityTypes = new Array<string>("New","Used");
+        this.qualityTypes = new Array<string>("New","Like New","Good", "Average", "Falling to pieces");
         //this.moduleCodeTypes = new Array<string>("OBS110","OBS120","ENG111","ENG122","LLB120","LLB140","EKN110","EKN120","CHE156","CHE186","ILB111","ILB122");
 
         this.AccomodationType = false;

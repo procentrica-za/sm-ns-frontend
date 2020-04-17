@@ -16,7 +16,6 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 
 
 import { TextField } from 'tns-core-modules/ui/text-field';
-import { AuthService } from "~/app/auth/auth.service";
 @Component({
     selector: 'ns-advert-textbook',
     templateUrl: './advert-textbook.component.html',
@@ -32,7 +31,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
     editionControlIsValid = true;
     qualityControlIsValid = true;
     authorControlIsValid = true;
-    public moduleCodeTypeBindNote;
+    public moduleCodeTypeBindNote; qualitytypeBind;
     
     bookResultSub: Subscription;
     book: GetBookResult;
@@ -51,8 +50,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 @ViewChild('qualityEl', {static:false}) qualityEl: ElementRef<TextField>;
 @ViewChild('authorEl', {static:false}) authorEl: ElementRef<TextField>;
 
-@ViewChild('isbnEl', {static:false}) isbnEl: ElementRef<TextField>;
-    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private barcodeScanner: BarcodeScanner) {
 
     }
@@ -229,6 +226,16 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                 this.moduleCodeTypeBindNote=selection;
             });      
     }
+
+    onQualityTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "QualityType" } }).then((selection:string) => {
+                this.qualitytypeBind=selection;
+            });      
+    }
+
 
     public onScan() {
         this.barcodeScanner.scan({

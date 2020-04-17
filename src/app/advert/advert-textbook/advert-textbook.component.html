@@ -92,6 +92,8 @@
             [ngClass]="{ invalid: !qualityControlIsValid }"
         ></Label>
         <TextField
+        (tap)="onQualityTypeTap()"
+        [text]="qualitytypeBind"
             class="input"
             returnKeyType="next"
             required
