@@ -126,6 +126,7 @@ export class AdvertListPickerComponent implements OnInit, OnDestroy {
 
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
+        console.log(args.view.bindingContext);
         this.advertServ.setAddTextbook(tappedAdvertItem);
         this.modalParams.closeCallback(true);
     }

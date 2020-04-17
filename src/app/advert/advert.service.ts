@@ -458,19 +458,19 @@ export class AdvertService {
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
-                const UploadTextbookResultErr = new UploadTextbookResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                const UploadTextbookResultErr = new UploadTextbookResult('none','00000000-0000-0000-0000-000000000000', 'none', 'none', 'none', 'none', 500);
                 this._currentUploadTextbook.next(UploadTextbookResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const UploadsuccessResult = new UploadTextbookResult(200, result.textbookadded, result.id, result.message);
+                const UploadsuccessResult = new UploadTextbookResult(result.modulecode, result.id, result.name, result.edition, result.quality,result.author, 200);
                 this._currentUploadTextbook.next(UploadsuccessResult);   
             } else {
-                const UploadsuccessResult = new UploadTextbookResult(responseCode, false,'00000000-0000-0000-0000-000000000000', response.content.toString());
+                const UploadsuccessResult = new UploadTextbookResult('none','00000000-0000-0000-0000-000000000000', 'none', 'none', 'none', 'none', responseCode);
                 this._currentUploadTextbook.next(UploadsuccessResult); 
             }
         }, (e) => {
 
-            const UploadsuccessResult = new UploadTextbookResult(400, false,'00000000-0000-0000-0000-000000000000', "An Error has been recieved, please contact support.");
+            const UploadsuccessResult = new UploadTextbookResult('none','00000000-0000-0000-0000-000000000000', 'none', 'none', 'none', 'none', 400);
                 this._currentUploadTextbook.next(UploadsuccessResult); 
         });
         return null;

@@ -115,10 +115,13 @@ export class TextbookResultList {
 
 export class UploadTextbookResult {
     constructor (
-        public responseStatusCode : number,
-        public textbookadded : boolean,
-        public textbookid : string,
-        public message : string,
+        public modulecode : string,
+        public ID : string,
+        public name : string,
+        public edition : string,
+        public quality : string,
+        public author: string,
+        public responseCode : number,
     ){}
 }
 

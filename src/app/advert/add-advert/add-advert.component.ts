@@ -77,7 +77,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('moduleCodeNoteTypeEl', {static:false}) moduleCodeNoteTypeEl: ElementRef<TextField>;
 
    
-    ngOnInit(){   
+    ngOnInit(){
+        this.textbookSub = this.advertServ.currentAddTextbook.subscribe(
+            (textbookResult) => {
+                this.addTextbook = textbookResult;
+            }
+        )   
         this.form = new FormGroup({
             description: new FormControl(
                 null,
