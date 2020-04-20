@@ -437,6 +437,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 if (this.advertPostedSub){
                     this.advertPostedSub.unsubscribe();
                 }
+                this.advertServ.clearAddTextbook();
             }
                 
            

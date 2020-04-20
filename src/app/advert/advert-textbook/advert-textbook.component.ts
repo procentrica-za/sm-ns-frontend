@@ -108,25 +108,24 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     this.upload = uploadresult;
  
                     if(this.upload.responseCode === 200 && this.upload.ID != '00000000-0000-0000-0000-000000000000'){
-                    TNSFancyAlert.showSuccess("Book success","Textbook has been uploaded", "Dismiss");
-                    this.advertServ.initializeAddTextbookList();
+                    TNSFancyAlert.showSuccess("Book success","Your textbook has been successfully uploaded", "Dismiss");
                     this.advertServ.setAddTextbook(uploadresult);
                     this.advertServ.clearUpload();
                     this.router.back();
                        
                     
                     } else if (this.upload.responseCode === 500 ){
-                        TNSFancyAlert.showError("Connection Error", "Error", "Dismiss");
+                        TNSFancyAlert.showError("Connection Error", "An internal error has occured.", "Dismiss");
                  
       
                     }
                     else if (this.upload.responseCode === 400){
-                        TNSFancyAlert.showError("Error", "Error", "Dismiss");
+                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support.", "Dismiss");
               
               
                     }
                     else {
-                        TNSFancyAlert.showError("Error", "Error", "Dismiss");
+                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support.", "Dismiss");
                         this.advertServ.clearUpload();
              
    

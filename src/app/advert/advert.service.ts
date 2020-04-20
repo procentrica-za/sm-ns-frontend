@@ -419,6 +419,11 @@ export class AdvertService {
         this._currentAddTextbook.next(textbook);
     }
 
+    clearAddTextbook(){
+        this._currentAddTextbook = new BehaviorSubject<Textbook>(null);
+
+    }
+
     GetBook(isbn: string) {
         const reqUrl = "https://api.altmetric.com/v1/isbn/" + isbn
         console.log(reqUrl);
