@@ -16,7 +16,6 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 
 
 import { TextField } from 'tns-core-modules/ui/text-field';
-import { AuthService } from "~/app/auth/auth.service";
 @Component({
     selector: 'ns-advert-textbook',
     templateUrl: './advert-textbook.component.html',
@@ -32,7 +31,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
     editionControlIsValid = true;
     qualityControlIsValid = true;
     authorControlIsValid = true;
-    public moduleCodeTypeBindNote;
+    public moduleCodeTypeBindNote; qualitytypeBind;
     
     bookResultSub: Subscription;
     book: GetBookResult;
@@ -51,8 +50,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 @ViewChild('qualityEl', {static:false}) qualityEl: ElementRef<TextField>;
 @ViewChild('authorEl', {static:false}) authorEl: ElementRef<TextField>;
 
-@ViewChild('isbnEl', {static:false}) isbnEl: ElementRef<TextField>;
-    @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
     constructor(private advertServ: AdvertService, private router: RouterExtensions, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private barcodeScanner: BarcodeScanner) {
 
     }
@@ -110,24 +107,25 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                 if(uploadresult){
                     this.upload = uploadresult;
  
-                    if(this.upload.responseStatusCode === 200 && this.upload.textbookadded == true){
-                    TNSFancyAlert.showSuccess("Book success", this.upload.message + " Please select your textbook now.", "Dismiss");
+                    if(this.upload.responseCode === 200 && this.upload.ID != '00000000-0000-0000-0000-000000000000'){
+                    TNSFancyAlert.showSuccess("Book success","Your textbook has been successfully uploaded", "Dismiss");
+                    this.advertServ.setAddTextbook(uploadresult);
                     this.advertServ.clearUpload();
                     this.router.back();
                        
                     
-                    } else if (this.upload.responseStatusCode === 500 ){
-                        TNSFancyAlert.showError("Connection Error", this.upload.message, "Dismiss");
+                    } else if (this.upload.responseCode === 500 ){
+                        TNSFancyAlert.showError("Connection Error", "An internal error has occured.", "Dismiss");
                  
       
                     }
-                    else if (this.upload.responseStatusCode === 400){
-                        TNSFancyAlert.showError("Error", this.upload.message, "Dismiss");
+                    else if (this.upload.responseCode === 400){
+                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support.", "Dismiss");
               
               
                     }
                     else {
-                        TNSFancyAlert.showError("Error", this.upload.message, "Dismiss");
+                        TNSFancyAlert.showError("Error", "An Error has been recieved, please contact support.", "Dismiss");
                         this.advertServ.clearUpload();
              
    
@@ -203,25 +201,6 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
 
 
     }
-
-    onTitle() {
-        TNSFancyAlert.showColorDialog(
-            "Add Textbook",
-            "Are you able to scan the barcode of the textbook?",
-            "Yes",
-            "No", 
-            "blue",
-            undefined,
-            undefined,
-            undefined,
-            ).then(result => {
-            if (result) {
-            }
-            else {
-            this.onScan();
-            }
-            });
-    }
     
     onItemSelected(args :ListViewEventData): void {
         const tappedAdvertItem = args.view.bindingContext;
@@ -248,6 +227,16 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                 this.moduleCodeTypeBindNote=selection;
             });      
     }
+
+    onQualityTypeTap(){
+        this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: true,
+            context: {string: "QualityType" } }).then((selection:string) => {
+                this.qualitytypeBind=selection;
+            });      
+    }
+
 
     public onScan() {
         this.barcodeScanner.scan({

@@ -2,9 +2,27 @@
 <StackLayout class="form" [formGroup]="form">
     <StackLayout class="input-field">
         <Label
-                text="&#xf02a;" class="ScanLabel" textWrap="true"
-                (tap)="onTitle()"
-            ></Label>
+        text="Please select if you are able to scan the textbook" class="label" textWrap="true"
+        (tap)="onScan()"
+        ></Label>
+        </StackLayout>
+    <StackLayout class="input-field" style="margin-left: 50%;" orientation="horizontal">
+        <Label
+        text="&#xf02a;" class="ScanLabel" textWrap="true"
+        (tap)="onScan()"
+        ></Label>
+        <Label
+        text="&#xf02a;" class="ScanLabel" textWrap="true"
+        (tap)="onScan()"
+        ></Label>
+        <Label
+        text="&#xf02a;" class="ScanLabel" textWrap="true"
+        (tap)="onScan()"
+        ></Label>
+        <Label
+        text="&#xf02a;" class="ScanLabel" textWrap="true"
+        (tap)="onScan()"
+        ></Label>
         </StackLayout>
     <StackLayout class="input-field">
         <Label
@@ -23,7 +41,6 @@
             autocapitalizationType="none"
             formControlName="modulecode"
             #modulecodeEl
-            hint="Select for module code options"
         ></TextField>
     </StackLayout>
     <StackLayout class="input-field">
@@ -33,7 +50,6 @@
             [ngClass]="{ invalid: !nameControlIsValid }"
         ></Label>
         <TextField
-        (tap)="onTitle()"
             class="input"
             returnKeyType="next"
             required
@@ -42,7 +58,6 @@
             formControlName="name"
             #nameEl
             [text]="Title" 
-            hint="Texbook title as displayed on the cover"
         ></TextField>
         <Label
             *ngIf="!nameControlIsValid"
@@ -57,13 +72,13 @@
         ></Label>
         <TextField
             class="input"
-            returnKeyType="next"
+            returnKeyType="done"
             required
             [autocorrect]="false"
             autocapitalizationType="none"
             formControlName="edition"
             #editionEl
-            hint="Textbook edition"
+            hint="eg. 1st, 2nd, Final"
         ></TextField>
         <Label
             *ngIf="!editionControlIsValid"
@@ -77,6 +92,8 @@
             [ngClass]="{ invalid: !qualityControlIsValid }"
         ></Label>
         <TextField
+        (tap)="onQualityTypeTap()"
+        [text]="qualitytypeBind"
             class="input"
             returnKeyType="next"
             required
@@ -84,7 +101,6 @@
             autocapitalizationType="none"
             formControlName="quality"
             #qualityEl
-            hint="Book quality as of now"
         ></TextField>
         <Label
             *ngIf="!qualityControlIsValid"
@@ -107,7 +123,6 @@
             formControlName="author"
             #authorEl
             [text]="Author" 
-            hint="Author name(s)"
         ></TextField>
         <Label
             *ngIf="!authorControlIsValid"

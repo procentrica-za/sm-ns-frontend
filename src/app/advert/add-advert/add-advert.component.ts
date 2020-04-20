@@ -58,7 +58,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
         this.textbookCapture = false;
         this.accomodationCapture = false;
         this.tutorCapture = false;
-        this.noteCapture = false;
+        this.noteCapture = false; 
         this.advertPostedLoading = false;
     }
 
@@ -77,7 +77,12 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
     @ViewChild('moduleCodeNoteTypeEl', {static:false}) moduleCodeNoteTypeEl: ElementRef<TextField>;
 
    
-    ngOnInit(){   
+    ngOnInit(){
+        this.textbookSub = this.advertServ.currentAddTextbook.subscribe(
+            (textbookResult) => {
+                this.addTextbook = textbookResult;
+            }
+        )   
         this.form = new FormGroup({
             description: new FormControl(
                 null,
@@ -432,6 +437,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 if (this.advertPostedSub){
                     this.advertPostedSub.unsubscribe();
                 }
+                this.advertServ.clearAddTextbook();
             }
                 
            

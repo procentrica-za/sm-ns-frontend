@@ -38,7 +38,7 @@
 
     <StackLayout *ngIf="ModuleCodeType">
         <SearchBar hint="Search..."
-            [text]="moduleSearch" (textChange)="onModuleSearchChanged($event)">
+            [text]="moduleSearch" (submit)="onModuleSearchChanged($event)">
         </SearchBar>
         <ListPicker [items]="moduleCodeTypesFilter" selectedIndex="0" (selectedIndexChange)="onSelectedIndexModuleTypeChanged($event)"></ListPicker>
         <Button *ngIf="!noFilterResults" text="Confirm" (tap)="onModuleTap()" class="btn btn-primary btn-rounded-lg"></Button>
