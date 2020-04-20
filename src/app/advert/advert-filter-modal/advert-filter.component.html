@@ -3,7 +3,33 @@
         <Label text="Filters" class="label1"></Label>
     </StackLayout>
     <StackLayout *ngIf="textbookFilter" class="input-field">
-
+        <StackLayout class="input-field">
+            <Label
+            text="Scan textbook barcode" class="label" textWrap="true"
+            (tap)="onScan()"
+            ></Label>
+            </StackLayout>
+        <StackLayout class="input-field" style="margin-left: 45%;" orientation="horizontal">
+            <Label
+            text="&#xf02a;" class="ScanLabel" textWrap="true"
+            (tap)="onScan()"
+            ></Label>
+            <Label
+            text="&#xf02a;" class="ScanLabel" textWrap="true"
+            (tap)="onScan()"
+            ></Label>
+            <Label
+            text="&#xf02a;" class="ScanLabel" textWrap="true"
+            (tap)="onScan()"
+            ></Label>
+            <Label
+            text="&#xf02a;" class="ScanLabel" textWrap="true"
+            (tap)="onScan()"
+            ></Label>
+            </StackLayout>
+            <StackLayout>
+            <Button text="Confirm" (tap)="onTextbookConfirmTap()" class="btn btn-primary btn-rounded-lg"></Button>
+        </StackLayout>
         <StackLayout class="input-field">
             <Label
             class="label"
@@ -34,6 +60,7 @@
                 autocapitalizationType="none"
                 formControlName="name"
                 #nameEl
+                [text]="Title" 
             ></TextField>
             
         </StackLayout>
