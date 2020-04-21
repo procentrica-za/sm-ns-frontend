@@ -229,7 +229,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
             this.advertServ.GetBook(result.text);
             this.modalDialog.showModal(AdvertFilterComponent, {viewContainerRef: this.vcRef,
                 animated: true,
-                fullscreen: false,
+                fullscreen: true,
                 context: {string: "TextbookFilter"} } ).then(( selection: boolean) => {
                     //console.log(selection + "Returned from modal");
                 });

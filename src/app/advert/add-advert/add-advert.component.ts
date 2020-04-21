@@ -667,7 +667,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             TNSFancyAlert.showInfo("Information", "The payment terms of the tutoring classes.", "Dismiss");
         } else if(messageType == "Notes"){
             TNSFancyAlert.showInfo("Information", "Specifies if the notes for this course are included.", "Dismiss");
-        }
+        } 
     }
     onAddNewTextbook() {
         this.router.navigate(['/advert/textbook'],
