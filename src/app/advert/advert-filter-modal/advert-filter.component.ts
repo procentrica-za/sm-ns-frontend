@@ -11,8 +11,9 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { Switch } from "tns-core-modules/ui/switch/switch";
 import * as appSettings from "tns-core-modules/application-settings";
-import { TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList } from "../advert.model";
-@Component({
+import { TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, GetBookResult } from "../advert.model";
+import { BarcodeScanner } from 'nativescript-barcodescanner';
+ @Component({
     selector: 'ns-advert-filter',
     templateUrl: './advert-filter.component.html',
     moduleId: module.id
@@ -33,7 +34,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
 
     public textbookFilter; accomodationFilter; tutorFilter; noteFilter; isSelling : boolean;
 
-    constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef){
+    constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private barcodeScanner: BarcodeScanner){
         this.instTypeBind = appSettings.getString("defaultInstitution");
         this.textbookFilter = false;
         this.accomodationFilter = false;
@@ -41,6 +42,15 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         this.noteFilter = false;
         this.isSelling = true;
     }
+
+    bookResultSub: Subscription;
+    book: GetBookResult;
+
+
+    public Gotbook: boolean;
+    public GotScan: boolean;
+    public Title: string;
+
     @ViewChild('nameEl', {static:false}) nameEl: ElementRef<TextField>;
     @ViewChild('editionEl', {static:false}) editionEl: ElementRef<TextField>;
     @ViewChild('moduleCodeEl', {static:false}) moduleCodeEl: ElementRef<TextField>;
@@ -172,6 +182,47 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 this.noteFilter = true;
                 break;
         }
+
+        this.Title = "";
+        
+        
+        this.bookResultSub = this.advertServ.currentGetBook.subscribe(
+            bookresult => {
+                if(bookresult){
+
+                    this.book = bookresult;
+ 
+                    if(this.book.responseStatusCode === 200 && this.book.Title != ""){
+                    this.Gotbook = true;       
+                    this.Title = this.book.Title;
+                       setTimeout(() =>{
+                        //Give textfield time to populate
+                        this.onTextbookConfirmTap();
+                    },50);
+                       this.advertServ.clearBook();
+                    
+                    } else if (this.book.responseStatusCode === 500 ){
+                        TNSFancyAlert.showError("No Book", "We unfortunately could not find the book you are looking for", "Dismiss");
+                        this.Gotbook = true;
+                      
+      
+                    }
+                    else if (this.book.responseStatusCode === 400){
+                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
+                        this.Gotbook = true;
+              
+                    }
+                    else {
+                        TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
+                        this.Gotbook = true;
+                        this.Title = this.book.Title; 
+                        this.advertServ.clearBook();
+   
+                    }
+                    
+                }
+            }
+        );
         
 
     }
@@ -259,7 +310,14 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
             this.instTypeEl.nativeElement.focus();
 
             var instType = this.form.get("instType").value;
-            var name = this.form.get('name').value;
+            var oldname = this.form.get('name').value;
+            if (this.form.get('name').value == null) {
+                var name = null;
+            }
+            else {
+                var name = oldname.split(" ").join("+");
+            }
+            
             var edition = this.form.get('edition').value;
             var quality = this.form.get('quality').value;
             var author = this.form.get('author').value;
@@ -604,6 +662,30 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         this.advertServ.initializeNotes(instType,true,999999,"");
         await this.delay(1500);
         this.modalParams.closeCallback(false);
+    }
+
+    public onScan() {
+        this.barcodeScanner.scan({
+            formats: "QR_CODE, EAN_13",
+            showFlipCameraButton: true,   
+            preferFrontCamera: false,     
+            showTorchButton: true,        
+            beepOnScan: true,             
+            torchOn: false,               
+            resultDisplayDuration: 500,       
+            openSettingsIfPermissionWasPreviouslyDenied: true //ios only 
+        }).then((result) => {
+            alert({
+                title: "You Scanned ",
+                message: "Format: " + result.format + ",\nContent: " + result.text,
+                okButtonText: "OK"
+            });
+            this.advertServ.GetBook(result.text);
+
+            }, (errorMessage) => {
+                console.log("Error when scanning " + errorMessage);
+            }
+        );
     }
 
 

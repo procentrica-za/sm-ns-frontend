@@ -2,8 +2,8 @@
     <StackLayout class="input-field">
         <Label text="Filters" class="label1"></Label>
     </StackLayout>
+    <ScrollView>
     <StackLayout *ngIf="textbookFilter" class="input-field">
-
         <StackLayout class="input-field">
             <Label
             class="label"
@@ -34,6 +34,7 @@
                 autocapitalizationType="none"
                 formControlName="name"
                 #nameEl
+                [text]="Title" 
             ></TextField>
             
         </StackLayout>
@@ -420,20 +421,6 @@
 
 
     </StackLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</ScrollView>
 </StackLayout>
 

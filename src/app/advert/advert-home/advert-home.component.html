@@ -8,7 +8,9 @@
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
 
     <StackLayout orientation="horizontal">
-        <Label text="Filters" class="FilterLabel" (tap)="onTextbookFilterTap()"></Label>
+        <Label text="Scan" class="ScanwordLabel" (tap)="onScan()"></Label>
+        <Label text="&#xf02a;" class="ScanLabel" textWrap="true" (tap)="onScan()" ></Label>
+        <Label text="Filters" class="TextbookFilterLabel" (tap)="onTextbookFilterTap()"></Label>
         <Label text="&#xf161;" class="FilterLabelicon" (tap)="onTextbookFilterTap()" ></Label>
     </StackLayout>
 

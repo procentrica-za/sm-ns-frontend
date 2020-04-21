@@ -12,6 +12,7 @@ import { ObservableArray, ChangedData } from "tns-core-modules/data/observable-a
 import * as appSettings from "tns-core-modules/application-settings";
 import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { AdvertFilterComponent } from "../advert-filter-modal/advert-filter.component";
+import { BarcodeScanner } from 'nativescript-barcodescanner';
 @Component({
     selector: 'ns-advert-home',
     templateUrl: './advert-home.component.html',
@@ -35,7 +36,7 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
     public myNoteArray : ObservableArray<NoteResult>;
     public myTutorArray : ObservableArray<TutorResult>;
 
-    constructor(private advertServ: AdvertService, private router: RouterExtensions, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef) {
+    constructor(private advertServ: AdvertService, private router: RouterExtensions, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private barcodeScanner: BarcodeScanner) {
         this.isSelling = appSettings.getBoolean("mainAdvertSelling");
         console.log("Logged in user: " + appSettings.getString("userid"));
     }
@@ -207,6 +208,35 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                     curve: "ease"
                 }
             });
+    }
+
+    public onScan() {
+        this.barcodeScanner.scan({
+            formats: "QR_CODE, EAN_13",
+            showFlipCameraButton: true,   
+            preferFrontCamera: false,     
+            showTorchButton: true,        
+            beepOnScan: true,             
+            torchOn: false,               
+            resultDisplayDuration: 500,       
+            openSettingsIfPermissionWasPreviouslyDenied: true //ios only 
+        }).then((result) => {
+            alert({
+                title: "You Scanned ",
+                message: "Format: " + result.format + ",\nContent: " + result.text,
+                okButtonText: "OK"
+            });
+            this.advertServ.GetBook(result.text);
+            this.modalDialog.showModal(AdvertFilterComponent, {viewContainerRef: this.vcRef,
+                animated: true,
+                fullscreen: false,
+                context: {string: "TextbookFilter"} } ).then(( selection: boolean) => {
+                    //console.log(selection + "Returned from modal");
+                });
+            }, (errorMessage) => {
+                console.log("Error when scanning " + errorMessage);
+            }
+        );
     }
 
 
