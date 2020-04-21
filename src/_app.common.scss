@@ -828,6 +828,15 @@ color: $secondary;
 .ScanLabel {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
+    font-size: 40em;
+    margin-left: 15%;
+    color: $primary;
+    margin-top: 1.5%;
+}
+
+.ScanhomeLabel {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-weight: 100;
     font-size: 22em;
     margin-left: 0.3%;
     color: $primary;
