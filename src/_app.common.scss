@@ -563,6 +563,24 @@ ActionBar {
     margin-top: 1%;
     margin-left: 67%
 }
+
+.TextbookFilterLabel {
+    font-weight: 700;
+    font-size: 24em;
+    margin-right: 25;
+    text-align: right;
+    margin-top: 1%;
+    margin-left: 34.8%
+}
+
+.ScanwordLabel {
+    font-weight: 700;
+    font-size: 24em;
+    margin-right: 25;
+    text-align: right;
+    margin-top: 1%;
+    margin-left: 4%
+}
  
 .PasswordLabel {
     font-family: FontAwesome, fontawesome-webfont;
@@ -810,9 +828,10 @@ color: $secondary;
 .ScanLabel {
     font-family: FontAwesome, fontawesome-webfont;
     font-weight: 100;
-    font-size: 30em;
+    font-size: 22em;
     margin-left: 0.3%;
     color: $primary;
+    margin-top: 1.5%;
 }
 
 .Textbooklabel{

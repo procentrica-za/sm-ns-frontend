@@ -13,7 +13,7 @@ import { Switch } from "tns-core-modules/ui/switch/switch";
 import * as appSettings from "tns-core-modules/application-settings";
 import { TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, GetBookResult } from "../advert.model";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
-@Component({
+ @Component({
     selector: 'ns-advert-filter',
     templateUrl: './advert-filter.component.html',
     moduleId: module.id
