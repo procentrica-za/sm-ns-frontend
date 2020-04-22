@@ -664,28 +664,18 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
         this.modalParams.closeCallback(false);
     }
 
-    public onScan() {
-        this.barcodeScanner.scan({
-            formats: "QR_CODE, EAN_13",
-            showFlipCameraButton: true,   
-            preferFrontCamera: false,     
-            showTorchButton: true,        
-            beepOnScan: true,             
-            torchOn: false,               
-            resultDisplayDuration: 500,       
-            openSettingsIfPermissionWasPreviouslyDenied: true //ios only 
-        }).then((result) => {
-            alert({
-                title: "You Scanned ",
-                message: "Format: " + result.format + ",\nContent: " + result.text,
-                okButtonText: "OK"
-            });
-            this.advertServ.GetBook(result.text);
 
-            }, (errorMessage) => {
-                console.log("Error when scanning " + errorMessage);
-            }
-        );
+    showMessage(messageType: string ) {
+        if(messageType == "Textbook"){
+            TNSFancyAlert.showInfo("Information", "Are you wanting to filter through people selling textbooks, or people who are looking for textbooks.", "Dismiss");
+        } else if(messageType == "Accomodation"){
+            TNSFancyAlert.showInfo("Information", "Are you wanting to filter through people advertising their accomodation, or people who are looking for accomodation.", "Dismiss");
+        } else if(messageType == "Tutoring"){
+            TNSFancyAlert.showInfo("Information", "Are you wanting to filter through people advertising their tutoring services, or people who are looking for tutoring services.", "Dismiss");
+        } else {
+            TNSFancyAlert.showInfo("Information", "Are you wanting to filter through people selling notes, or people who are looking for notes.", "Dismiss");
+        } 
+        
     }
 
 

@@ -121,8 +121,14 @@
         </StackLayout>
 
         <StackLayout class="input-field" orientation="horizontal">
-            <Label class="label" text="Selling?" ></Label>
+            <Label class="label" *ngIf="isSelling" text="Selling?" ></Label>
+            <Label class="label" *ngIf="!isSelling" text="Looking For?" ></Label>
             <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch> 
+            <Button
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Textbook')" 
+        ></Button>
         </StackLayout>
         <StackLayout>
             <Button text="Confirm" (tap)="onTextbookConfirmTap()" class="btn btn-primary btn-rounded-lg"></Button>
@@ -200,8 +206,14 @@
         </StackLayout>
 
         <StackLayout class="input-field" orientation="horizontal">
-            <Label class="label" text="Selling?" ></Label>
+            <Label class="label" *ngIf="isSelling" text="Selling?" ></Label>
+            <Label class="label" *ngIf="!isSelling" text="Looking For?" ></Label>
             <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch> 
+            <Button
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Accomodation')" 
+        ></Button>
         </StackLayout>
         <StackLayout>
             <Button text="Confirm" (tap)="onAccomodationConfirmTap()" class="btn btn-primary btn-rounded-lg"></Button>
@@ -337,8 +349,14 @@
         </StackLayout>
 
         <StackLayout class="input-field" orientation="horizontal">
-            <Label class="label" text="Selling?" ></Label>
+            <Label class="label" *ngIf="isSelling" text="Selling?" ></Label>
+            <Label class="label" *ngIf="!isSelling" text="Looking For?" ></Label>
             <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch> 
+            <Button
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Tutoring')" 
+        ></Button>
         </StackLayout>
         <StackLayout>
             <Button text="Confirm" (tap)="onTutorConfirmTap()" class="btn btn-primary btn-rounded-lg"></Button>
@@ -409,8 +427,14 @@
         </StackLayout>
 
         <StackLayout class="input-field" orientation="horizontal">
-            <Label class="label" text="Selling?" ></Label>
+            <Label class="label" *ngIf="isSelling" text="Selling?" ></Label>
+            <Label class="label" *ngIf="!isSelling" text="Looking For?" ></Label>
             <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch> 
+            <Button
+            text="&#xf05a;"
+            class="btn-info"
+            (tap)="showMessage('Notes')" 
+        ></Button>
         </StackLayout>
         <StackLayout>
             <Button text="Confirm" (tap)="onNoteConfirmTap()" class="btn btn-primary btn-rounded-lg"></Button>
