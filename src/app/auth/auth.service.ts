@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult} from './auth.model';
-
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -296,8 +295,9 @@ export class AuthService {
         });
     }
 
-    GetNewOtp(phonenumber: string) {
+    GetNewOtp() {
         const userid = appSettings.getString("userid");
+        const phonenumber = appSettings.getString("phonenumber");
         const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({

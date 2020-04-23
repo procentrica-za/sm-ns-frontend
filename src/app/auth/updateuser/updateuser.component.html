@@ -1,4 +1,5 @@
 <ns-action-bar [actionBarTitle]="'Update information'"></ns-action-bar>
+<ScrollView>
 <StackLayout class="form" [formGroup]="form">
     <StackLayout class="input-field">
         <Label
@@ -127,6 +128,7 @@
     <Button class="btn-flat" text="Validate Account" (tap)="onOTP()"></Button>
     <Button class="btn-flat" text="Change Password" (tap)="onPassword()"></Button>
 </StackLayout>
+</ScrollView>
 <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </FlexboxLayout>

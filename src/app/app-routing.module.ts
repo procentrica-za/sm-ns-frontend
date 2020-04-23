@@ -22,7 +22,6 @@ import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
 
 import { RatingComponent } from "./advert/rating/rating.component";
 
-import { OtpComponent } from "./auth/otp/otp.component";
 
 
 
@@ -47,7 +46,6 @@ const routes: Routes = [
     { path: 'ratebuyerhome', component: RatebuyerHomeComponent },
     { path: 'ratebuyer', component: RatebuyerComponent },
     { path: 'rating', component: RatingComponent },
-    { path: 'otp', component: OtpComponent },
 ];
 
 @NgModule({

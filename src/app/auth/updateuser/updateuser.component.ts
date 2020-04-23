@@ -8,6 +8,7 @@ import { GetUserResult, UpdateUserResult } from "../auth.model";
 import { InstitutionListPickerComponent } from "../institution-listpicker/institution-listpicker.component";
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { TNSFancyAlert } from "nativescript-fancyalert";
+import { OtpComponent } from "../otp/otp.component";
 
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
@@ -163,14 +164,11 @@ export class UpdateuserComponent implements OnInit {
     }
 
     onOTP(): void {
-        this.router.navigate(['/otp'],
-            {
-                animated: true,
-                transition: {
-                    name: "slide",
-                    duration: 200,
-                    curve: "ease"
-                }
+        this.modalDialog.showModal(OtpComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: false,
+            context: {string: "OTP"} } ).then(( selection: boolean) => {
+                //console.log(selection + "Returned from modal");
             });
 
     }
