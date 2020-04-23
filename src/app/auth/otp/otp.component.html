@@ -1,0 +1,66 @@
+<ns-action-bar [actionBarTitle]="'Validate account'"></ns-action-bar>
+<StackLayout class="form" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Phone number"
+            [ngClass]="{ invalid: !phonenumberControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="phonenumber"
+            #phonenumberEl
+        ></TextField>        
+        <Label
+            *ngIf="!phonenumberControlIsValid"
+            text="Please enter a phonenumber address."
+        ></Label>
+    </StackLayout>
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Get OTP"
+        (tap)="onRequestOTP()"
+    ></Button>
+    <TextField 
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
+        #hiddenEl
+    ></TextField>
+</StackLayout>
+<StackLayout class="form" style="margin-top: 50%;" [formGroup]="form">
+    <StackLayout class="input-field">
+        <Label
+            class="label"
+            text="Please enter the OTP:"
+            [ngClass]="{ invalid: !otpControlIsValid }"
+        ></Label>
+        <TextField
+            class="input"
+            returnKeyType="next"
+            required
+            [autocorrect]="false"
+            autocapitalizationType="none"
+            formControlName="otp"
+            #otpEl
+        ></TextField>        
+        <Label
+            *ngIf="!otpControlIsValid"
+            text="Please enter a otp address."
+        ></Label>
+    </StackLayout>
+    <Button
+        class="btn btn-primary btn-rounded-lg"
+        text="Validate OTP"
+        (tap)="onValidateOTP()"
+    ></Button>
+    <TextField 
+        style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
+        #hiddenEl
+    ></TextField>
+</StackLayout>
+<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+</FlexboxLayout>

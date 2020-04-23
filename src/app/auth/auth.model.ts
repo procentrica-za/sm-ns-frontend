@@ -84,3 +84,27 @@ export class InstitutionNameList {
         public InstitutionNames : InstitutionName[]
     ){}
 }
+
+export class GetOTPResult {
+    constructor (
+        public responseStatusCode: number,
+        public Sent: boolean, 
+        public Message:     string 
+    ){}
+}
+
+export class ValidateOTPResult {
+    constructor (
+        public responseStatusCode: number,
+        public Validated: boolean, 
+        public Message:     string 
+    ){}
+}
+
+export class GetNewOTPResult {
+    constructor (
+        public responseStatusCode: number,
+        public Sent: boolean, 
+        public Message:     string 
+    ){}
+}

@@ -162,6 +162,19 @@ export class UpdateuserComponent implements OnInit {
 
     }
 
+    onOTP(): void {
+        this.router.navigate(['/otp'],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                }
+            });
+
+    }
+
     onUpdateUser() {
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
