@@ -90,7 +90,6 @@ export class ValidateComponent implements OnInit, OnDestroy {
                        this.router.navigate(['/updateuser'], {clearHistory: true});
                        const id = appSettings.getString("userid");
                        this.authServ.GetUser(id);
-                       this.modalParams.closeCallback(true);
                     } else if(this.validateotp.responseStatusCode === 200 && this.validateotp.Validated == false) {
                         TNSFancyAlert.showError("Error", this.validateotp.Message, "Dismiss");
                     } else if(this.validateotp.responseStatusCode === 500) {

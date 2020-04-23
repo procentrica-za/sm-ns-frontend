@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -20,6 +20,7 @@ export class AuthService {
     private _currentGetotp = new BehaviorSubject<GetOTPResult>(null)
     private _currentValidateotp = new BehaviorSubject<ValidateOTPResult>(null)
     private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
+    private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -63,6 +64,10 @@ export class AuthService {
 
     get currentGetnewotp() {
         return this._currentGetnewotp.asObservable();
+    }
+
+    get currentIsVerified() {
+        return this._currentIsverified.asObservable();
     }
    
 
@@ -351,6 +356,34 @@ export class AuthService {
 
             const validateotpResult = new ValidateOTPResult(400, false, "An Error has been recieved, please contact support.");
                 this._currentValidateotp.next(validateotpResult); 
+        });
+    }
+
+    VerificationStatus() {
+        const userid = appSettings.getString("userid");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const isverifiedResultErr = new IsVerifiedResult(500, false);
+                this._currentIsverified.next(isverifiedResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const isverifiedResult = new IsVerifiedResult(200, result.isverified);
+                this._currentIsverified.next(isverifiedResult);                
+            } else {
+                const isverifiedResult = new IsVerifiedResult(responseCode, false);
+                this._currentIsverified.next(isverifiedResult); 
+            }
+        }, (e) => {
+
+            const isverifiedResult = new IsVerifiedResult(400, false);
+                this._currentIsverified.next(isverifiedResult); 
         });
     }
     

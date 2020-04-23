@@ -108,3 +108,10 @@ export class GetNewOTPResult {
         public Message:     string 
     ){}
 }
+
+export class IsVerifiedResult {
+    constructor(
+        public responseStatusCode : number,
+        public isverified : boolean
+    ){}
+}

@@ -125,7 +125,7 @@
         text="Update Details"
         (tap)="onUpdateUser()"
     ></Button>
-    <Button class="btn-flat" text="Validate Account" (tap)="onOTP()"></Button>
+    <Button class="btn-flat" *ngIf="isVerified" text="Validate Account" (tap)="onOTP()"></Button>
     <Button class="btn-flat" text="Change Password" (tap)="onPassword()"></Button>
 </StackLayout>
 </ScrollView>
