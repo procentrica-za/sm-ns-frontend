@@ -6,6 +6,14 @@
         <Button text="Confirm" (tap)="onQualityTap()" class="btn btn-primary btn-rounded-lg"></Button>
     </StackLayout>
 
+    <StackLayout *ngIf="CountryType">
+        <SearchBar hint="Search..."
+            [text]="countrySearch" (submit)="onCountrySearchChanged($event)">
+        </SearchBar>
+        <ListPicker [items]="countryTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexCountryTypeChanged($event)"></ListPicker>
+        <Button text="Confirm" (tap)="onCountryTap()" class="btn btn-primary btn-rounded-lg"></Button>
+    </StackLayout>
+
     <StackLayout *ngIf="AccomodationType">
         <ListPicker [items]="accomodationTypes" selectedIndex="0" (selectedIndexChange)="onSelectedIndexAcdTypeChanged($event)"></ListPicker>
         <Button text="Confirm" (tap)="onAcdTap()" class="btn btn-primary btn-rounded-lg"></Button>

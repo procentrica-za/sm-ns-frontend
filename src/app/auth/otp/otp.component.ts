@@ -8,7 +8,6 @@ import { GetOTPResult, ValidateOTPResult, GetNewOTPResult } from "../auth.model"
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { ModalDialogParams,ModalDialogService } from "nativescript-angular/modal-dialog";
 import * as appSettings from "tns-core-modules/application-settings";
-import { ValidateComponent } from "../validate/validate.component";
 @Component({
     selector: 'ns-otp',
     templateUrl: './otp.component.html',
