@@ -59,12 +59,8 @@ export class OtpComponent implements OnInit, OnDestroy {
                     if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == true){
                         TNSFancyAlert.showSuccess("Success", this.getotp.Message, "Dismiss").then( t => {
                        this.authServ.clearOTPObject();
-                       this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
-                        animated: true,
-                        fullscreen: false,
-                        context: {string: "OTP"} } ).then(( selection: boolean) => {
-                
-                        });
+                       this.modalParams.closeCallback(false);
+                        
                     });
                     } else if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == false) {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
@@ -94,7 +90,7 @@ export class OtpComponent implements OnInit, OnDestroy {
         
       
         const number = this.form.get('phonenumber').value;
-        appSettings.setString("personid", number);
+        appSettings.setString("phonenumber", number);
         
         this.isLoading = true;
       this.authServ.GetOtp(number);

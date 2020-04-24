@@ -9,6 +9,7 @@ import { InstitutionListPickerComponent } from "../institution-listpicker/instit
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { OtpComponent } from "../otp/otp.component";
+import { ValidateComponent } from "../validate/validate.component";
 
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
@@ -184,7 +185,12 @@ this.authServ.GetUser(id);
             animated: true,
             fullscreen: false,
             context: {string: "OTP"} } ).then(( selection: boolean) => {
-                //console.log(selection + "Returned from modal");
+                this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
+                    animated: true,
+                    fullscreen: false,
+                    context: {string: "OTP"} } ).then(( selection: boolean) => {
+                        
+                    });
             });
 
     }

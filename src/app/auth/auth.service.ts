@@ -303,7 +303,7 @@ export class AuthService {
     GetNewOtp() {
         const userid = appSettings.getString("userid");
         const phonenumber = appSettings.getString("phonenumber");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({
             url: reqUrl,

@@ -57,7 +57,6 @@ export class ValidateComponent implements OnInit, OnDestroy {
                 if(getnewotpresult){
                     this.isLoading = false;
                     this.getnewotp = getnewotpresult;
-                    console.log(this.getnewotp.responseStatusCode, this.getnewotp.Sent == true, this.getnewotp.Message);
                     if(this.getnewotp.responseStatusCode === 200 && this.getnewotp.Sent == true){
                         TNSFancyAlert.showSuccess("Success", this.getnewotp.Message, "Dismiss").then( t => {
                        this.authServ.clearNewOTPObject();
@@ -82,14 +81,15 @@ export class ValidateComponent implements OnInit, OnDestroy {
                 if(validateotpresult){
                     this.isLoading = false;
                     this.validateotp = validateotpresult;
-                    console.log(this.validateotp.responseStatusCode, this.validateotp.validated, this.validateotp.message);
                     if(this.validateotp.responseStatusCode === 200 && this.validateotp.validated == true){
                         TNSFancyAlert.showSuccess("Success", this.validateotp.message, "Dismiss").then( t => {
-                    });
                        this.modalParams.closeCallback(false);
+                       this.authServ.clearValidateOTPObject()
                        this.router.navigate(['/updateuser'], {clearHistory: true});
                        const id = appSettings.getString("userid");
                        this.authServ.GetUser(id);
+                       this.authServ.VerificationStatus();;
+                    });
                     } else if(this.validateotp.responseStatusCode === 200 && this.validateotp.validated == false) {
                         TNSFancyAlert.showError("Error", this.validateotp.message, "Dismiss");
                     } else if(this.validateotp.responseStatusCode === 500) {
