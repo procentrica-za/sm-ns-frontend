@@ -96,8 +96,8 @@ export class GetOTPResult {
 export class ValidateOTPResult {
     constructor (
         public responseStatusCode: number,
-        public Validated: boolean, 
-        public Message:     string 
+        public validated: boolean, 
+        public message:     string 
     ){}
 }
 

@@ -21,24 +21,19 @@ export class OtpComponent implements OnInit, OnDestroy {
     otpControlIsValid = true;
     isLoading = false;
 
-    sentOTP : boolean;
 
     @ViewChild('phonenumberEl', {static:false}) phonenumberEl: ElementRef<TextField>;
     @ViewChild('hiddenEl', {static:false}) hiddenEl: ElementRef<TextField>;
-    @ViewChild('otpEl', {static:false}) otpEl: ElementRef<TextField>;
 //Subscribe from auth service
     getotpResultSub: Subscription;
     getotp: GetOTPResult;
 
-    getnewotpResultSub: Subscription;
-    getnewotp: GetNewOTPResult;
 
     validateotpResultSub: Subscription;
     validateotp: ValidateOTPResult;
     constructor(private modalParams: ModalDialogParams, private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef) {
     }
     ngOnInit() {
-        this.sentOTP = false;
         this.form = new FormGroup({
             phonenumber: new FormControl(
                 null,
@@ -53,7 +48,7 @@ export class OtpComponent implements OnInit, OnDestroy {
         
         //subscribe to status changes of form
         this.form.get('phonenumber').statusChanges.subscribe(status => {
-            this.phonenumberControlIsValid = status === 'VALID';
+            this.phonenumberControlIsValid = status === 'VALID'; 
         });
         //Subscribe to result in auth service
         this.getotpResultSub = this.authServ.currentGetotp.subscribe(
@@ -61,24 +56,31 @@ export class OtpComponent implements OnInit, OnDestroy {
                 if(getotpresult){
                     this.isLoading = false;
                     this.getotp = getotpresult;
-     
                     if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == true){
                         TNSFancyAlert.showSuccess("Success", this.getotp.Message, "Dismiss").then( t => {
                        this.authServ.clearOTPObject();
-                       this.sentOTP = true;
-                       //this.router.navigate([''], {clearHistory: true});
+                       this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
+                        animated: true,
+                        fullscreen: false,
+                        context: {string: "OTP"} } ).then(( selection: boolean) => {
+                
+                        });
                     });
                     } else if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == false) {
-                        TNSFancyAlert.showError("Error", this.validateotp.Message, "Dismiss");
+                        TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
+                        
    
                     } else if(this.getotp.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
+                        
                     }
                     else if(this.getotp.responseStatusCode === 400) {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
+                        
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
+                        
                     }
                 }
             }
@@ -92,21 +94,10 @@ export class OtpComponent implements OnInit, OnDestroy {
         
       
         const number = this.form.get('phonenumber').value;
-                 appSettings.setString("personid", number);
+        appSettings.setString("personid", number);
         
         this.isLoading = true;
-        //Timeout to give loading bar time to appear
-        setTimeout(() =>{
-            //Verify Login Credentials
-            this.authServ.GetOtp(number);
-        },100);
-        this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
-            animated: true,
-            fullscreen: false,
-            context: {string: "OTP"} } ).then(( selection: boolean) => {
-                //console.log(selection + "Returned from modal");
-            });
-
+      this.authServ.GetOtp(number);
     }
 
 
