@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList} from './auth.model';
-
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
 import { getString, setString } from "tns-core-modules/application-settings";
-
+import * as appSettings from "tns-core-modules/application-settings";
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
@@ -18,6 +17,10 @@ export class AuthService {
     private _currentUpdatePassword = new BehaviorSubject<UpdatePasswordResult>(null)
     private _currentInstitutionName = new BehaviorSubject<InstitutionName>(null);
     private _currentInstitutionNameList = new BehaviorSubject<InstitutionNameList>(null);
+    private _currentGetotp = new BehaviorSubject<GetOTPResult>(null)
+    private _currentValidateotp = new BehaviorSubject<ValidateOTPResult>(null)
+    private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
+    private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -49,6 +52,22 @@ export class AuthService {
 
     get currentInstitutionNameList(){
         return this._currentInstitutionNameList.asObservable();
+    }
+
+    get currentGetotp() {
+        return this._currentGetotp.asObservable();
+    }
+
+    get currentValidateotp() {
+        return this._currentValidateotp.asObservable();
+    }
+
+    get currentGetnewotp() {
+        return this._currentGetnewotp.asObservable();
+    }
+
+    get currentIsVerified() {
+        return this._currentIsverified.asObservable();
     }
    
 
@@ -252,6 +271,121 @@ export class AuthService {
         });
 
     }
+
+    GetOtp(phonenumber: string) {
+        const userid = appSettings.getString("userid");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getotpResultErr = new GetOTPResult(500, false, "An internal error has occured.");
+                this._currentGetotp.next(getotpResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getotpResult = new GetOTPResult(200, result.sent, result.Message);
+                this._currentGetotp.next(getotpResult);                
+            } else {
+                const getotpResult = new GetOTPResult(responseCode, false, response.content.toString());
+                this._currentGetotp.next(getotpResult); 
+            }
+        }, (e) => {
+
+            const getotpResult = new GetOTPResult(400, false, "An Error has been recieved, please contact support.");
+                this._currentGetotp.next(getotpResult); 
+        });
+    }
+
+    GetNewOtp() {
+        const userid = appSettings.getString("userid");
+        const phonenumber = appSettings.getString("phonenumber");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getnewotpResultErr = new GetNewOTPResult(500, false, "An internal error has occured.");
+                this._currentGetnewotp.next(getnewotpResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getnewotpResult = new GetNewOTPResult(200, result.sent, result.Message);
+                this._currentGetnewotp.next(getnewotpResult);                
+            } else {
+                const getnewotpResult = new GetNewOTPResult(responseCode, false, response.content.toString());
+                this._currentGetnewotp.next(getnewotpResult); 
+            }
+        }, (e) => {
+
+            const getnewotpResult = new GetNewOTPResult(400, false, "An Error has been recieved, please contact support.");
+                this._currentGetnewotp.next(getnewotpResult); 
+        });
+    }
+
+    ValidateOtp(otp: string) {
+        const userid = appSettings.getString("userid");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp";
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ userid: userid, otp: otp}),
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const validateotpResultErr = new ValidateOTPResult(500, false, "An internal error has occured.");
+                this._currentValidateotp.next(validateotpResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const validateotpResult = new ValidateOTPResult(200, result.validated, result.Message);
+                this._currentValidateotp.next(validateotpResult);                
+            } else {
+                const validateotpResult = new ValidateOTPResult(responseCode, false, response.content.toString());
+                this._currentValidateotp.next(validateotpResult); 
+            }
+        }, (e) => {
+
+            const validateotpResult = new ValidateOTPResult(400, false, "An Error has been recieved, please contact support.");
+                this._currentValidateotp.next(validateotpResult); 
+        });
+    }
+
+    VerificationStatus() {
+        const userid = appSettings.getString("userid");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const isverifiedResultErr = new IsVerifiedResult(500, false);
+                this._currentIsverified.next(isverifiedResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const isverifiedResult = new IsVerifiedResult(200, result.isverified);
+                this._currentIsverified.next(isverifiedResult);                
+            } else {
+                const isverifiedResult = new IsVerifiedResult(responseCode, false);
+                this._currentIsverified.next(isverifiedResult); 
+            }
+        }, (e) => {
+
+            const isverifiedResult = new IsVerifiedResult(400, false);
+                this._currentIsverified.next(isverifiedResult); 
+        });
+    }
     
     //This method clears all results
     clearAllObjects(){
@@ -273,4 +407,15 @@ export class AuthService {
         this._currentForgotPassword = new BehaviorSubject<ForgotPasswordResult>(null)
     }
 
+    clearOTPObject() {
+        this._currentGetotp = new BehaviorSubject<GetOTPResult>(null);
+    }
+
+    clearNewOTPObject() {
+        this._currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null);
+    }
+
+    clearValidateOTPObject() {
+        this._currentValidateotp = new BehaviorSubject<ValidateOTPResult>(null);
+    }
 }

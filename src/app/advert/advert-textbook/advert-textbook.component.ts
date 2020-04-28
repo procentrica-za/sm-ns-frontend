@@ -13,7 +13,7 @@ import { ObservableArray, ChangedData } from "tns-core-modules/data/observable-a
 import * as appSettings from "tns-core-modules/application-settings";
 import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
-
+ 
 
 import { TextField } from 'tns-core-modules/ui/text-field';
 @Component({

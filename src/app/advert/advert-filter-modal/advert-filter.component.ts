@@ -5,7 +5,7 @@ import { AdvertService } from "../advert.service";
 import { Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { EventData } from "tns-core-modules/ui/page/page";
-import { ListPicker } from "tns-core-modules/ui/list-picker/list-picker";
+import { ListPicker } from "tns-core-modules/ui/list-picker/list-picker"; 
 import { AdvertListPickerComponent } from "../advert-listpicker/advert-listpicker.component";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";

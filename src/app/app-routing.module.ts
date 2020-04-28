@@ -25,6 +25,7 @@ import { RatingComponent } from "./advert/rating/rating.component";
 
 
 
+
 const routes: Routes = [
     { path: '', component: AuthComponent },
     { path: 'register', component: RegisterComponent},

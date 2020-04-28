@@ -34,7 +34,8 @@ import { RatingComponent } from "./advert/rating/rating.component";
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular/side-drawer-directives';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular"
 import { InstitutionListPickerComponent } from "././auth/institution-listpicker/institution-listpicker.component"
-
+import { OtpComponent } from "./auth/otp/otp.component";
+import { ValidateComponent } from "./auth/validate/validate.component";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 @NgModule({
     bootstrap: [
@@ -72,11 +73,13 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
         RatebuyerHomeComponent,
         RatebuyerComponent,
         InstitutionListPickerComponent,
-        RatingComponent
+        RatingComponent,
+        OtpComponent,
+        ValidateComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
     ],
-    entryComponents: [InstitutionListPickerComponent]
+    entryComponents: [InstitutionListPickerComponent, OtpComponent, ValidateComponent]
 })
 export class AppModule { }

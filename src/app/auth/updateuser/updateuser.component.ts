@@ -4,10 +4,12 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
-import { GetUserResult, UpdateUserResult } from "../auth.model";
+import { GetUserResult, UpdateUserResult, IsVerifiedResult } from "../auth.model";
 import { InstitutionListPickerComponent } from "../institution-listpicker/institution-listpicker.component";
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { TNSFancyAlert } from "nativescript-fancyalert";
+import { OtpComponent } from "../otp/otp.component";
+import { ValidateComponent } from "../validate/validate.component";
 
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
@@ -29,6 +31,9 @@ export class UpdateuserComponent implements OnInit {
     updateResultSub: Subscription;
     update: UpdateUserResult;
 
+    isverifiedResultSub: Subscription;
+    isverified: IsVerifiedResult;
+    public isVerified: boolean;
     //form
     form: FormGroup;
     idControlIsValid = true;
@@ -54,6 +59,8 @@ export class UpdateuserComponent implements OnInit {
     }
     ngOnInit() {
 //form controls
+const id = appSettings.getString("userid");
+this.authServ.GetUser(id);
         this.form = new FormGroup({
             username: new FormControl(
                 null,
@@ -118,8 +125,7 @@ export class UpdateuserComponent implements OnInit {
 
         //find User from app settings
         this.userFound = false;
-        const id = appSettings.getString("userid");
-
+        this.isVerified = false;
 
 
         //subscribe to Get User result
@@ -135,9 +141,21 @@ export class UpdateuserComponent implements OnInit {
                 }
              }
         );
+        this.authServ.VerificationStatus();
+        this.isverifiedResultSub = this.authServ.currentIsVerified.subscribe(
+            isverifiedResult => {
+                if(isverifiedResult) {
+                    this.isverified = isverifiedResult
+                    if(this.isverified.responseStatusCode === 200 && this.isverified.isverified == true){
+                        this.isVerified = false;
+                    } else {
+                        this.isVerified = true;
+                     }
+                    }
+                 }
+            );
 
     //Send User ID from app settings
-        this.authServ.GetUser(id);
     }
 
     onInstitutionNameTap(){
@@ -158,6 +176,21 @@ export class UpdateuserComponent implements OnInit {
                     duration: 200,
                     curve: "ease"
                 }
+            });
+
+    }
+
+    onOTP(): void {
+        this.modalDialog.showModal(OtpComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: false,
+            context: {string: "OTP"} } ).then(( selection: boolean) => {
+                this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
+                    animated: true,
+                    fullscreen: false,
+                    context: {string: "OTP"} } ).then(( selection: boolean) => {
+                        
+                    });
             });
 
     }
@@ -230,6 +263,10 @@ export class UpdateuserComponent implements OnInit {
         
         if(this.updateResultSub){
             this.updateResultSub.unsubscribe();
+        }
+
+        if(this.isverifiedResultSub){
+            this.isverifiedResultSub.unsubscribe();
         }
         }
  }
