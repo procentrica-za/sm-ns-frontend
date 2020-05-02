@@ -81,13 +81,13 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
                     } else if (this.book.responseStatusCode === 500 ){
                         TNSFancyAlert.showError("No Book", "We unfortunately could not find the book you are looking for", "Dismiss");
                         this.Gotbook = true;
-                      
+                        this.advertServ.clearBook();
       
                     }
                     else if (this.book.responseStatusCode === 400){
                         TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
                         this.Gotbook = true;
-              
+                        this.advertServ.clearBook();
                     }
                     else {
                         TNSFancyAlert.showError("Error", "Unfortunately we do not have knowledge of this textbook", "Dismiss");
