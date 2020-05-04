@@ -4,6 +4,7 @@
     <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu-top" text="Home" (tap)="advertHome()"></Button>
     <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="My Adverts" (tap)="myAdsHome()"></Button>
     <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Personal Details" (tap)="myPersonalDetails()"></Button>
+    <Button *ngIf="isLoggedIn" class="btn-sidedrawer-menu" text="Shop" (tap)="shopHome()"></Button>
     <StackLayout orientation="horizontal" class="Sidedrawer">
     <Button *ngIf="isLoggedIn" class="btn-sidedrawer-message" text="Messages" (tap)="Messagehome()"></Button>
     <Label *ngIf="unreadMessages" text="&#xf0f3;" class="Homeunread" textWrap="true" ></Label>

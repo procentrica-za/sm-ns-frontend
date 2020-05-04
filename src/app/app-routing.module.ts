@@ -35,6 +35,10 @@ const routes: Routes = [
         path: 'advert',
         loadChildren: '~/app/advert/advert.module#AdvertModule'
     },
+    {
+        path: 'purchase',
+        loadChildren: '~/app/purchase/purchase.module#PurchaseModule'
+    },
     { path: 'messaginghome', component: MessagingHomeComponent },
     { path: 'messagingdetails', component: MessagingDetailsComponent },
     { path: 'ratinghome', component: RatingHomeComponent },

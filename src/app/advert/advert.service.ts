@@ -340,10 +340,10 @@ export class AdvertService {
    
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.188:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.188:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
-        setString("sm-service-messages-host", "http://192.168.1.188:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.52:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.52:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.52:9955");
+        setString("sm-service-messages-host", "http://192.168.1.52:9956");
     }
     
     initializeModuleCodeList(){
@@ -584,7 +584,7 @@ export class AdvertService {
                 ================================================================================================*/
                 const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
                 console.log(reqUrl);
-               
+                console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description, institution: instName }))
                 request ({
                     url: reqUrl,
                     method: "POST",

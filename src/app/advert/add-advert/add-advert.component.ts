@@ -358,7 +358,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
                 const instType = this.form.get('instType').value;
 
                 switch (acdType){
-                    case "Apartement": {
+                    case "Apartment": {
                         acdType = "APT";
                         break;
                     }

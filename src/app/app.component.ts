@@ -7,10 +7,15 @@ import { RouterExtensions } from "nativescript-angular/router";
 
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular/side-drawer-directives";
 import { UIService } from './shared/ui/ui.service';
-
+import * as purchase from "nativescript-purchase";
 
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
+
+purchase.init([
+    "org.nativescript.purchasesample.product1",
+    "org.nativescript.purchasesample.product3"
+]);
 
 @Component({
     moduleId: module.id,
@@ -18,6 +23,9 @@ import * as appSettings from "tns-core-modules/application-settings";
     templateUrl: "app.component.html"
 })
 export class AppComponent implements OnInit{ 
+
+   
+
 
     public isLoggedIn: boolean;
     private drawersub: Subscription;
@@ -112,6 +120,11 @@ export class AppComponent implements OnInit{
         this.router.navigate(['/advert']);
         
 
+    }
+
+    shopHome(){
+        this.drawerComponent.sideDrawer.closeDrawer();
+        this.router.navigate(['/purchase']);
     }
 
     myAdsHome(){
