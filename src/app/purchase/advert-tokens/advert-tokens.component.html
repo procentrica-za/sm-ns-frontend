@@ -1,0 +1,14 @@
+<ns-action-bar [actionBarTitle]="'Shop'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout class="advertRadList">
+    <GridLayout class="GridLayoutAdvertListStyle" shadow="6">
+        <ListView [items]="myProductArray" (itemTap)="onProductTap($event)">
+            <ng-template tkListItemTemplate let-inAppProduct="item" >
+                <GridLayout rows="auto, auto" columns="*, auto" padding="5">
+                    <Label row="0" col="0" class="h2" [text]="inAppProduct.localizedTitle"></Label>
+                    <Label row="1" col="0" [text]="inAppProduct.localizedDescription" textWrap="true" color="#999999"></Label>
+                    <Label [text]="inAppProduct.priceFormatted" row="0" rowSpan="2" col="1" class="h1" style="margin-left: 5"></Label>
+                </GridLayout>
+            </ng-template>
+        </ListView>
+    </GridLayout>
+</StackLayout>
