@@ -237,7 +237,13 @@ export class AdvertHomeComponent implements OnInit, OnDestroy {
                 console.log("Error when scanning " + errorMessage);
             }
         );
+
+        
     } 
+    
+    onHelp() {
+        this.router.navigate(['/help']);
+    }
 
 
     ngOnDestroy() {

@@ -1,5 +1,7 @@
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false>
-    
+    <ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" >
+        <Label class="label" text="?" style="padding-right: 20%; font-size: 20em;" ></Label>
+    </ActionItem>
 </ns-action-bar>
 
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
