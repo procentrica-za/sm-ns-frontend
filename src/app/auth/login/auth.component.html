@@ -1,4 +1,8 @@
-<ns-action-bar [actionBarTitle]="'Study Money'"></ns-action-bar>
+<ns-action-bar [actionBarTitle]="'Study Money'">
+<ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" >
+    <Label class="label" text="?" style="padding-right: 20%; font-size: 20em;" ></Label>
+</ActionItem>
+</ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
     <Image class="img-login-logo" src="res://icon"></Image>
     <StackLayout class="input-field">

@@ -22,7 +22,7 @@ import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
 
 import { RatingComponent } from "./advert/rating/rating.component";
 
-
+import { HelpComponent } from "./auth/help/help.component";
 
 
 
@@ -50,6 +50,7 @@ const routes: Routes = [
     { path: 'ratebuyerhome', component: RatebuyerHomeComponent },
     { path: 'ratebuyer', component: RatebuyerComponent },
     { path: 'rating', component: RatingComponent },
+    { path: 'help', component: HelpComponent },
 ];
 
 @NgModule({

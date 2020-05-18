@@ -14,6 +14,10 @@ import * as appSettings from "tns-core-modules/application-settings";
 //Below imports are for "remember me switch"
 import { Switch } from "tns-core-modules/ui/switch";
 import { EventData } from "tns-core-modules/data/observable";
+import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
+import { Page } from "tns-core-modules/ui/page";
+import {Observable} from "tns-core-modules/data/observable";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 
 @Component({
@@ -156,10 +160,14 @@ export class AuthComponent implements OnInit, OnDestroy {
     onForgotpassword() {
         this.router.navigate(['/forgotpassword']);
     }
+    onHelp() {
+        this.router.navigate(['/help']);
+    }
 
 
     onRememberMeChanged(args: EventData) {
         let mySwitch = args.object as Switch;
         this.rememberMe = mySwitch.checked;
     }
+
 }
