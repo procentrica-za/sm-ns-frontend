@@ -3,9 +3,22 @@ import { BehaviorSubject } from 'rxjs';
 import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
-
 import { getString, setString } from "tns-core-modules/application-settings";
 import * as appSettings from "tns-core-modules/application-settings";
+
+import { knownFolders } from 'file-system'
+import * as Https from 'nativescript-https'
+let dir = knownFolders.currentApp().getFolder('assets')
+let certificate = dir.getFile('httpbin.org.cer').path
+Https.enableSSLPinning({ host: 'httpbin.org', certificate })
+
+export interface HttpsSSLPinningOptions {
+    host: "https://10.10.100.148:8243/user/v1.0/institution"
+    certificate: 'https://10.10.100.148:8243/user/v1.0/institution'
+    allowInvalidCertificates?: false
+    validatesDomainName?: true
+    commonName?: "institution"
+}
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
@@ -73,7 +86,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://10.10.100.148:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -245,11 +258,13 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = "https://10.10.100.148:8243/user/v1.0/institution"
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
-            timeout: 5000
+            timeout: 5000,
+            headers: { "Authorization": "Bearer 926027af-4a0e-32cc-aab8-fe0cf15a1a31" },
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500){
