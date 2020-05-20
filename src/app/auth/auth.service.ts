@@ -6,6 +6,20 @@ import { request } from "tns-core-modules/http";
 
 import { getString, setString } from "tns-core-modules/application-settings";
 import * as appSettings from "tns-core-modules/application-settings";
+
+import { knownFolders } from 'file-system'
+import * as Https from 'nativescript-https'
+let dir = knownFolders.currentApp().getFolder('assets')
+let certificate = dir.getFile('https://192.168.1.187:8243/user/v1.0/institution').path
+Https.enableSSLPinning({ host: 'https://192.168.1.187:8243/user/v1.0/institution', certificate })
+
+export interface HttpsSSLPinningOptions {
+    host: 'https://192.168.1.187:8243/user/v1.0/institution'
+    certificate: 'https://192.168.1.187:8243/user/v1.0/institution'
+    allowInvalidCertificates?: false
+    validatesDomainName?: true
+    commonName?: 'institution'
+}
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
@@ -73,7 +87,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -245,10 +259,12 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = "https://192.168.1.187:8243/user/v1.0/institution"
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "accept": "application/json", "Authorization": "Bearer d232484a-2c80-3d2a-b4e0-6577d5b19f3c" }, 
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
