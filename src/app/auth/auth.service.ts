@@ -73,7 +73,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://10.10.100.148:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -245,11 +245,13 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = "https://10.10.100.148:8243/user/v1.0/institution"
+        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
-            timeout: 5000
+            timeout: 5000,
+            headers: { "Authorization": "Bearer 521ec2a4-bb20-3543-9f93-37f49c3d4314" },
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500){
