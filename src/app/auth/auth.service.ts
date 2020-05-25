@@ -73,7 +73,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://10.10.100.148:9952");
     }
 
     validateCredentials(username: string, password: string) {
@@ -245,10 +245,12 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = 'https://10.10.100.148:8243/user/v1.0/institution'
+        console.log(reqUrl)
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer dc7806b3-ab83-39bc-85df-58dc60c6abcd" },
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -386,6 +388,19 @@ export class AuthService {
             const isverifiedResult = new IsVerifiedResult(400, false);
                 this._currentIsverified.next(isverifiedResult); 
         });
+    }
+
+    testCall(username: string, password: string){
+        //if status 303 then:
+        const success = this.RefreshTokens();
+        //if success == true then:
+        this.testCall(username, password);
+        //else show error
+    }
+
+    RefreshTokens():boolean{
+        //calls and stuff
+        return true;
     }
     
     //This method clears all results
