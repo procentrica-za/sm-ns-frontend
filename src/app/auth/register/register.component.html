@@ -127,7 +127,8 @@
         text="Register"
         (tap)="onRegisterUser()"
     ></Button>
+
+    <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+        <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+    </FlexboxLayout>
 </StackLayout>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
-    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
-</FlexboxLayout>

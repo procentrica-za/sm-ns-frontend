@@ -3,6 +3,7 @@
     <Label text="&#xf059;" class="Help" ></Label>
 </ActionItem>
 </ns-action-bar>
+<StackLayout>
 <StackLayout class="form" [formGroup]="form">
     <Image class="img-login-logo" src="res://icon"></Image>
     <StackLayout class="input-field">
@@ -62,3 +63,4 @@
 <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </FlexboxLayout>
+</StackLayout>

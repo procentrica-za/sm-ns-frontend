@@ -4,11 +4,7 @@
     </ActionItem>
 </ns-action-bar>
 
-<Gridlayout colums="*,*" rows="*,11*" style="background-color: #efeeee;">
-    <Label col="0" row="0" class="labelOutsideInput" *ngIf="isSelling" text="Selling"></Label>
-    <Label col="1" row="0" class="labelOutsideInput" *ngIf="!isSelling" text="Looking For"></Label>
-    <Switch checked="{{isSelling}}" (checkedChange)="onCheckedChange($event)" class="IsSellingSwitch"></Switch>  
-</Gridlayout>
+
 
 <TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded" style="margin-top: 7%;">
     <!-- TAB AND RADLIST USED FOR ACCOMODATION -->
@@ -16,7 +12,7 @@
     <Gridlayout *ngIf="textbookListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
         <Label *ngIf="textbookListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
     </Gridlayout>
-    <RadListView  *ngIf="!textbookListEmpty" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
+    <RadListView height="2600px" *ngIf="!textbookListEmpty" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                 <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -39,7 +35,7 @@
         <Gridlayout *ngIf="accomodationListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
             <Label *ngIf="accomodationListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
         </Gridlayout>
-        <RadListView  *ngIf="!accomodationListEmpty" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
+        <RadListView height="2600px" *ngIf="!accomodationListEmpty" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -64,7 +60,7 @@
         <Gridlayout *ngIf="tutorListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
             <Label *ngIf="tutorListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
         </Gridlayout>
-        <RadListView  *ngIf="!tutorListEmpty" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
+        <RadListView height="2600px" *ngIf="!tutorListEmpty" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -87,7 +83,7 @@
         <Gridlayout *ngIf="noteListEmpty" rows="*" columns="*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
             <Label *ngIf="noteListEmpty" text="You have not posted any advertisements yet.." class="label1" textwrap = "true"></Label>
         </Gridlayout>
-        <RadListView  *ngIf="!noteListEmpty" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
+        <RadListView height="2600px" *ngIf="!noteListEmpty" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="myAdvertRadlist">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>

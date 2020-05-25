@@ -73,7 +73,8 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://10.10.100.147:9952");
+        console.log("Initializing app SM... Backend address: " + getString("sm-service-cred-manager-host"));
     }
 
     validateCredentials(username: string, password: string) {

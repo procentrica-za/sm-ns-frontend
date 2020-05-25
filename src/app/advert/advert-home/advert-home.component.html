@@ -16,7 +16,7 @@
         <Label text="&#xf161;" class="FilterLabelicon" (tap)="onTextbookFilterTap()" ></Label>
     </StackLayout>
 
-    <RadListView  *ngIf="textbookImagesLoaded" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+    <RadListView height="2600px" *ngIf="textbookImagesLoaded" [items]="myTextbookArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
         <ng-template tkListItemTemplate let-textbook="item" >
             <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                 <Image *ngIf="textbook"  row="0" col="0" rowspan="4" [src]="textbook.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -42,7 +42,7 @@
             <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onAccomodationFilterTap()" ></Label>
         </StackLayout>
 
-        <RadListView  *ngIf="accomodationImagesLoaded" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView  height="2600px" *ngIf="accomodationImagesLoaded" [items]="myAccomodationArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-accomodation="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="accomodation"  row="0" col="0" rowspan="4" [src]="accomodation.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -67,7 +67,7 @@
             <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onTutorFilterTap()" ></Label>
         </StackLayout>
 
-        <RadListView  *ngIf="tutorImagesLoaded" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView height="2600px" *ngIf="tutorImagesLoaded" [items]="myTutorArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-tutor="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="tutor"  row="0" col="0" rowspan="4" [src]="tutor.imagebytes" class="thumb-img-circle" shadow="2"></Image>
@@ -92,7 +92,7 @@
             <Label col="1" text="&#xf161;" class="FilterLabelicon" (tap)="onNoteFilterTap()" ></Label>
         </StackLayout>
 
-        <RadListView  *ngIf="noteImagesLoaded" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView height="2600px" *ngIf="noteImagesLoaded" [items]="myNoteArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-note="item" >
                 <Gridlayout rows="*,49,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Image *ngIf="note"  row="0" col="0" rowspan="4" [src]="note.imagebytes" class="thumb-img-circle" shadow="2"></Image>

@@ -1,6 +1,6 @@
 <ns-action-bar [actionBarTitle]="'Advert Details'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
 
-
+<StackLayout>
 <!-- ######################################################## GRIDLAYOUT USED FOR TEXTBOOK ADS ########################################################-->
 <Gridlayout rows="35*,10*,5*,15*,5*,5*,5*,5*,5*,12*,5*" columns="*,*,*,*,*" class="list-group-item" class="GridLayoutAdvertStyle" shadow="6" *ngIf="textbookResult" >
     <Image *ngIf="textbookResult"  row="0" col="1" colspan="3" [src]="textbookResult.imagebytes" shadow="2" style="margin-top: 5; margin-bottom: 5;"></Image>
@@ -324,4 +324,5 @@
         <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon" (tap)="deleteAdvertisement(userAdvertNoteResult.advertisementid)"></Label>
         <Label row="10" col="3" text="Delete" class="DeleteLabel" (tap)="deleteAdvertisement(userAdvertNoteResult.advertisementid)"></Label>
 </Gridlayout>
+</StackLayout>
 
