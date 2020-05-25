@@ -133,8 +133,8 @@ export class AuthService {
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname }),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            content: "grant_type=password&username=Username&password=Password",
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
