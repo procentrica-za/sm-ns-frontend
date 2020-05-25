@@ -1,0 +1,6 @@
+framework module Pods_smnsfrontend {
+  umbrella header "Pods-smnsfrontend-umbrella.h"
+
+  export *
+  module * { export * }
+}

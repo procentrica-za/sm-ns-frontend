@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var TNSFancyAlertButton = (function () {
+    function TNSFancyAlertButton(model) {
+        if (model) {
+            this.label = model.label;
+            this.action = model.action;
+            this.applyStyle = model.applyStyle;
+        }
+    }
+    return TNSFancyAlertButton;
+}());
+exports.TNSFancyAlertButton = TNSFancyAlertButton;
+//# sourceMappingURL=common.js.map

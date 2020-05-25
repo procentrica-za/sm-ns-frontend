@@ -1,0 +1,51 @@
+PODS:
+  - MaterialComponents/AnimationTiming (84.6.0)
+  - MaterialComponents/Ink (84.6.0):
+    - MaterialComponents/private/Math
+  - MaterialComponents/Palettes (84.6.0)
+  - MaterialComponents/private/Application (84.6.0)
+  - MaterialComponents/private/Math (84.6.0)
+  - MaterialComponents/ShadowElevations (84.6.0)
+  - MaterialComponents/ShadowLayer (84.6.0):
+    - MaterialComponents/ShadowElevations
+  - MaterialComponents/Tabs (84.6.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Ink
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Typography
+    - MDFInternationalization
+  - MaterialComponents/Typography (84.6.0):
+    - MaterialComponents/private/Application
+    - MaterialComponents/private/Math
+  - MDFInternationalization (2.0.0)
+  - QBImagePickerController (3.4.0)
+  - SCLAlertView-Objective-C (1.1.6)
+  - SSKeychain (1.4.1)
+
+DEPENDENCIES:
+  - MaterialComponents/Tabs (~> 84.4)
+  - QBImagePickerController (~> 3.4.0)
+  - SCLAlertView-Objective-C
+  - SSKeychain
+
+SPEC REPOS:
+  trunk:
+    - MaterialComponents
+    - MDFInternationalization
+    - QBImagePickerController
+    - SCLAlertView-Objective-C
+    - SSKeychain
+
+SPEC CHECKSUMS:
+  MaterialComponents: 71139af6ca6875fbde8ab8e64a275b7fd6a22d7f
+  MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  SCLAlertView-Objective-C: 2bb9be204bffaf24762a0e33fe6ca9645819b3b7
+  SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
+
+PODFILE CHECKSUM: 05d8d66811fc34973fd4b21a29969f50c83028d3
+
+COCOAPODS: 1.9.1
