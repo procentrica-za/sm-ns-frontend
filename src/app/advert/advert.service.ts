@@ -1611,6 +1611,18 @@ export class AdvertService {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
             const outstandingratingResultErr = new OutstandingratingResult(500, null, null, null, null, null);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.initializeOutstandingratings(userid);
+            }
+            
+            else {
+                const outstandingratingResultErr = new OutstandingratingResult(500, null, null, null, null, null);
+            }
+    
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();
@@ -1620,7 +1632,7 @@ export class AdvertService {
             const JSONOutstandingratingList = result.outstandingratings;
             // iterate through the outstandingratinglist and read each textbook into a textbook object and push to the list variable
             JSONOutstandingratingList.forEach(element => {
-                element.responseStatusCode =200;
+                element.responseStatusCode = 200;
                 outstandingratingList.push(element)
             })
             const outstandingratingResult = new OutstandingratingResultList(200, outstandingratingList, "Successfully recieved outstanding ratings");
@@ -1745,6 +1757,19 @@ clearSelectedOutstandingrating() {
             if(responseCode === 500) {
                 const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
                 this._currentRateSeller.next(RateSellerResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.RateSeller(ratingid, sellerrating, sellercomments);
+                }
+                
+                else {
+                    const RateSellerResultErr = new RateSellerResult(500, false, 'An error has occured whilst trying to connect.',);
+                    this._currentRateSeller.next(RateSellerResultErr);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const RateSellersuccessResult = new RateSellerResult(200, true, result.message);
@@ -1764,7 +1789,7 @@ clearSelectedOutstandingrating() {
     
 
 //seller dashboard
-Previoussellerratings(userid) {
+Previoussellerratings(userid: string) {
     const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/sellerrating?userid=" + userid;
     console.log(reqUrl);
@@ -1777,6 +1802,18 @@ Previoussellerratings(userid) {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
             const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.Previoussellerratings(userid);
+            }
+            
+            else {
+                const previousratingResultErr = new PreviousratingResult(500, null, null, null, null)
+            }
+    
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();
@@ -1803,7 +1840,7 @@ Previoussellerratings(userid) {
 }
 
 //buyer dashboard
-Previousbuyerratings(userid) {
+Previousbuyerratings(userid: string) {
     const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/buyerrating?userid=" + userid;
     console.log(reqUrl);
@@ -1816,6 +1853,18 @@ Previousbuyerratings(userid) {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
             const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.Previousbuyerratings(userid);
+            }
+            
+            else {
+                const previousratingResultErr = new PreviousratingResult(500, null, null, null, null);
+            }
+    
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();
@@ -1856,6 +1905,19 @@ StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, adver
         if(responseCode === 500) {
             const StartChatResultErr = new StartChatResult(500, false,'00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
             this._currentStartChat.next(StartChatResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.StartNewChat(sellerid, buyerid, advertisementtype, advertisementid);
+            }
+            
+            else {
+                const StartChatResultErr = new StartChatResult(500, false,'00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentStartChat.next(StartChatResultErr);
+            }
+    
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
@@ -1888,6 +1950,19 @@ UnreadChats() {
         if(responseCode === 500) {
             const UnreadChatsResultErr = new UnreadChatsResult(500, false,);
             this._currentUnreadChats.next(UnreadChatsResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.UnreadChats();
+            }
+            
+            else {
+                const UnreadChatsResultErr = new UnreadChatsResult(500, false,);
+            this._currentUnreadChats.next(UnreadChatsResultErr);
+            }
+    
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
@@ -1918,6 +1993,19 @@ deleteChat(chatid: string){
         if (responseCode === 500){
             const DeleteChatResultErr = new DeleteChatResult(500, false , 'An internal error has occured whilst trying to delete ' + chatid);
             this._currentDeleteChatResult.next(DeleteChatResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.deleteChat(chatid);
+            }
+            
+            else {
+                const DeleteChatResultErr = new DeleteChatResult(500, false , 'An internal error has occured whilst trying to delete ' + chatid);
+            this._currentDeleteChatResult.next(DeleteChatResultErr);
+            }
+    
         } else if (responseCode === 200){
             const result = response.content.toJSON();
             const DeleteChatResultSuccess = new DeleteChatResult(200, result.chatposted, result.message);
@@ -1946,6 +2034,18 @@ InterestedBuyers(userid: string, advertisementid: string) {
         const responseCode = response.statusCode;
         if(responseCode === 500) {
             const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null, null);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.InterestedBuyers(userid, advertisementid);
+            }
+            
+            else {
+                const interestedbuyerResultErr = new InterestedbuyerResult(500, null, null, null, null, null);
+            }
+    
         } else if (responseCode === 200) {
             // Make sure the response we receive is in JSON format.
             const result = response.content.toJSON();
@@ -1989,6 +2089,19 @@ RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerratin
         if(responseCode === 500) {
             const RateBuyerResultErr = new RateBuyerResult(500, false, '00000000-0000-0000-0000-000000000000','An error has occured whilst trying to connect.',);
             this._currentRateBuyer.next(RateBuyerResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.RateBuyer(advertisementid, buyerid, sellerid, buyerrating, buyercomments);
+            }
+            
+            else {
+                const RateBuyerResultErr = new RateBuyerResult(500, false, '00000000-0000-0000-0000-000000000000','An error has occured whilst trying to connect.',);
+            this._currentRateBuyer.next(RateBuyerResultErr);
+            }
+    
         } else if (responseCode === 200) {
             const result = response.content.toJSON();
             const RateBuyersuccessResult = new RateBuyerResult(200, result.buyerrated, result.ratingid, result.message);
@@ -2020,6 +2133,19 @@ OutstandingRatings() {
         if(responseCode === 500) {
             const OutstandingRatingResultErr = new OutstandingRatingResult(500, false,);
             this._currentOutstandingRating.next(OutstandingRatingResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.OutstandingRatings();
+            }
+            
+            else {
+                const OutstandingRatingResultErr = new OutstandingRatingResult(500, false,);
+            this._currentOutstandingRating.next(OutstandingRatingResultErr);
+            }
+    
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
@@ -2052,6 +2178,19 @@ Buyingdashboard() {
         if(responseCode === 500) {
             const BuyingAverageResultErr = new BuyingAverageResult(500, "You do not have any ratings as yet");
             this._currentBuyingAverage.next(BuyingAverageResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.Buyingdashboard();
+            }
+            
+            else {
+                const BuyingAverageResultErr = new BuyingAverageResult(500, "You do not have any ratings as yet");
+            this._currentBuyingAverage.next(BuyingAverageResultErr);
+            }
+    
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
@@ -2083,6 +2222,19 @@ Sellingdashboard() {
         if(responseCode === 500) {
             const SellingAverageResultErr = new SellingAverageResult(500, "You do not have any ratings as yet");
             this._currentSellingAverage.next(SellingAverageResultErr);
+        } else if (responseCode === 401) {
+            this.RefreshTokens();
+            const success = this.RefreshTokens();
+            
+            if(success == true) {
+            this.Sellingdashboard();
+            }
+            
+            else {
+                const SellingAverageResultErr = new SellingAverageResult(500, "You do not have any ratings as yet");
+            this._currentSellingAverage.next(SellingAverageResultErr);
+            }
+    
         } else if (responseCode === 200) {
 
             const result = response.content.toJSON();
