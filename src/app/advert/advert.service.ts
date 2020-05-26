@@ -43,7 +43,7 @@ import {    TextbookResult,
             UnreadChatsResult,
             DeleteChatResult,
             ImageUploadedResult,
-            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult, GetBookResult} from './advert.model'
+            OutstandingRatingResult, BuyingAverageResult, SellingAverageResult, UploadTextbookResult, GetBookResult, RefreshResult} from './advert.model'
            
 //import { TextbookResult, TextbookResultList } from './advert.model';
 import { HttpClient } from '@angular/common/http';
@@ -145,6 +145,8 @@ export class AdvertService {
     private _currentSellingAverage = new BehaviorSubject<SellingAverageResult>(null);
    
     private _currentGetBook = new BehaviorSubject<GetBookResult>(null)
+
+    private _currentRefresh = new BehaviorSubject<RefreshResult>(null)
 
     get currentImageUploaded(){
         return this._currentImageUploaded.asObservable();
@@ -337,6 +339,10 @@ export class AdvertService {
     get currentUploadTextbook() {
         return this._currentUploadTextbook.asObservable();
     }
+
+    get currentRefresh() {
+        return this._currentRefresh.asObservable();
+    }
    
 
     constructor(private http: HttpClient){
@@ -347,16 +353,30 @@ export class AdvertService {
     }
     
     initializeModuleCodeList(){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/modulecode"
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500){
                 const modulecodeErr = new ModuleCode(500, null);
-            }else if(responseCode === 200){
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeModuleCodeList();
+                }
+                
+                else {
+                    const modulecodeErr = new ModuleCode(500, null);
+                }
+        
+            } else if(responseCode === 200){
                 const result = response.content.toJSON();
                 let modulecodeList: ModuleCode[] = [];
                 const JSONModuleCodeList = result.modulecodes;
@@ -376,15 +396,29 @@ export class AdvertService {
     }
 
     initializeAddTextbookList(){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/textbooks"
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const textbookErr = new Textbook(500, null, null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeAddTextbookList();
+                }
+                
+                else {
+                    const textbookErr = new Textbook(500, null, null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let textbookList: Textbook[] = [];
@@ -424,7 +458,7 @@ export class AdvertService {
 
     }
 
-    GetBook(isbn: string) {
+    GetBook(isbn: string) { 
         const reqUrl = "https://api.altmetric.com/v1/isbn/" + isbn
         console.log(reqUrl);
         request ({
@@ -436,7 +470,7 @@ export class AdvertService {
             if(responseCode === 500) {
                 const getbookResultErr = new GetBookResult(500, 'Please enter Title', 'Please enter author(s)');
                 this._currentGetBook.next(getbookResultErr);
-            } else if (responseCode === 200) {
+            }  else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const getbookResult = new GetBookResult(200, result.title, result.authors || result.authors_or_editors);
                 this._currentGetBook.next(getbookResult);             
@@ -452,12 +486,13 @@ export class AdvertService {
     }
 
     UploadNewTextbook(modulecode: string, name: string, edition: string, quality: string, author: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/textbook"
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ modulecode: modulecode, name: name, edition: edition , quality: quality, author: author}),
             timeout: 5000
         }).then((response) => {
@@ -465,6 +500,19 @@ export class AdvertService {
             if(responseCode === 500) {
                 const UploadTextbookResultErr = new UploadTextbookResult('none','00000000-0000-0000-0000-000000000000', 'none', 'none', 'none', 'none', 500);
                 this._currentUploadTextbook.next(UploadTextbookResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.UploadNewTextbook(modulecode, name, edition, quality, author);
+                }
+                
+                else {
+                    const UploadTextbookResultErr = new UploadTextbookResult('none','00000000-0000-0000-0000-000000000000', 'none', 'none', 'none', 'none', 500);
+                this._currentUploadTextbook.next(UploadTextbookResultErr);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const UploadsuccessResult = new UploadTextbookResult(result.modulecode, result.id, result.name, result.edition, result.quality,result.author, 200);
@@ -482,6 +530,7 @@ export class AdvertService {
     }  
 
     deleteAdvertisement(advertisementID: string){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement?id=" + advertisementID;
         request ({
             url: reqUrl,
@@ -492,6 +541,19 @@ export class AdvertService {
             if (responseCode === 500){
                 const DeleteAdvertisementResultErr = new DeleteAdvertisementResult(500, false, advertisementID, 'An internal error has occured.');
                 this._currentDeleteAdvertisementResult.next(DeleteAdvertisementResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.deleteAdvertisement(advertisementID);
+                }
+                
+                else {
+                    const DeleteAdvertisementResultErr = new DeleteAdvertisementResult(500, false, advertisementID, 'An internal error has occured.');
+                this._currentDeleteAdvertisementResult.next(DeleteAdvertisementResultErr);
+                }
+        
             } else if (responseCode === 200){
                 const result = response.content.toJSON();
                 const DeleteAdvertisementResultSuccess = new DeleteAdvertisementResult(200, result.advertisementdeleted, result.id, result.message);
@@ -506,11 +568,12 @@ export class AdvertService {
     }
 
     AddNewImage(advertisementID: string, isMainImage: boolean, imageBytes: string){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-file-manager-host") + "/uploadimage";
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ entityid: advertisementID, ismainimage: isMainImage, imagebytes:imageBytes }),
             timeout: 5000
         }).then((response) => {
@@ -521,6 +584,20 @@ export class AdvertService {
                 this.setImageUploaded(addImageResult);
                 console.log("Image Successfully uploaded and linked to advertisement: Status Code ---> " + responseCode);
                 
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.AddNewImage(advertisementID, isMainImage, imageBytes);
+                }
+                
+                else {
+                    const addImageResult = new ImageUploadedResult(false, "Error")
+                    this.setImageUploaded(addImageResult);
+                    console.log("Internal Error encountered: Status Code ---> " + responseCode);
+                }
+        
             } else {
                 //const result = response.content.toJSON();
                 const addImageResult = new ImageUploadedResult(false, "Error")
@@ -533,12 +610,13 @@ export class AdvertService {
     }
 
     AddNewTextbookAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
        
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
             timeout: 5000
         }).then((response) => {
@@ -546,6 +624,19 @@ export class AdvertService {
             if(responseCode === 500) {
                 const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.AddNewTextbookAdvertisement(userID, isSelling, advertType, price, description, institution , entityID);
+                }
+                
+                else {
+                    const AddAdvertisementResultErr = new AddAdvertisementResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddAdvertisement.next(AddAdvertisementResultErr);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const AddAdvertisementSuccess = new AddAdvertisementResult(200, result.advertisementposted, result.id, result.message);
@@ -562,11 +653,12 @@ export class AdvertService {
     }
 
     AddNewAccomodationAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, acdID: string, acdType: string, location: string, distancetocampus: string, instName: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/accomodation" ;
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: acdID, accomodationtypecode: acdType, institutionname: instName, location: location, distancetocampus: distancetocampus }),
             timeout: 5000
         }).then((response) => {
@@ -574,6 +666,19 @@ export class AdvertService {
             if(responseCode === 500) {
                 const AddAccomodationResultErr = new AddAccomodationResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentAddAccomodation.next(AddAccomodationResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.AddNewAccomodationAdvertisement(userID, isSelling, advertType, price, description, acdID, acdType, location, distancetocampus, instName);
+                }
+                
+                else {
+                    const AddAccomodationResultErr = new AddAccomodationResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddAccomodation.next(AddAccomodationResultErr);
+                }
+        
             } else if (responseCode === 200) {
 
                 const result = response.content.toJSON();
@@ -582,13 +687,14 @@ export class AdvertService {
                 /* ===============================================================================================
                 ==================================================================================================
                 ================================================================================================*/
+                const accesstoken = appSettings.getString("accesstoken"); 
                 const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
                 console.log(reqUrl);
                 console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description, institution: instName }))
                 request ({
                     url: reqUrl,
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
                     content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: acdID, price: price, description: description, institution: instName }),
                     timeout: 5000
                 }).then((response) => {
@@ -633,11 +739,12 @@ export class AdvertService {
    
 
     AddNewTutorAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string, subject: string, yearcompleted: string, venue: string, notesincluded: string, terms: string, moduleCode: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/tutor" ;
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: entityID, modulecode: moduleCode, subject: subject, yearcompleted: yearcompleted, venue: venue, notesincluded: notesincluded, terms: terms }),
             timeout: 5000
         }).then((response) => {
@@ -645,6 +752,19 @@ export class AdvertService {
             if(responseCode === 500) {
                 const AddTutorResultErr = new AddTutorResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentAddTutor.next(AddTutorResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.AddNewTutorAdvertisement(userID, isSelling, advertType, price, description, institution , entityID, subject, yearcompleted, venue, notesincluded, terms, moduleCode);
+                }
+                
+                else {
+                    const AddTutorResultErr = new AddTutorResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                    this._currentAddTutor.next(AddTutorResultErr);
+                }
+        
             } else if (responseCode === 200) {
 
                 const result = response.content.toJSON();
@@ -653,13 +773,14 @@ export class AdvertService {
                 /* ===============================================================================================
                 ==================================================================================================
                 ================================================================================================*/
+                const accesstoken = appSettings.getString("accesstoken"); 
                 const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
                 //console.log(reqUrl);
                 //console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }))
                 request ({
                     url: reqUrl,
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
                     content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
                     timeout: 5000
                 }).then((response) => {
@@ -702,12 +823,13 @@ export class AdvertService {
 
 
     AddNewNoteAdvertisement(userID: string, isSelling: boolean, advertType: string, price: string, description: string, institution : string, entityID: string, moduleCode: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/note" ;
         //console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: entityID, modulecode: moduleCode}),
             timeout: 5000
         }).then((response) => {
@@ -715,6 +837,19 @@ export class AdvertService {
             if(responseCode === 500) {
                 const AddNoteResultErr = new AddNoteResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentAddNote.next(AddNoteResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.AddNewNoteAdvertisement(userID, isSelling, advertType, price, description, institution , entityID, moduleCode);
+                }
+                
+                else {
+                    const AddNoteResultErr = new AddNoteResult(500, false, '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
+                this._currentAddNote.next(AddNoteResultErr);
+                }
+        
             } else if (responseCode === 200) {
 
                 const result = response.content.toJSON();
@@ -723,13 +858,14 @@ export class AdvertService {
                 /* ===============================================================================================
                 ==================================================================================================
                 ================================================================================================*/
-                const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
+                const accesstoken = appSettings.getString("accesstoken"); 
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
                 //console.log(reqUrl);
                 //console.log(JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }));
                 request ({
                     url: reqUrl,
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
                     content: JSON.stringify({ userid: userID, isselling: isSelling, advertisementtype: advertType, entityid: entityID, price: price, description: description, institution: institution }),
                     timeout: 5000
                 }).then((response) => {
@@ -774,13 +910,14 @@ export class AdvertService {
 
 
     UpdateAdvertisement(advertisementid: string, userid: string, isSelling: string, advertType: string, entityid: string, price: string, description: string){
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisement" ;
         console.log(reqUrl);
         //console.log(JSON.stringify({ id: advertisementid, userid: userid, isselling: isSelling, advertisementtype: advertType, entityid: entityid, price: price, description: description }));
         request ({
             url: reqUrl,
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: advertisementid, userid: userid, isselling: isSelling, advertisementtype: advertType, entityid: entityid, price: price, description: description }),
             timeout: 5000
         }).then((response) => {
@@ -788,6 +925,19 @@ export class AdvertService {
             if (responseCode === 500){
                 const UpdateAdvertisementResultErr = new UpdateAdvertisementResult(500, false, "An internal error has occured");
                 this._currentUpdateAdvertisementResult.next(UpdateAdvertisementResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.UpdateAdvertisement(advertisementid, userid, isSelling, advertType, entityid, price, description);
+                }
+                
+                else {
+                    const UpdateAdvertisementResultErr = new UpdateAdvertisementResult(500, false, "An internal error has occured");
+                this._currentUpdateAdvertisementResult.next(UpdateAdvertisementResultErr);
+                }
+        
             } else if (responseCode === 200){
                 const result = response.content.toJSON();
                 const UpdateAdvertisementResultSuccess = new UpdateAdvertisementResult(200, result.advertisementupdated, result.message);
@@ -822,17 +972,31 @@ export class AdvertService {
 
     
     initializeTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling +
         "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter + "&institution=" + institution ;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeTextbooks(institution , isSelling, priceFilter, modulecodeFilter, nameFilter, editionFilter, qualityFilter, authorFilter);
+                }
+                
+                else {
+                    const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let textbookList: TextbookResult[] = [];
@@ -859,16 +1023,30 @@ export class AdvertService {
     initializeAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number) {
         
         
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter +
         "&acdType=" + acdTypeFilter + "&location=" + locationFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const accomodationResultErr = new AccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeAccomodation(instNameFilter, isSelling, priceFilter, acdTypeFilter, locationFilter, distancetoCampusFilter);
+                }
+                
+                else {
+                    const accomodationResultErr = new AccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let accomodationList: AccomodationResult[] = [];
@@ -910,6 +1088,7 @@ export class AdvertService {
     
 
     initializeTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string ) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter +
         "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&yearcompleted=" + yearCompletedFilter + "&venue=" + venueFilter + "&notes=" +
         notesincludedFilter + "&terms=" + termsFilter + "&institution=" + institution;
@@ -917,11 +1096,24 @@ export class AdvertService {
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeTutors(institution, isSelling, priceFilter, subjectFilter, yearCompletedFilter, venueFilter, notesincludedFilter , termsFilter , moduleCodeFilter );
+                }
+                
+                else {
+                    const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let tutorList: TutorResult[] = [];
@@ -945,15 +1137,29 @@ export class AdvertService {
     }
 
     initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this. initializeNotes(institution, isSelling, priceFilter, modulecodeFilter );
+                }
+                
+                else {
+                    const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let noteList: NoteResult[] = [];
@@ -979,16 +1185,30 @@ export class AdvertService {
 
     initializeUserAdvertTextbooks(userID: string, isSelling: boolean) {
         //console.log(userID);
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=TXB&selling=" + isSelling;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const userAdvertTextbookResultErr = new UserAdvertTextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeUserAdvertTextbooks(userID, isSelling);
+                }
+                
+                else {
+                    const userAdvertTextbookResultErr = new UserAdvertTextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let userAdverttextbookList: UserAdvertTextbookResult[] = [];
@@ -1012,15 +1232,29 @@ export class AdvertService {
     }
 
     initializeUserAdvertAccomodation(userID: string, isSelling: boolean) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=ACD&selling=" + isSelling;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const userAdvertAccomodationResultErr = new UserAdvertAccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeUserAdvertAccomodation(userID, isSelling);
+                }
+                
+                else {
+                    const userAdvertAccomodationResultErr = new UserAdvertAccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let userAdvertAccomodationList: UserAdvertAccomodationResult[] = [];
@@ -1058,15 +1292,29 @@ export class AdvertService {
     }
 
     initializeUserAdvertTutors(userID: string, isSelling: boolean) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=TUT&selling=" + isSelling;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const userAdvertTutorResultErr = new UserAdvertTutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null, null ,null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeUserAdvertTutors(userID, isSelling);
+                }
+                
+                else {
+                    const userAdvertTutorResultErr = new UserAdvertTutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null, null ,null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let userAdvertTutorList: UserAdvertTutorResult[] = [];
@@ -1090,15 +1338,29 @@ export class AdvertService {
     }
 
     initializeUserAdvertNotes(userID: string, isSelling: boolean) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/useradvertisements?id=" + userID + "&adverttype=NTS&selling=" + isSelling;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const userAdvertNoteResultErr = new UserAdvertNoteResult(500, null, null, null, null, null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeUserAdvertNotes(userID, isSelling);
+                }
+                
+                else {
+                    const userAdvertNoteResultErr = new UserAdvertNoteResult(500, null, null, null, null, null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let userAdvertNoteList: UserAdvertNoteResult[] = [];
@@ -1177,17 +1439,31 @@ export class AdvertService {
     }
     initializeActiveChats() {
         const userid = appSettings.getString("userid");
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-messages-host") + "/chats?userid=" + userid;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 
                 const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeActiveChats();
+                }
+                
+                else {
+                    const activechatResultErr = new ActivechatResult(500, null, null, null, null, null, null, null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -1215,16 +1491,30 @@ export class AdvertService {
     }
     setActivechat(chatid: string) {
         const userid = appSettings.getString("userid");
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-messages-host") + "/message?userid=" + userid + "&chatid=" + chatid;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const messageResultErr = new MessageResult(500, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this. setActivechat(chatid);
+                }
+                
+                else {
+                    const messageResultErr = new MessageResult(500, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -1253,19 +1543,32 @@ export class AdvertService {
         });
     }
     SendMessage(chatid: string, authorid: string, message: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-messages-host") + "/message" ;
         console.log(reqUrl);
       
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ chatid: chatid, authorid: authorid, message: message }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const messageResultErr = new MessageResult(500, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.SendMessage(chatid, authorid, message);
+                }
+                
+                else {
+                    const messageResultErr = new MessageResult(500, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 // Make sure the response we receive is in JSON format.
                 const result = response.content.toJSON();
@@ -1296,11 +1599,13 @@ export class AdvertService {
 
    //Outstading ratings for Buyer to rate seller
    initializeOutstandingratings(userid) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/rate?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1426,12 +1731,13 @@ clearSelectedOutstandingrating() {
     }
 
     RateSeller(ratingid: string, sellerrating: string, sellercomments: string) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-ratings-host") + "/rate" ;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ ratingid: ratingid,  sellerrating: sellerrating, sellercomments: sellercomments}),
             timeout: 5000
         }).then((response) => {
@@ -1459,11 +1765,13 @@ clearSelectedOutstandingrating() {
 
 //seller dashboard
 Previoussellerratings(userid) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/sellerrating?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1496,11 +1804,13 @@ Previoussellerratings(userid) {
 
 //buyer dashboard
 Previousbuyerratings(userid) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/buyerrating?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1532,12 +1842,13 @@ Previousbuyerratings(userid) {
 }
 
 StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, advertisementid: string) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-messages-host") + "/chat";
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
         content: JSON.stringify({ sellerid: sellerid, buyerid: buyerid, advertisementtype: advertisementtype, advertisementid: advertisementid}),
         timeout: 5000
     }).then((response) => {
@@ -1564,11 +1875,13 @@ StartNewChat(sellerid: string, buyerid: string, advertisementtype: string, adver
 
 UnreadChats() {
     const userid = appSettings.getString("userid");
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-messages-host") + "/unreadchats?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1593,6 +1906,7 @@ UnreadChats() {
 } 
 
 deleteChat(chatid: string){
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-messages-host") + "/chat?id=" + chatid;
     console.log(reqUrl);
     request ({
@@ -1619,12 +1933,13 @@ deleteChat(chatid: string){
 }
 
 InterestedBuyers(userid: string, advertisementid: string) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/interest" ;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
         content: JSON.stringify({ userid: userid, advertisementid: advertisementid}),
         timeout: 5000
     }).then((response) => {
@@ -1660,12 +1975,13 @@ InterestedBuyers(userid: string, advertisementid: string) {
 }
 
 RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerrating: string, buyercomments: string) {
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/rate";
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
         content: JSON.stringify({ advertisementid: advertisementid,  buyerid: buyerid, sellerid: sellerid, buyerrating: buyerrating, buyercomments: buyercomments }),
         timeout: 5000
     }).then((response) => {
@@ -1691,11 +2007,13 @@ RateBuyer(advertisementid: string, buyerid: string, sellerid: string, buyerratin
 
 OutstandingRatings() {
     const userid = appSettings.getString("userid");
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/rating?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1721,11 +2039,13 @@ OutstandingRatings() {
 
 Buyingdashboard() {
     const userid = appSettings.getString("userid");
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/buyer?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1750,11 +2070,13 @@ Buyingdashboard() {
 
 Sellingdashboard() {
     const userid = appSettings.getString("userid");
+    const accesstoken = appSettings.getString("accesstoken"); 
     const reqUrl = getString("sm-service-ratings-host") + "/seller?userid=" + userid;
     console.log(reqUrl);
     request ({
         url: reqUrl,
         method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;
@@ -1776,6 +2098,42 @@ Sellingdashboard() {
             this._currentSellingAverage.next(SellingAveragesuccessResult); 
     });
 }
+
+RefreshTokens():boolean{
+    const reqUrl = getString("sm-service-cred-manager-host") +'/token';
+    const refreshtoken = appSettings.getString("refreshtoken");
+    request ({
+        url: reqUrl,
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh" },
+        content: "grant_type=refresh_token&refresh_token=" + refreshtoken,
+        timeout: 5000
+    }).then((response) => {
+        const responseCode = response.statusCode;
+        if(responseCode === 500) {
+            const RefreshResultErr = new RefreshResult(400, "00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+            this._currentRefresh.next(RefreshResultErr);
+            return false;
+        } else if (responseCode === 200) {
+            const result = response.content.toJSON();
+            const RefreshsuccessResult = new RefreshResult(200, result.access_token, result.refresh_token);
+            this._currentRefresh.next(RefreshsuccessResult);
+            appSettings.setString("accesstoken", result.access_token);
+            appSettings.setString("refreshtoken", result.refresh_token);
+            return true;   
+        } else {
+            const RefreshsuccessResult = new RefreshResult(responseCode,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+            this._currentRefresh.next(RefreshsuccessResult); 
+            return false;
+        }
+    }, (e) => {
+
+        const RefreshsuccessResult = new RefreshResult(500,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+            this._currentRefresh.next(RefreshsuccessResult); 
+    });
+    return true;
+}  
+
 
 clearChat(){
     this._currentDeleteChatResult = new BehaviorSubject<DeleteChatResult>(null);
@@ -1809,8 +2167,6 @@ clearBook(){
 clearUpload(){
     this._currentUploadTextbook = new BehaviorSubject<UploadTextbookResult>(null);
 }
-
-
 
 }
 

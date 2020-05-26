@@ -82,7 +82,7 @@ export class AuthService {
     }
 
     validateCredentials(username: string, password: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/userlogin?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userlogin?username=" + username + "&password=" + password;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -94,6 +94,19 @@ export class AuthService {
             if(responseCode === 500) {
                 const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
                 this._currentLogin.next(loginResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.validateCredentials(username, password);
+                }
+                
+                else {
+                    const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);  
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin));
@@ -110,7 +123,7 @@ export class AuthService {
     }
 
     ResetPassword(email: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/forgotpassword?email=" + email;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/forgotpassword?email=" + email;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -122,6 +135,19 @@ export class AuthService {
             if(responseCode === 500) {
                 const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured.");
                 this._currentForgotPassword.next(forgotpasswordResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.ResetPassword(email);
+                }
+                
+                else {
+                    const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured.");
+                    this._currentForgotPassword.next(forgotpasswordResultErr); 
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const forgotpasswordResult = new ForgotPasswordResult(200, "Success", result.message);
@@ -138,7 +164,7 @@ export class AuthService {
     }
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -183,7 +209,7 @@ export class AuthService {
     }  
 
     GetUser(id: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user?id="  + id;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user?id="  + id;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -225,7 +251,7 @@ export class AuthService {
     }
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -268,7 +294,7 @@ export class AuthService {
     }
 
     UpdatePassword(id: string, currentpassword: string, password: string ) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/userpassword" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userpassword" ;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -345,7 +371,7 @@ export class AuthService {
     GetOtp(phonenumber: string) {
         const userid = appSettings.getString("userid");
         const accesstoken = appSettings.getString("accesstoken");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({
             url: reqUrl,
@@ -388,7 +414,7 @@ export class AuthService {
     GetNewOtp() {
         const userid = appSettings.getString("userid");
         const phonenumber = appSettings.getString("phonenumber");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -431,7 +457,7 @@ export class AuthService {
 
     ValidateOtp(otp: string) {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/otp";
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp";
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -475,7 +501,7 @@ export class AuthService {
 
     VerificationStatus() {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/status?userid=" + userid;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
