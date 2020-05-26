@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -21,6 +21,7 @@ export class AuthService {
     private _currentValidateotp = new BehaviorSubject<ValidateOTPResult>(null)
     private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
     private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
+    private _currentRefresh = new BehaviorSubject<RefreshResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -69,11 +70,16 @@ export class AuthService {
     get currentIsVerified() {
         return this._currentIsverified.asObservable();
     }
+
+    get currentRefresh() {
+        return this._currentRefresh.asObservable();
+    }
    
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
+        setString("sm-service-wso2-manager-host", "http2://192.168.1.187:8243");
     }
 
     validateCredentials(username: string, password: string) {
@@ -245,10 +251,12 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = 'https://192.168.1.187:8243/user/v1.0/institution'
+        console.log(reqUrl)
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer 0b6377df-7777-3b2b-8c1a-c50f35be19d3" },
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -387,6 +395,42 @@ export class AuthService {
                 this._currentIsverified.next(isverifiedResult); 
         });
     }
+
+    RefreshTokens():boolean{
+        const reqUrl = getString("sm-service-wso2-manager-host") +'/token';
+        const refreshtoken = appSettings.getString("refreshtoken");
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh" },
+            content: "grant_type=refresh_token&refresh_token=" + refreshtoken,
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const RefreshResultErr = new RefreshResult(400, "00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshResultErr);
+                return false;
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const RefreshsuccessResult = new RefreshResult(200, result.access_token, result.refresh_token);
+                this._currentRefresh.next(RefreshsuccessResult);
+                appSettings.setString("accesstoken", result.access_token);
+                appSettings.setString("refreshtoken", result.refresh_token);
+                return true;   
+            } else {
+                const RefreshsuccessResult = new RefreshResult(responseCode,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshsuccessResult); 
+                return false;
+            }
+        }, (e) => {
+
+            const RefreshsuccessResult = new RefreshResult(500,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshsuccessResult); 
+        });
+        return true;
+    }  
+    
     
     //This method clears all results
     clearAllObjects(){

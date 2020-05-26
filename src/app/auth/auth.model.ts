@@ -115,3 +115,11 @@ export class IsVerifiedResult {
         public isverified : boolean
     ){}
 }
+
+export class RefreshResult {
+    constructor (
+        public responseStatusCode: number,
+        public AccessToken: string, 
+        public RefreshToken:    string,
+    ){}
+}
