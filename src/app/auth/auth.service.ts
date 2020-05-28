@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -21,6 +21,7 @@ export class AuthService {
     private _currentValidateotp = new BehaviorSubject<ValidateOTPResult>(null)
     private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
     private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
+    private _currentRefresh = new BehaviorSubject<RefreshResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -69,24 +70,43 @@ export class AuthService {
     get currentIsVerified() {
         return this._currentIsverified.asObservable();
     }
+
+    get currentRefresh() {
+        return this._currentRefresh.asObservable();
+    }
    
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.188:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
     }
 
     validateCredentials(username: string, password: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/userlogin?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userlogin?username=" + username + "&password=" + password;
+        const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
                 this._currentLogin.next(loginResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.validateCredentials(username, password);
+                }
+                
+                else {
+                    const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);  
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin));
@@ -103,16 +123,31 @@ export class AuthService {
     }
 
     ResetPassword(email: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/forgotpassword?email=" + email;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/forgotpassword?email=" + email;
+        const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured.");
                 this._currentForgotPassword.next(forgotpasswordResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.ResetPassword(email);
+                }
+                
+                else {
+                    const forgotpasswordResultErr = new ForgotPasswordResult(500, "Error", "An internal error has occured.");
+                    this._currentForgotPassword.next(forgotpasswordResultErr); 
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const forgotpasswordResult = new ForgotPasswordResult(200, "Success", result.message);
@@ -129,11 +164,12 @@ export class AuthService {
     }
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
+        const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname }),
             timeout: 5000
         }).then((response) => {
@@ -146,6 +182,20 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const RegistersuccessResult = new RegisterResult(200, result.usercreated, result.username, result.id, result.message);
                 this._currentRegister.next(RegistersuccessResult);   
+            }
+            else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.RegisterNewUser(username, password, name, surname, email, institutionname);
+                }
+                
+                else {
+                    const RegisterResultErr = new RegisterResult(500, "false", 'none', '00000000-0000-0000-0000-000000000000', 'An internal error has occured.'); 
+                    this._currentRegister.next(RegisterResultErr);   
+                }
+        
             } else {
                 const RegistersuccessResult = new RegisterResult(responseCode, "false","none",  '00000000-0000-0000-0000-000000000000', response.content.toString());
                 this._currentRegister.next(RegistersuccessResult); 
@@ -159,11 +209,13 @@ export class AuthService {
     }  
 
     GetUser(id: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user?id="  + id;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user?id="  + id;
+        const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -174,6 +226,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.institutionname, result.adsremaining, result.message, result.gotuser);
                 this._currentGetUser.next(getuserResult);                
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.GetUser(id);
+                }
+                
+                else {
+                    const getuserResultErr = new GetUserResult(500, "00000000-0000-0000-0000-000000000000", "Unable to retrieve username","Unable to retrieve name", "Unable to retrieve surname", "Unable to retrieve email address", "Unable to retireve institution", "Unaable to retrieve ads remaining", "Error whilst trying to recieve user details.", false);
+                    this._currentGetUser.next(getuserResultErr);    
+                }
+        
             } else {
                 const getuserResult = new GetUserResult(responseCode, '00000000-0000-0000-0000-000000000000',"none", "none", "none", "none", "none", "none", response.content.toString(), false);
                 this._currentGetUser.next(getuserResult); 
@@ -186,11 +251,12 @@ export class AuthService {
     }
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
+        const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" , "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: id,  username: username, name: name , surname: surname, email: email, institutionname: institutionname }),
             timeout: 5000
         }).then((response) => {
@@ -202,6 +268,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const UpdatesuccessResult = new UpdateUserResult(200, result.userupdated, result.message);
                 this._currentUpdateUser.next(UpdatesuccessResult);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.UpdateUser(id, username, name, surname, email, institutionname);
+                }
+                
+                else {
+                    const UpdateResultErr = new UpdateUserResult(500, false, 'An error has occured whilst trying to connect.',);
+                this._currentUpdateUser.next(UpdateResultErr);   
+                }
+        
             } else {
                 const UpdatesuccessResult = new UpdateUserResult(responseCode, false, response.content.toString());
                 this._currentUpdateUser.next(UpdatesuccessResult); 
@@ -215,12 +294,13 @@ export class AuthService {
     }
 
     UpdatePassword(id: string, currentpassword: string, password: string ) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/userpassword" ;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userpassword" ;
+        const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ id: id, currentpassword: currentpassword, password: password }),
             timeout: 5000
         }).then((response) => {
@@ -245,10 +325,13 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") + "/institution"
+        const reqUrl = getString("sm-service-cred-manager-host") +'/user/v1.0/institution' ;
+        const accesstoken = appSettings.getString("accesstoken");
+        console.log(reqUrl)
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -264,7 +347,19 @@ export class AuthService {
                 });
                 const toNextList = new InstitutionNameList(200, institutionnameList);
                 this._currentInstitutionNameList.next(toNextList);
-            }else {
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.initializeInstitutionNameList();
+                }
+                
+                else {
+                    const institutionnameErr = new InstitutionName(500, null); 
+                }
+        
+            } else {
                 console.log("in the else");
             }
         }, (e) => {
@@ -275,11 +370,13 @@ export class AuthService {
 
     GetOtp(phonenumber: string) {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const accesstoken = appSettings.getString("accesstoken");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -290,6 +387,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const getotpResult = new GetOTPResult(200, result.sent, result.Message);
                 this._currentGetotp.next(getotpResult);                
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.GetOtp(phonenumber);
+                }
+                
+                else {
+                const getotpResultErr = new GetOTPResult(500, false, "An internal error has occured.");
+                this._currentGetotp.next(getotpResultErr);  
+                }
+        
             } else {
                 const getotpResult = new GetOTPResult(responseCode, false, response.content.toString());
                 this._currentGetotp.next(getotpResult); 
@@ -304,11 +414,13 @@ export class AuthService {
     GetNewOtp() {
         const userid = appSettings.getString("userid");
         const phonenumber = appSettings.getString("phonenumber");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -319,6 +431,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const getnewotpResult = new GetNewOTPResult(200, result.sent, result.Message);
                 this._currentGetnewotp.next(getnewotpResult);                
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.GetNewOtp();
+                }
+                
+                else {
+                    const getnewotpResultErr = new GetNewOTPResult(500, false, "An internal error has occured.");
+                    this._currentGetnewotp.next(getnewotpResultErr);
+                }
+        
             } else {
                 const getnewotpResult = new GetNewOTPResult(responseCode, false, response.content.toString());
                 this._currentGetnewotp.next(getnewotpResult); 
@@ -332,12 +457,13 @@ export class AuthService {
 
     ValidateOtp(otp: string) {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/otp";
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp";
+        const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ userid: userid, otp: otp}),
             timeout: 5000
         }).then((response) => {
@@ -349,6 +475,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const validateotpResult = new ValidateOTPResult(200, result.validated, result.Message);
                 this._currentValidateotp.next(validateotpResult);                
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.ValidateOtp(otp);
+                }
+                
+                else {
+                const validateotpResultErr = new ValidateOTPResult(500, false, "An internal error has occured.");
+                this._currentValidateotp.next(validateotpResultErr);
+                }
+        
             } else {
                 const validateotpResult = new ValidateOTPResult(responseCode, false, response.content.toString());
                 this._currentValidateotp.next(validateotpResult); 
@@ -362,11 +501,13 @@ export class AuthService {
 
     VerificationStatus() {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/status?userid=" + userid;
+        const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken },
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -377,6 +518,19 @@ export class AuthService {
                 const result = response.content.toJSON();
                 const isverifiedResult = new IsVerifiedResult(200, result.isverified);
                 this._currentIsverified.next(isverifiedResult);                
+            }  else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.VerificationStatus();
+                }
+                
+                else {
+                    const isverifiedResultErr = new IsVerifiedResult(500, false);
+                    this._currentIsverified.next(isverifiedResultErr);
+                }
+        
             } else {
                 const isverifiedResult = new IsVerifiedResult(responseCode, false);
                 this._currentIsverified.next(isverifiedResult); 
@@ -387,6 +541,42 @@ export class AuthService {
                 this._currentIsverified.next(isverifiedResult); 
         });
     }
+
+    RefreshTokens():boolean{
+        const reqUrl = getString("sm-service-cred-manager-host") +'/token';
+        const refreshtoken = appSettings.getString("refreshtoken");
+        request ({
+            url: reqUrl,
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh" },
+            content: "grant_type=refresh_token&refresh_token=" + refreshtoken,
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const RefreshResultErr = new RefreshResult(400, "00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshResultErr);
+                return false;
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const RefreshsuccessResult = new RefreshResult(200, result.access_token, result.refresh_token);
+                this._currentRefresh.next(RefreshsuccessResult);
+                appSettings.setString("accesstoken", result.access_token);
+                appSettings.setString("refreshtoken", result.refresh_token);
+                return true;   
+            } else {
+                const RefreshsuccessResult = new RefreshResult(responseCode,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshsuccessResult); 
+                return false;
+            }
+        }, (e) => {
+
+            const RefreshsuccessResult = new RefreshResult(500,"00000000-0000-0000-0000-000000000000",'00000000-0000-0000-0000-000000000000');
+                this._currentRefresh.next(RefreshsuccessResult); 
+        });
+        return true;
+    }  
+    
     
     //This method clears all results
     clearAllObjects(){
