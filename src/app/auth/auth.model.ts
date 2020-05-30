@@ -123,12 +123,3 @@ export class RefreshResult {
         public RefreshToken:    string,
     ){}
 }
-
-
-export class GetScimIDResult {
-    constructor (
-        public responseStatusCode: number,
-        public ScimID:      string,
-    ){}
-}
-
