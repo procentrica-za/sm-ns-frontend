@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult, GetScimIDResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -22,6 +22,7 @@ export class AuthService {
     private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
     private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
     private _currentRefresh = new BehaviorSubject<RefreshResult>(null)
+    private _currentGetScimID = new BehaviorSubject<GetScimIDResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -74,7 +75,10 @@ export class AuthService {
     get currentRefresh() {
         return this._currentRefresh.asObservable();
     }
-   
+
+    get currentGetScimID() {
+        return this._currentGetScimID.asObservable();
+    }
 
 
     constructor(private http: HttpClient){
@@ -225,7 +229,8 @@ export class AuthService {
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.institutionname, result.adsremaining, result.message, result.gotuser);
-                this._currentGetUser.next(getuserResult);                
+                this._currentGetUser.next(getuserResult); 
+                this.GetScimID()                      
             } else if (responseCode === 401) {
                 this.RefreshTokens();
                 const success = this.RefreshTokens();
@@ -576,6 +581,36 @@ export class AuthService {
         });
         return true;
     }  
+
+    GetScimID() {
+        const username = appSettings.getString("username");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/wso2/scim/Users?filter=userName+Eq+%22"+username+"%22";
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            headers: { "Authorization": "Basic YWRtaW46YWRtaW4="},
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getuserResultErr = new GetScimIDResult(500, "00000000-0000-0000-0000-000000000000");
+                this._currentGetScimID.next(getuserResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getuserResult = new GetScimIDResult(200,result.Resources.id);
+                this._currentGetScimID.next(getuserResult);
+                appSettings.setString("scimid", result.Resources.id);                
+            }  else {
+                const getuserResult = new GetScimIDResult(responseCode, '00000000-0000-0000-0000-000000000000');
+                this._currentGetScimID.next(getuserResult); 
+            }
+        }, (e) => {
+
+            const getuserResult = new GetScimIDResult(400, '00000000-0000-0000-0000-000000000000');
+            this._currentGetScimID.next(getuserResult); 
+        });
+    }
     
     
     //This method clears all results
