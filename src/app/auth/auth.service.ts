@@ -87,12 +87,10 @@ export class AuthService {
     validateCredentials(username: string, password: string) {
         appSettings.setString("username", username);
         appSettings.setString("password", password);             
-        const reqUrl = getString("sm-service-cred-manager-host") + "/login?username=" + username + "&password=" + password;
-        const accesstoken = appSettings.getString("accesstoken");
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login?username=" + username + "&password=" + password;
         request ({
             url: reqUrl,
             method: "GET",
-            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -131,7 +129,7 @@ export class AuthService {
 
     ResetPassword(email: string) {
         const scimid = appSettings.getString("scimid");   
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/forgotpassword?email=" + email + "&scimid=" + scimid;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/forgotpassword?email=" + email + "&scimid=" + scimid;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -173,12 +171,11 @@ export class AuthService {
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
         const clientkey = appSettings.getString("clientkey");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
-        const accesstoken = appSettings.getString("accesstoken");
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
+            headers: { "Content-Type": "application/json" },
             content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname, keysecret: clientkey }),
             timeout: 5000
         }).then((response) => {
@@ -262,7 +259,7 @@ export class AuthService {
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
         const scimid = appSettings.getString("scimid");  
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -306,7 +303,7 @@ export class AuthService {
 
     UpdatePassword(id: string, currentpassword: string, password: string ) {
         const scimid = appSettings.getString("scimid");  
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userpassword" ;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/userpassword" ;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -624,7 +621,7 @@ export class AuthService {
     RememberMe() {
         const username = appSettings.getString("username");
         const password = appSettings.getString("password");             
-        const reqUrl = getString("sm-service-cred-manager-host") + "/login?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/login?username=" + username + "&password=" + password;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
