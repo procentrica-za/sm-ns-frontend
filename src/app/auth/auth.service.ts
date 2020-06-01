@@ -172,13 +172,14 @@ export class AuthService {
     }
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
+        const clientkey = appSettings.getString("clientkey");
         const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname }),
+            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname, keysecret: clientkey }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
