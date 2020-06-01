@@ -85,6 +85,8 @@ export class AuthService {
     }
 
     validateCredentials(username: string, password: string) {
+        appSettings.setString("username", username);
+        appSettings.setString("password", password);             
         const reqUrl = getString("sm-service-cred-manager-host") + "/login?username=" + username + "&password=" + password;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
@@ -616,6 +618,51 @@ export class AuthService {
             const getuserResult = new GetScimIDResult(400, '00000000-0000-0000-0000-000000000000');
             this._currentGetScimID.next(getuserResult); 
         });
+    }
+
+    RememberMe() {
+        const username = appSettings.getString("username");
+        const password = appSettings.getString("password");             
+        const reqUrl = getString("sm-service-cred-manager-host") + "/login?username=" + username + "&password=" + password;
+        const accesstoken = appSettings.getString("accesstoken");
+        request ({
+            url: reqUrl,
+            method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.validateCredentials(username, password);
+                }
+                
+                else {
+                    const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);  
+                }
+        
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin, result.access_token, result.refresh_token));
+                this._currentLogin.next(loginResult);   
+                appSettings.setString("accesstoken", result.access_token);
+                appSettings.setString("refreshtoken", result.refresh_token);             
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+
     }
     
     

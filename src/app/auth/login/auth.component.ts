@@ -67,8 +67,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
             this.advertServ.UnreadChats();
             this.advertServ.OutstandingRatings();
-            
             this.router.navigate(['/advert/home'], {clearHistory: true});
+            this.authServ.RememberMe();
         } 
     }
 
