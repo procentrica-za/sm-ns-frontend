@@ -11,7 +11,9 @@ export class LoginUser {
         public id: string,
         public username: string,
         public defaultInstitution: string,
-        public loggedIn: boolean
+        public loggedIn: boolean,
+        public accesstoken: string,
+        public refreshtoken: string,
     ){}
 }
 
