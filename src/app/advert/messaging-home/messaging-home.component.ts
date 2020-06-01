@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AdvertService } from "../advert.service";
 import { ActivechatResult, ActivechatResultList, DeleteChatResult} from '../advert.model';
 import { Subscription } from "rxjs";
-import { TNSFancyAlert } from "nativescript-fancyalert";
+import { TNSFancyAlert, TNSFancyAlertButton } from "nativescript-fancyalert";
 import { RadListView, ListViewEventData } from "nativescript-ui-listview";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
@@ -85,24 +85,55 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
             );
             
             const tappedActivechatItem = args.view.bindingContext;
-            TNSFancyAlert.showColorDialog(
-            "Confirm Deletion",
-            "Are you sure that you wish to delete this chat?",
-            "Yes",
-            "Cancel", 
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            ).then(result => {
-            if (result) {
-            this.deleteChat = false;
+            var isAndroid : boolean
+            isAndroid = appSettings.getBoolean("isAndroid")
+
+            if(isAndroid){
+                TNSFancyAlert.showColorDialog(
+                    "Confirm Deletion",
+                    "Are you sure that you wish to delete this chat?",
+                    "Yes",
+                    "Cancel", 
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    ).then(result => {
+                    if (result) {
+                    this.deleteChat = false;
+                    }
+                    else {
+                    this.deleteChat = false;
+                    this.advertServ.deleteChat(tappedActivechatItem.chatid);
+                    }
+                });
+            }else{
+                let buttons = [
+                    new TNSFancyAlertButton({
+                      label: "Yes",
+                      action: () => {
+                        this.deleteChat = false;
+                        this.advertServ.deleteChat(tappedActivechatItem.chatid);
+                      }
+                    }),
+                    new TNSFancyAlertButton({
+                      label: "No",
+                      action: () => {
+                        this.deleteChat = false;
+                        console.log("No");
+                      }
+                    })
+                  ];
+                  TNSFancyAlert.showCustomButtons(
+                    buttons,
+                    undefined,
+                    "#ff0000",
+                    "Delete Confirmation",
+                    `Are you sure you want to delete this chat?`,
+                    "Ok"
+                  );
             }
-            else {
-            this.deleteChat = false;
-            this.advertServ.deleteChat(tappedActivechatItem.chatid);
-            }
-            });
+            
             
         
         }

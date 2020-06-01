@@ -139,6 +139,13 @@
 			name = "nativescript-uuid";
 			sourceTree = "<group>";
 		};
+		7769B7B5976D4358A4E092BF /* TNSNativeSource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = TNSNativeSource;
+			sourceTree = "<group>";
+		};
 		77A9A2926F2144AFA8293F85 /* nativescript-barcodescanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +179,7 @@
 				80E891B8E6F241618FECB1CB /* nativescript-ui-core */,
 				A7806381B2324E87A7AAAC49 /* tns-core-modules-widgets */,
 				A172235CE1886AACE4D1D34B /* Pods */,
-				9A583F49DDEC43848E9CE83E /* TNSNativeSource */,
+				7769B7B5976D4358A4E092BF /* TNSNativeSource */,
 			);
 			sourceTree = "<group>";
 		};
@@ -265,13 +272,6 @@
 			children = (
 			);
 			name = "nativescript-imagepicker";
-			sourceTree = "<group>";
-		};
-		9A583F49DDEC43848E9CE83E /* TNSNativeSource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = TNSNativeSource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -572,7 +572,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A261BB43B5D00EC2671 /* build-debug.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 3.0;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -610,11 +610,13 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
+				MARKETING_VERSION = 1;
+				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -625,7 +627,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A271BB43B5D00EC2671 /* build-release.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 3.0;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -659,11 +661,13 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
+				MARKETING_VERSION = 1;
+				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

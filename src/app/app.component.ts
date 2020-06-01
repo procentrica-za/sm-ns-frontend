@@ -13,8 +13,7 @@ import * as purchase from "nativescript-purchase";
 import * as appSettings from "tns-core-modules/application-settings";
 
 purchase.init([
-    "org.nativescript.purchasesample.product1",
-    "org.nativescript.purchasesample.product3"
+    "coza.procentrica.adverttokenpurchase.product1"
 ]);
 
 @Component({

@@ -24,13 +24,13 @@
             class="input"
             returnKeyType="next"
             required
-            editable="false"
             [autocorrect]="false"
             autocapitalizationType="none"
             formControlName="modulecode"
             #modulecodeEl
         ></TextField>
     </StackLayout>
+    
     <StackLayout class="input-field">
         <Label
             class="label"
@@ -66,7 +66,7 @@
             autocapitalizationType="none"
             formControlName="edition"
             #editionEl
-            hint="eg. 1st, 2nd, Final"
+            hint="eg. 1st, 2nd etc.."
         ></TextField>
         <Label
             *ngIf="!editionControlIsValid"

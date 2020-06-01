@@ -1,10 +1,10 @@
-<ns-action-bar [actionBarTitle]="'Study Money'">
-<ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" >
+<ns-action-bar [actionBarTitle]="'Study Money'" [hasMenu]=false [showBackButton]=false>
+<ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" ios.position="right">
     <Label text="&#xf059;" class="Help" ></Label>
 </ActionItem>
 </ns-action-bar>
 <StackLayout>
-<StackLayout class="form" [formGroup]="form">
+<StackLayout class="form" [formGroup]="form" *ngIf="!isLoading">
     <Image class="img-login-logo" src="res://icon"></Image>
     <StackLayout class="input-field">
         <Label
@@ -60,7 +60,7 @@
     <Button class="btn-flat" text="Register" (tap)="onRegister()"></Button>
     <Button class="btn-flat" text="Forgot Password" (tap)="onForgotpassword()"></Button>
 </StackLayout>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+<FlexboxLayout height="100%" justifyContent="center" alignItems="center" *ngIf="isLoading" class="main-container">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </FlexboxLayout>
 </StackLayout>

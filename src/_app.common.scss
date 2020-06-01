@@ -190,23 +190,21 @@ ActionBar {
     android-selected-tab-highlight-color: $primary;
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
-    font-weight: 400;
-    font-size: 35em;
     background-color: #efeeee;
 }
 
 .tab-fa {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
-    font-weight: 400;
-    font-size: 35em;
+    font-weight: 200;
+    font-size: 30em;
 }
 
 .btn-fa {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
-    font-weight: 400;
-    font-size: 35em;
+    font-weight: 200;
+    font-size: 30em;
     border-width: 1;
     border-color: transparent;
     z-index: 0;

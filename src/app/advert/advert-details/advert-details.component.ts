@@ -313,9 +313,38 @@ export class AdvertDetailsComponent implements OnInit, OnDestroy {
     }
 
     async deleteAdvertisement(advertisementID: string){
-        TNSFancyAlert.showColorDialog("Delete Confirmation", "Are you sure you want to delete this advertisement?","Yes","No").then( t =>  {
-            this.advertServ.deleteAdvertisement(advertisementID);
-        })
+        var isAndroid : boolean
+        isAndroid = appSettings.getBoolean("isAndroid")
+
+        if (isAndroid){
+            TNSFancyAlert.showColorDialog("Delete Confirmation", "Are you sure you want to delete this advertisement?","Yes","No").then( t =>  {
+                this.advertServ.deleteAdvertisement(advertisementID);
+            })
+        }else {
+            let buttons = [
+                new TNSFancyAlertButton({
+                  label: "Yes",
+                  action: () => {
+                    this.advertServ.deleteAdvertisement(advertisementID);
+                  }
+                }),
+                new TNSFancyAlertButton({
+                  label: "No",
+                  action: () => {
+                    console.log("No");
+                  }
+                })
+              ];
+              TNSFancyAlert.showCustomButtons(
+                buttons,
+                undefined,
+                "#ff0000",
+                "Delete Confirmation",
+                `Are you sure you want to delete this advertisement?`,
+                "Ok"
+              );
+        }
+        
 
         await this.delay(1000);
         this.deleteAdvertisementResultSub = this.advertServ.currentDeleteAdvertisementResult.subscribe(

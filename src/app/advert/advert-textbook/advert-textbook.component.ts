@@ -263,6 +263,7 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
     }
 
     onPostNewTextbook () {
+        console.log("Hit it");
         this.modulecodeEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.editionEl.nativeElement.focus();
@@ -270,17 +271,14 @@ export class AdvertTextbookComponent implements OnInit, OnDestroy {
         this.authorEl.nativeElement.focus();
         this.authorEl.nativeElement.dismissSoftInput();
 
-        if(!this.form.valid){
-            return;
-        }
- 
         const modulecode = this.form.get('modulecode').value;
         const name = this.form.get('name').value;
         const edition = this.form.get('edition').value;
         const quality = this.form.get('quality').value;
         const author = this.form.get('author').value;
-
+        console.log(modulecode + name + edition + quality + author);
         this.advertServ.UploadNewTextbook(modulecode, name, edition, quality, author);
+        
     }
 
   

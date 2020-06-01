@@ -1,10 +1,10 @@
 <ns-action-bar [actionBarTitle]="'Advertisements'" [hasMenu]=true [showBackButton]=false>
-    <ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" >
+    <ActionItem position="right" (tap)="onHelp()" style="margin-right: 2%;" ios.position="right">
         <Label text="&#xf059;" class="Help" ></Label>
     </ActionItem>
 </ns-action-bar>
 
-<TabView class="advert-tabs" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
+<TabView class="advert-tabs" height="2000px" androidTabsPosition="bottom" *ngIf="allImagesLoaded">
     
     <!-- TAB AND RADLIST USED FOR TEXTBOOK -->
     <StackLayout *tabItem="{title: '&#xf02d;'}" class="tab-fa" >
