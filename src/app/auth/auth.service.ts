@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult} from './auth.model';
+import { LoginResult, LoginUser, ForgotPasswordResult, RegisterResult, GetUserResult, UpdateUserResult, UpdatePasswordResult, InstitutionName, InstitutionNameList, GetOTPResult, GetNewOTPResult, ValidateOTPResult, IsVerifiedResult, RefreshResult, GetScimIDResult} from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { request } from "tns-core-modules/http";
 
@@ -22,6 +22,7 @@ export class AuthService {
     private _currentGetnewotp = new BehaviorSubject<GetNewOTPResult>(null)
     private _currentIsverified = new BehaviorSubject<IsVerifiedResult>(null)
     private _currentRefresh = new BehaviorSubject<RefreshResult>(null)
+    private _currentGetScimID = new BehaviorSubject<GetScimIDResult>(null)
 
     get currentLogin() {
         return this._currentLogin.asObservable();
@@ -74,20 +75,22 @@ export class AuthService {
     get currentRefresh() {
         return this._currentRefresh.asObservable();
     }
-   
+
+    get currentGetScimID() {
+        return this._currentGetScimID.asObservable();
+    }
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
     }
 
     validateCredentials(username: string, password: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userlogin?username=" + username + "&password=" + password;
-        const accesstoken = appSettings.getString("accesstoken");
+        appSettings.setString("username", username);
+        appSettings.setString("password", password);             
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login?username=" + username + "&password=" + password;
         request ({
             url: reqUrl,
             method: "GET",
-            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -109,8 +112,10 @@ export class AuthService {
         
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin));
-                this._currentLogin.next(loginResult);                
+                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin, result.access_token, result.refresh_token));
+                this._currentLogin.next(loginResult);   
+                appSettings.setString("accesstoken", result.access_token);
+                appSettings.setString("refreshtoken", result.refresh_token);             
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
                 console.log("in the else");
@@ -123,13 +128,14 @@ export class AuthService {
     }
 
     ResetPassword(email: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/forgotpassword?email=" + email;
+        const scimid = appSettings.getString("scimid");   
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/forgotpassword?email=" + email + "&scimid=" + scimid;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "GET",
             headers: { "Authorization": "Bearer " + accesstoken},
-            timeout: 5000
+            timeout: 60000
         }).then((response) => {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
@@ -164,13 +170,13 @@ export class AuthService {
     }
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
-        const accesstoken = appSettings.getString("accesstoken");
+        const clientkey = appSettings.getString("clientkey");
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname }),
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ username: username, password: password, name: name , surname: surname, email: email, institutionname: institutionname, keysecret: clientkey }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -225,7 +231,8 @@ export class AuthService {
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 const getuserResult = new GetUserResult(200, result.id, result.username, result.name, result.surname, result.email, result.institutionname, result.adsremaining, result.message, result.gotuser);
-                this._currentGetUser.next(getuserResult);                
+                this._currentGetUser.next(getuserResult); 
+                this.GetScimID()                      
             } else if (responseCode === 401) {
                 this.RefreshTokens();
                 const success = this.RefreshTokens();
@@ -251,13 +258,14 @@ export class AuthService {
     }
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user" ;
+        const scimid = appSettings.getString("scimid");  
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json" , "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ id: id,  username: username, name: name , surname: surname, email: email, institutionname: institutionname }),
+            content: JSON.stringify({ id: id, scimid: scimid,  username: username, name: name , surname: surname, email: email, institutionname: institutionname }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -294,14 +302,15 @@ export class AuthService {
     }
 
     UpdatePassword(id: string, currentpassword: string, password: string ) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/userpassword" ;
+        const scimid = appSettings.getString("scimid");  
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/userpassword" ;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ id: id, currentpassword: currentpassword, password: password }),
+            content: JSON.stringify({ id: id, scimid: scimid, currentpassword: currentpassword, password: password }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -545,10 +554,11 @@ export class AuthService {
     RefreshTokens():boolean{
         const reqUrl = getString("sm-service-cred-manager-host") +'/token';
         const refreshtoken = appSettings.getString("refreshtoken");
+        const clientkey = appSettings.getString("clientkey");
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh" },
+            headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic " + clientkey },
             content: "grant_type=refresh_token&refresh_token=" + refreshtoken,
             timeout: 5000
         }).then((response) => {
@@ -576,6 +586,82 @@ export class AuthService {
         });
         return true;
     }  
+
+    GetScimID() {
+        const username = appSettings.getString("username");
+        const basicauth = appSettings.getString("basicauth");
+        const reqUrl = getString("sm-service-cred-manager-host") + "/wso2/scim/Users?filter=userName+Eq+%22"+username+"%22";
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            headers: { "Authorization": "Basic " + basicauth},
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const getuserResultErr = new GetScimIDResult(500, "00000000-0000-0000-0000-000000000000");
+                this._currentGetScimID.next(getuserResultErr);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const getuserResult = new GetScimIDResult(200,result.Resources.id);
+                this._currentGetScimID.next(getuserResult);
+                appSettings.setString("scimid", result.Resources.id);                
+            }  else {
+                const getuserResult = new GetScimIDResult(responseCode, '00000000-0000-0000-0000-000000000000');
+                this._currentGetScimID.next(getuserResult); 
+            }
+        }, (e) => {
+
+            const getuserResult = new GetScimIDResult(400, '00000000-0000-0000-0000-000000000000');
+            this._currentGetScimID.next(getuserResult); 
+        });
+    }
+
+    RememberMe() {
+        const username = appSettings.getString("username");
+        const password = appSettings.getString("password");             
+        const reqUrl = getString("sm-service-scim-manager-host") + "/login?username=" + username + "&password=" + password;
+        const accesstoken = appSettings.getString("accesstoken");
+        request ({
+            url: reqUrl,
+            method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.validateCredentials(username, password);
+                }
+                
+                else {
+                    const loginResultErr = new LoginResult(500, "Login Unsuccessful", null);
+                this._currentLogin.next(loginResultErr);  
+                }
+        
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                const loginResult = new LoginResult(200, result.message, new LoginUser(result.id, result.username, result.institution, result.userloggedin, result.access_token, result.refresh_token));
+                this._currentLogin.next(loginResult);   
+                appSettings.setString("accesstoken", result.access_token);
+                appSettings.setString("refreshtoken", result.refresh_token);             
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+
+    }
     
     
     //This method clears all results

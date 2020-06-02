@@ -11,7 +11,9 @@ export class LoginUser {
         public id: string,
         public username: string,
         public defaultInstitution: string,
-        public loggedIn: boolean
+        public loggedIn: boolean,
+        public accesstoken: string,
+        public refreshtoken: string,
     ){}
 }
 
@@ -121,5 +123,12 @@ export class RefreshResult {
         public responseStatusCode: number,
         public AccessToken: string, 
         public RefreshToken:    string,
+    ){}
+}
+
+export class GetScimIDResult {
+    constructor (
+        public responseStatusCode: number,
+        public ScimID:      string,
     ){}
 }
