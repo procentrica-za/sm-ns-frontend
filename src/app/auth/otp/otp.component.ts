@@ -4,7 +4,7 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
-import { GetOTPResult, ValidateOTPResult, GetNewOTPResult } from "../auth.model";
+import { GetOTPResult, ValidateOTPResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { ModalDialogParams,ModalDialogService } from "nativescript-angular/modal-dialog";
 import * as appSettings from "tns-core-modules/application-settings";
@@ -30,7 +30,7 @@ export class OtpComponent implements OnInit, OnDestroy {
 
     validateotpResultSub: Subscription;
     validateotp: ValidateOTPResult;
-    constructor(private modalParams: ModalDialogParams, private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef) {
+    constructor(private modalParams: ModalDialogParams, private router: RouterExtensions, private authServ: AuthService) {
     }
     ngOnInit() {
         this.form = new FormGroup({
@@ -57,11 +57,12 @@ export class OtpComponent implements OnInit, OnDestroy {
                     this.getotp = getotpresult;
                     if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == true){
                         TNSFancyAlert.showSuccess("Success", this.getotp.Message, "Dismiss").then( t => {
-                       this.authServ.clearOTPObject();
-                       this.modalParams.closeCallback(false);
-                        
-                    });
-                    } else if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == false) {
+                        console.log("Hit get OTP");    
+                        this.authServ.clearOTPObject();
+                       this.modalParams.closeCallback(true);
+            ;
+         });
+                     } else if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == false) {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
                         
    
@@ -93,7 +94,17 @@ export class OtpComponent implements OnInit, OnDestroy {
         
         this.isLoading = true;
       this.authServ.GetOtp(number);
-    }
+      this.router.navigate(['/validate'],
+      {
+          animated: true,
+          transition: {
+              name: "slide",
+              duration: 200,
+              curve: "ease"
+          }
+      }
+      
+      )}
 
 
 

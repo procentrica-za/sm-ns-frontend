@@ -87,7 +87,8 @@ export class AuthService {
     validateCredentials(username: string, password: string) {
         appSettings.setString("username", username);
         appSettings.setString("password", password);             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/userlogin?username=" + username + "&password=" + password;
+        console.log(reqUrl)
         request ({
             url: reqUrl,
             method: "GET",
@@ -215,7 +216,7 @@ export class AuthService {
     }  
 
     GetUser(id: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user?id="  + id;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user?id="  + id;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -380,7 +381,7 @@ export class AuthService {
     GetOtp(phonenumber: string) {
         const userid = appSettings.getString("userid");
         const accesstoken = appSettings.getString("accesstoken");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({
             url: reqUrl,
@@ -423,7 +424,7 @@ export class AuthService {
     GetNewOtp() {
         const userid = appSettings.getString("userid");
         const phonenumber = appSettings.getString("phonenumber");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -466,7 +467,7 @@ export class AuthService {
 
     ValidateOtp(otp: string) {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp";
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp";
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -510,7 +511,7 @@ export class AuthService {
 
     VerificationStatus() {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/status?userid=" + userid;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({

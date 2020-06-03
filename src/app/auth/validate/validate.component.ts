@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewContainerRef  } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewContainerRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
-import { GetOTPResult, ValidateOTPResult, GetNewOTPResult } from "../auth.model";
+import { ValidateOTPResult, GetNewOTPResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-import { ModalDialogService, ModalDialogParams } from "nativescript-angular/modal-dialog";
+import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import * as appSettings from "tns-core-modules/application-settings";
+import { OtpComponent } from "../otp/otp.component";
 @Component({
     selector: 'ns-validate',
     templateUrl: './validate.component.html',
-    styleUrls: ['./validate.component.scss'],
+    styleUrls: ['./validate.component.scss'], 
     moduleId: module.id
 })
 export class ValidateComponent implements OnInit, OnDestroy {
@@ -31,7 +32,7 @@ export class ValidateComponent implements OnInit, OnDestroy {
 
     validateotpResultSub: Subscription;
     validateotp: ValidateOTPResult;
-    constructor(private modalParams: ModalDialogParams,private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef) {
+    constructor(private router: RouterExtensions, private authServ: AuthService, private modalDialog: ModalDialogService,  private vcRef: ViewContainerRef) {
     }
     ngOnInit() {
         this.form = new FormGroup({
@@ -50,6 +51,13 @@ export class ValidateComponent implements OnInit, OnDestroy {
         this.form.get('otp').statusChanges.subscribe(status => {
             this.otpControlIsValid = status === 'VALID';
         });
+
+        this.modalDialog.showModal(OtpComponent, {viewContainerRef: this.vcRef,
+            animated: true,
+            fullscreen: false,
+            context: {string: "OTP"} } ).then(( selection: boolean) => {
+             
+            });
         //Subscribe to result in auth service
 
         this.getnewotpResultSub = this.authServ.currentGetnewotp.subscribe(
@@ -81,9 +89,10 @@ export class ValidateComponent implements OnInit, OnDestroy {
                 if(validateotpresult){
                     this.isLoading = false;
                     this.validateotp = validateotpresult;
+                    console.log("Hit Validation"); 
                     if(this.validateotp.responseStatusCode === 200 && this.validateotp.validated == true){
-                        TNSFancyAlert.showSuccess("Success", this.validateotp.message, "Dismiss").then( t => {
-                       this.modalParams.closeCallback(false);
+                        TNSFancyAlert.showSuccess("Success", this.validateotp.message, "Dismiss").then( t => {    
+
                        this.authServ.clearValidateOTPObject()
                        this.router.navigate(['/updateuser'], {clearHistory: true});
                        const id = appSettings.getString("userid");
@@ -94,15 +103,15 @@ export class ValidateComponent implements OnInit, OnDestroy {
                         TNSFancyAlert.showError("Error", this.validateotp.message, "Dismiss");
                     } else if(this.validateotp.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
-                        this.modalParams.closeCallback(false);
+
                     }
                     else if(this.validateotp.responseStatusCode === 400) {
                         TNSFancyAlert.showError("Error", this.validateotp.message, "Dismiss");
-                        this.modalParams.closeCallback(false);
+     
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.validateotp.message, "Dismiss");
-                        this.modalParams.closeCallback(false);
+   
                     }
                 }
             }

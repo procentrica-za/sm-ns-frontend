@@ -18,8 +18,7 @@ import { SellerratingsComponent } from "./advert/sellerratings/sellerratings.com
 
 import { RatebuyerHomeComponent } from "./advert/ratebuyer-home/ratebuyer-home.component";
 import { RatebuyerComponent } from "./advert/ratebuyer/ratebuyer.component";
-
-
+import { ValidateComponent } from "./auth/validate/validate.component";
 import { RatingComponent } from "./advert/rating/rating.component";
 
 import { HelpComponent } from "./auth/help/help.component";
@@ -51,6 +50,7 @@ const routes: Routes = [
     { path: 'ratebuyer', component: RatebuyerComponent },
     { path: 'rating', component: RatingComponent },
     { path: 'help', component: HelpComponent },
+    { path: 'validate', component: ValidateComponent }
 ];
 
 @NgModule({

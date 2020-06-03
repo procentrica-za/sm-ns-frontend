@@ -37,7 +37,6 @@ import { InstitutionListPickerComponent } from "././auth/institution-listpicker/
 import { OtpComponent } from "./auth/otp/otp.component";
 import { ValidateComponent } from "./auth/validate/validate.component";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
-
 import { HelpComponent } from "./auth/help/help.component";
 @NgModule({
     bootstrap: [
@@ -83,6 +82,6 @@ import { HelpComponent } from "./auth/help/help.component";
     schemas: [
         NO_ERRORS_SCHEMA
     ],
-    entryComponents: [InstitutionListPickerComponent, OtpComponent, ValidateComponent]
+    entryComponents: [InstitutionListPickerComponent, OtpComponent]
 })
 export class AppModule { }

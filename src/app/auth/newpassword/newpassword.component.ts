@@ -5,7 +5,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { AuthService } from "../auth.service";
 import { Subscription } from "rxjs";
 import { GetUserResult, UpdatePasswordResult } from "../auth.model";
-import { TNSFancyAlert } from "nativescript-fancyalert";
+import { TNSFancyAlert } from "nativescript-fancyalert"; 
 
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";

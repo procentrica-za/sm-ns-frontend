@@ -48,13 +48,13 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
 
-        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
-        setString("sm-service-ratings-host", "http://192.168.1.188:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.188:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
-        setString("sm-service-messages-host", "http://192.168.1.188:9956");
-        setString("sm-service-scim-manager-host", "http://192.168.1.187:9961");
-        setString("sm-service-is-host", "http://192.168.1.187:9959");
+        setString("sm-service-cred-manager-host", "http://192.168.0.119:9952");
+        setString("sm-service-ratings-host", "http://192.168.0.119:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.0.119:9953");
+        setString("sm-service-file-manager-host", "http://192.168.0.119:9955");
+        setString("sm-service-messages-host", "http://192.168.0.119:9956");
+        setString("sm-service-scim-manager-host", "http://192.168.0.119:9961");
+        setString("sm-service-is-host", "http://192.168.0.119:9959");
         console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);

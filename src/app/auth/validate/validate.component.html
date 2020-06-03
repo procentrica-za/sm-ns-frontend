@@ -1,4 +1,4 @@
-
+<ns-action-bar [actionBarTitle]="'Validate OTP'"></ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
     <Button class="btn-flat" text="Resend OTP" (tap)="onRequestNewOTP()"></Button>
     <StackLayout class="input-field">
@@ -32,6 +32,3 @@
         #hiddenEl
     ></TextField>
 </StackLayout>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
-    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
-</FlexboxLayout>
