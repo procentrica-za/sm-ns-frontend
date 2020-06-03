@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild, ElementRef, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, OnDestroy,ViewChild, ElementRef, ViewContainerRef, ɵclearResolutionOfComponentResourcesQueue } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { DropDown, SelectedIndexChangedEventData}  from "nativescript-drop-down"
@@ -18,6 +18,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { TNSFancyAlert } from "nativescript-fancyalert";
 import { AddAdvertisementResult, Textbook, ImageUploadedResult } from "../advert.model";
 import { PageRoute, RouterExtensions } from "nativescript-angular/router";
+import { TouchAction } from "tns-core-modules/ui/gestures/gestures";
 @Component({
     selector: 'ns-add-advert',
     templateUrl: './add-advert.component.html',
@@ -116,7 +117,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             instType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -136,7 +137,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             acdType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -146,7 +147,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             subject: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -156,7 +157,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             yearType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -166,7 +167,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             venueType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -176,7 +177,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             noteType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -186,7 +187,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             termType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -196,7 +197,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             moduleCodeTutorType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -206,7 +207,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             moduleCodeNoteType: new FormControl(
                 null,
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                     validators: [
                         Validators.required
                     ]
@@ -548,13 +549,17 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
 
     }
 
+  
+
     onAccomodationTypeTap(){
         this.modalDialog.showModal(AdvertListPickerComponent, {viewContainerRef: this.vcRef, 
             animated: true,
             fullscreen: true,
             context: {string: "AccomodationType" } }).then((selection: string) => {
                 this.acdTypeBind=selection;
+               
             });
+            
     }
 
     onInstitutionTypeTap(){
@@ -563,7 +568,9 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             fullscreen: true,
             context: {string: "InstitutionType" } }).then((selection:string) => {
                 this.instTypeBind=selection;
-            });
+                
+            })
+            
     }
 
     onYearTypeTap(){
@@ -572,7 +579,7 @@ export class AddAdvertComponent implements OnInit, OnDestroy {
             fullscreen: true,
             context: {string: "YearCompletedType" } }).then((selection:string) => {
                 this.yearTypeBind=selection;
-            });
+            })
     }
 
     onVenueTypeTap(){

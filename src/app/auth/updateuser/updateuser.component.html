@@ -128,8 +128,9 @@
     <Button class="btn-flat" *ngIf="isVerified" text="Validate Account" (tap)="onOTP()"></Button>
     <Button class="btn-flat" text="Change Password" (tap)="onPassword()"></Button>
 </StackLayout>
-</ScrollView>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+<FlexboxLayout height="100%" justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </FlexboxLayout>
+</ScrollView>
+
 

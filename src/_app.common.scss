@@ -196,14 +196,14 @@ ActionBar {
 .tab-fa {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 30em;
 }
 
 .btn-fa {
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 30em;
     border-width: 1;
     border-color: transparent;
@@ -705,7 +705,6 @@ ActionBar {
     font-weight: 100;
     font-size: 50em;
     color: $secondary;
-    margin-left: 25%;
   
 }
 .BuyingAverage {
@@ -713,8 +712,6 @@ ActionBar {
     font-weight: 500;
     font-size: 13em;
     color: $primary;
-    margin-left: 12%;
-    margin-top: 10%;
   
 }
 
@@ -723,8 +720,7 @@ ActionBar {
     font-weight: 100;
     font-size: 50em;
     color: $secondary;
-    margin-left: 35%;
-    margin-top: 10%;
+    
   
 }
 
@@ -733,9 +729,6 @@ ActionBar {
     font-weight: 500;
     font-size: 13em;
     color: $primary;
-    margin-left: 5%;
-    margin-top: 10%;
-  
 }
 
 .PreviousSold {
@@ -743,8 +736,6 @@ ActionBar {
     font-weight: 500;
     font-size: 13em;
     color: $primary;
-    margin-left: 10%;
-    margin-top: 10%;
   
 }
 
@@ -753,12 +744,9 @@ ActionBar {
     font-weight: 500;
     font-size: 13em;
     color: $primary;
-    margin-left: 14%;
-    margin-top: 10%;
   
 }
 .Ratingdashboard {
-margin-left: 29%;
 font-weight: 500;
 font-size: 50em;
 color: $secondary;
@@ -770,10 +758,7 @@ color: $secondary;
     background-color: whitesmoke;
     border-color: #efeeee;
     border-radius: 5;
-    margin-bottom: 68%;
-    margin-left: 3%;
-    margin-right:52%;
-    margin-top: 7%;
+    
 } 
 .GridLayoutSellerRatingdash {
     border-style: solid;
