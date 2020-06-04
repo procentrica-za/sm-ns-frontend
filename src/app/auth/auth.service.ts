@@ -87,10 +87,12 @@ export class AuthService {
     validateCredentials(username: string, password: string) {
         appSettings.setString("username", username);
         appSettings.setString("password", password);             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
         request ({
             url: reqUrl,
-            method: "GET",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ username: username, password: password}),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -622,11 +624,11 @@ export class AuthService {
         const username = appSettings.getString("username");
         const password = appSettings.getString("password");             
         const reqUrl = getString("sm-service-scim-manager-host") + "/login?username=" + username + "&password=" + password;
-        const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
-            method: "GET",
-            headers: { "Authorization": "Bearer " + accesstoken},
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ username: username, password: password}),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
