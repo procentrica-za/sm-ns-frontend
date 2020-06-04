@@ -623,7 +623,7 @@ export class AuthService {
     RememberMe() {
         const username = appSettings.getString("username");
         const password = appSettings.getString("password");             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/login?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
         request ({
             url: reqUrl,
             method: "POST",
