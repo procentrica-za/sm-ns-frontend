@@ -313,7 +313,7 @@ export class AuthService {
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ id: id, scimid: scimid, currentpassword: currentpassword, username: username, password: password }),
+            content: JSON.stringify({ id: id, scimid: scimid, username: username, currentpassword: currentpassword, password: password }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
