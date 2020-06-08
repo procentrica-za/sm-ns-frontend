@@ -178,5 +178,8 @@
 		"/Users/j-master/Desktop/Try3/sm-ns-frontend/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/Modules/module.modulemap": "00d2220e76eb098f1808eb4e9b5c43ad4cadf1da",
 		"/Users/j-master/Desktop/Try3/sm-ns-frontend/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/Info.plist": "4d37d9169ea2619d7185f6230f3ea93552027f92",
 		"/Users/j-master/Desktop/Try3/sm-ns-frontend/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/TNSWidgets": "55051118ec6113219ebe0c56bead1a469db0981c"
+	},
+	"nativescript-iqkeyboardmanager": {
+		"/Users/j-master/Desktop/Try3/sm-ns-frontend/node_modules/nativescript-iqkeyboardmanager/platforms/ios/Podfile": "5092a1d2ce6bf004814ff8095d297bdcf7a410f7"
 	}
 }

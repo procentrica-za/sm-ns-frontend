@@ -101,6 +101,13 @@
 			name = "nativescript-ng-shadow";
 			sourceTree = "<group>";
 		};
+		1A48B3E754264B59BDF6310E /* nativescript-iqkeyboardmanager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "nativescript-iqkeyboardmanager";
+			sourceTree = "<group>";
+		};
 		32BABCB6F9164831AAB01AA9 /* tns-core-modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +180,7 @@
 				A7806381B2324E87A7AAAC49 /* tns-core-modules-widgets */,
 				A172235CE1886AACE4D1D34B /* Pods */,
 				F10E5BD1624A404A9AF55D82 /* TNSNativeSource */,
+				1A48B3E754264B59BDF6310E /* nativescript-iqkeyboardmanager */,
 			);
 			sourceTree = "<group>";
 		};
@@ -377,6 +385,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-smnsfrontend/Pods-smnsfrontend-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
@@ -385,6 +394,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
@@ -572,7 +582,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A261BB43B5D00EC2671 /* build-debug.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -615,6 +625,7 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -630,7 +641,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A271BB43B5D00EC2671 /* build-release.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -669,6 +680,7 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

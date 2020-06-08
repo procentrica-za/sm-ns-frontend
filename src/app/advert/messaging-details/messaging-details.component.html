@@ -25,14 +25,14 @@
         </ng-template>
     </RadListView>
 
-    
+
     <Gridlayout rows="*" columns="5*,*" class="GridLayoutMessages">
         <TextView
         class="messagetext"
         row="0" col="0"
         editable="true" hint="Type a message..."
-        returnKeyType="next"
-        [autocorrect]="true"
+        returnKeyType="done"
+        [autocorrect]="false"
         autocapitalizationType="none"
         formControlName="message"
         lineHeight="50"
@@ -40,6 +40,7 @@
         ></TextView>
         <Label row="0" col="1"(tap)="onSendMessage()" text="&#xf1d8;" class="SendMessageLabel" ></Label>
     </Gridlayout>
+
     <TextField 
         style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: lightgray; height:0;"           
         #hiddenEl
