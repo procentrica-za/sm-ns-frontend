@@ -49,7 +49,6 @@ ActionBar {
             border-color: $primary;
             border-bottom-color: $primary;
             width: 100%;
-            color: black;
         }
 
         .input.ng-invalid.ng-touched{
@@ -186,8 +185,7 @@ ActionBar {
 }
 
 .advert-tabs {
-    selected-tab-text-color: $primary;
-    android-selected-tab-highlight-color: $primary;
+    
     font-family: FontAwesome, fontawesome-webfont;
     color: $primary;
     background-color: #efeeee;
@@ -212,10 +210,10 @@ ActionBar {
 
 .ContactSellerLabel {
     font-family: FontAwesome, fontawesome-webfont;
-    color: $primary;
     font-weight: 700;
     font-size: 60em;
     text-align: center;
+    color: $primary;
 }
 
 .UploadPictureLabel {
@@ -416,9 +414,7 @@ ActionBar {
     background-color: white;
 }
 
-.GridLayoutMessageinput {
 
-}
 
 .messageitem {
     width: 95%;
@@ -494,7 +490,7 @@ ActionBar {
 }
 
  .AdLabel {
- 
+    color: black;
     margin-left: 1%;
     margin-top: 0;
 }
@@ -510,6 +506,7 @@ ActionBar {
 
 .ItemSoldLabel {
     margin-left: 22;
+    color: black;
 }
 .InterestedBuyers {
     font-size: 25em;
@@ -518,6 +515,7 @@ ActionBar {
 
 .InterestedBuyerslabel {
     margin-top: 10;
+    color: black;
 }
 
 .Ratebuyerlabel {
@@ -530,6 +528,7 @@ ActionBar {
 }
 .DeleteLabel {
     margin-left: 17;
+    color: black;
 }
  
 .EditLabel {
@@ -559,7 +558,8 @@ ActionBar {
     margin-right: 25;
     text-align: right;
     margin-top: 1%;
-    margin-left: 67%
+    margin-left: 67%;
+    color: $primary;
 }
 
 .TextbookFilterLabel {
@@ -568,7 +568,7 @@ ActionBar {
     margin-right: 25;
     text-align: right;
     margin-top: 1%;
-    margin-left: 34.8%
+    margin-left: 34.8%;
 }
 
 .ScanwordLabel {
@@ -577,7 +577,7 @@ ActionBar {
     margin-right: 25;
     text-align: right;
     margin-top: 1%;
-    margin-left: 4%
+    margin-left: 4%;
 }
  
 .PasswordLabel {
@@ -601,6 +601,7 @@ ActionBar {
 .ratingLabel {
    margin-left: 9%;
    margin-top: 0;
+   color: black;
 
 }
 

@@ -24,5 +24,9 @@
 	<string>Requires access to microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Requires access to photo library.</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 </dict>
 </plist>

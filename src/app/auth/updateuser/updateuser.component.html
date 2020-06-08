@@ -16,6 +16,7 @@
             formControlName="username"
             [text]="getuser.Username" *ngIf="userFound"
             #usernameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
@@ -37,6 +38,7 @@
             formControlName="name"
             [text]="getuser.Name" *ngIf="userFound"
             #nameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
@@ -58,6 +60,7 @@
             formControlName="surname"
             [text]="getuser.Surname" *ngIf="userFound"
             #surnameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!surnameControlIsValid"
@@ -79,6 +82,7 @@
             formControlName="email"
             [text]="getuser.Email" *ngIf="userFound"
             #emailEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!emailControlIsValid"
@@ -103,6 +107,7 @@
         autocapitalizationType="none"
         formControlName="institutionname"
         #institutionnameEl
+        style="color: black;"
         ></TextField>
     </StackLayout>
     <StackLayout class="input-field">
@@ -118,6 +123,7 @@
             required
             [autocorrect]="false"
             autocapitalizationType="none"
+            style="color: black;"
         ></TextField>
     </StackLayout>
     <Button

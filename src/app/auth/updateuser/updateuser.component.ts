@@ -181,17 +181,15 @@ this.authServ.GetUser(id);
     }
 
     onOTP(): void {
-        this.modalDialog.showModal(OtpComponent, {viewContainerRef: this.vcRef,
+        this.router.navigate(['/validate'],
+        {
             animated: true,
-            fullscreen: false,
-            context: {string: "OTP"} } ).then(( selection: boolean) => {
-                this.modalDialog.showModal(ValidateComponent, {viewContainerRef: this.vcRef,
-                    animated: true,
-                    fullscreen: false,
-                    context: {string: "OTP"} } ).then(( selection: boolean) => {
-                        
-                    });
-            });
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
 
     }
 

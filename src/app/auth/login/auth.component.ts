@@ -7,7 +7,7 @@ import { AdvertService, } from "../../../app/advert/advert.service";
 import { Subscription } from "rxjs";
 import { LoginResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-
+import { UIService } from "../../shared/ui/ui.service"
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
 
@@ -47,12 +47,15 @@ export class AuthComponent implements OnInit, OnDestroy {
     get android() {
         return isAndroid;
     }
-    constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
+    constructor(private uiService : UIService ,private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
         console.log("Constructing Auth Component");
+        console.log("Closing SideDrawer");
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
         appSettings.setBoolean("isAndroid", isAndroid);
-        console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
         //TODO: REmove before committing
         //appSettings.setString("userid", this.login.loginUser.id);
        /* appSettings.setBoolean("rememberme", true);

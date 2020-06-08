@@ -58,24 +58,24 @@ export class OtpComponent implements OnInit, OnDestroy {
                     if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == true){
                         TNSFancyAlert.showSuccess("Success", this.getotp.Message, "Dismiss").then( t => {
                        this.authServ.clearOTPObject();
-                       this.modalParams.closeCallback(false);
+                       this.modalParams.closeCallback(true);
                         
                     });
                     } else if(this.getotp.responseStatusCode === 200 && this.getotp.Sent == false) {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
-                        
+                        this.modalParams.closeCallback(true);
    
                     } else if(this.getotp.responseStatusCode === 500) {
                         TNSFancyAlert.showError("Connection error", "A Connection cannot be established at this time", "Dismiss");
-                        
+                        this.modalParams.closeCallback(true);
                     }
                     else if(this.getotp.responseStatusCode === 400) {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
-                        
+                        this.modalParams.closeCallback(true);
                     }
                     else {
                         TNSFancyAlert.showError("Error", this.getotp.Message, "Dismiss");
-                        
+                        this.modalParams.closeCallback(true);
                     }
                 }
             }

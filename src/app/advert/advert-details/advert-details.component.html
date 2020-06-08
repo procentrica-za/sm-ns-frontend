@@ -35,7 +35,7 @@
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>                         
  
         <Label row="9" col="2" text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
-        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller" style="color: black;"></Label>
 </Gridlayout>
 
 
@@ -78,7 +78,7 @@
         <Label *ngIf="notrated" row="10" col="2" text="Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
         
         <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel" (tap)="updateAdvertisement(userAdvertTextbookResult.advertisementid, userAdvertTextbookResult.advertisementtype)"></Label>
-        <Label row="10" col="1"  text="Edit" class="EditLabel" (tap)="updateAdvertisement(userAdvertTextbookResult.advertisementid, userAdvertTextbookResult.advertisementtype)"></Label>
+        <Label row="10" col="1"  text="Edit" class="EditLabel" style="color: black;" (tap)="updateAdvertisement(userAdvertTextbookResult.advertisementid, userAdvertTextbookResult.advertisementtype)"></Label>
 
         <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon" (tap)="deleteAdvertisement(userAdvertTextbookResult.advertisementid)"></Label>
         <Label row="10" col="3" text="Delete" class="DeleteLabel" (tap)="deleteAdvertisement(userAdvertTextbookResult.advertisementid)"></Label>
@@ -122,7 +122,7 @@
 
 
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel" (tap)="onItemSelected($event)" ></Label>
-        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller" style="color: black;"></Label>
 </Gridlayout>
 
 <!-- ######################################################## GRIDLAYOUT USED FOR USER ACCOMODATION ADS ########################################################-->
@@ -157,7 +157,7 @@
         <StackLayout row="7" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
 
         <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel" (tap)="updateAdvertisement(userAdvertAccomodationResult.advertisementid, userAdvertAccomodationResult.advertisementtype)"></Label>
-        <Label row="10" col="1" class="EditLabel" text="Edit" (tap)="updateAdvertisement(userAdvertAccomodationResult.advertisementid,userAdvertAccomodationResult.advertisementtype)"></Label>
+        <Label row="10" col="1" class="EditLabel" text="Edit" style="color: black;" (tap)="updateAdvertisement(userAdvertAccomodationResult.advertisementid,userAdvertAccomodationResult.advertisementtype)"></Label>
 
         <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon" (tap)="deleteAdvertisement(userAdvertAccomodationResult.advertisementid)"></Label>
         <Label row="10" col="3" class="DeleteLabel" text="Delete" (tap)="deleteAdvertisement(userAdvertAccomodationResult.advertisementid)"></Label>
@@ -208,7 +208,7 @@
 
 
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
-        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller" style="color: black;"></Label>
 </Gridlayout>
 
 <!-- ######################################################## GRIDLAYOUT USED FOR USER TUTOR ADS ########################################################-->
@@ -249,7 +249,7 @@
         <StackLayout row="8" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
 
       <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel" (tap)="updateAdvertisement(userAdvertNoteResult.advertisementid, userAdvertNoteResult.advertisementtype)"></Label>
-        <Label row="10" col="1"  text="Edit" class="EditLabel" (tap)="updateAdvertisement(userAdvertNoteResult.advertisementid, userAdvertNoteResult.advertisementtype)"></Label>
+        <Label row="10" col="1"  text="Edit" class="EditLabel" style="color: black;" (tap)="updateAdvertisement(userAdvertNoteResult.advertisementid, userAdvertNoteResult.advertisementtype)"></Label>
 
         <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon" (tap)="deleteAdvertisement(userAdvertTutorResult.advertisementid)"></Label>
         <Label row="10" col="3" text="Delete" class="DeleteLabel" (tap)="deleteAdvertisement(userAdvertTutorResult.advertisementid)"></Label>
@@ -289,7 +289,7 @@
         <StackLayout row="4" col="0" colspan="5" class="StackLayoutDividers"></StackLayout>
 
         <Label row="9" col="2"  text="&#xf086;" class="ContactSellerLabel"  (tap)="onItemSelected($event)"></Label>
-        <Label row="10" col="2" colspan="2" text="Contact Seller"></Label>
+        <Label row="10" col="2" colspan="2" text="Contact Seller" style="color: black;"></Label>
 </Gridlayout>
 
 <!-- ######################################################## GRIDLAYOUT USED FOR USER NOTE ADS ########################################################-->
@@ -316,10 +316,10 @@
 
 
         <Label row="9" col="1"  text="&#xf044;" class="ContactSellerLabel" (tap)="updateAdvertisement(userAdvertNoteResult.advertisementid, userAdvertNoteResult.advertisementtype)"></Label>
-        <Label row="10" col="1" text="Edit" class="EditLabel"></Label>
+        <Label row="10" col="1" text="Edit" class="EditLabel" style="color: black;"></Label>
 
         <Label  row="9" col="2"   text="&#xf0d6;" class="InterestLabel"  (tap)="onViewInterest($event)"></Label>
-        <Label  row="10" col="2" text="Sold"  (tap)="onViewInterest($event)"></Label>
+        <Label  row="10" col="2" text="Sold" class="ItemSoldLabel" (tap)="onViewInterest($event)"></Label>
 
         <Label row="9" col="3"  text="&#xf1f8;" class="DeleteLabelicon" (tap)="deleteAdvertisement(userAdvertNoteResult.advertisementid)"></Label>
         <Label row="10" col="3" text="Delete" class="DeleteLabel" (tap)="deleteAdvertisement(userAdvertNoteResult.advertisementid)"></Label>
