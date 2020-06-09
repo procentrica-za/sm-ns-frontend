@@ -179,8 +179,8 @@
 				80E891B8E6F241618FECB1CB /* nativescript-ui-core */,
 				A7806381B2324E87A7AAAC49 /* tns-core-modules-widgets */,
 				A172235CE1886AACE4D1D34B /* Pods */,
-				F10E5BD1624A404A9AF55D82 /* TNSNativeSource */,
 				1A48B3E754264B59BDF6310E /* nativescript-iqkeyboardmanager */,
+				2A85654AD042462CBAA2DE61 /* TNSNativeSource */,
 			);
 			sourceTree = "<group>";
 		};
@@ -275,7 +275,7 @@
 			name = "nativescript-imagepicker";
 			sourceTree = "<group>";
 		};
-		F10E5BD1624A404A9AF55D82 /* TNSNativeSource */ = {
+		2A85654AD042462CBAA2DE61 /* TNSNativeSource */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -582,7 +582,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A261BB43B5D00EC2671 /* build-debug.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -626,11 +626,13 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
+				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -641,7 +643,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A271BB43B5D00EC2671 /* build-release.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -681,11 +683,13 @@
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
+				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
