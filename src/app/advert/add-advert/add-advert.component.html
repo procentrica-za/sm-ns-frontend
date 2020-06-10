@@ -1,6 +1,6 @@
 <ns-action-bar [actionBarTitle]="'Add Advertisement'" [hasMenu]=false [showBackButton]=true></ns-action-bar>
-
-<ScrollView>
+<StackLayout>
+<ScrollView *ngIf="!advertPostedLoading">
 <StackLayout class="form" [formGroup]="form">
 
     <StackLayout class="input-field">
@@ -377,6 +377,9 @@
 </StackLayout>
 </ScrollView>
 
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="advertPostedLoading">
+<FlexboxLayout height="100%" justifyContent="center" alignItems="center" *ngIf="advertPostedLoading">
     <ActivityIndicator [busy]="advertPostedLoading"></ActivityIndicator>
 </FlexboxLayout>
+
+</StackLayout>
+

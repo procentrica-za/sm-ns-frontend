@@ -40,13 +40,27 @@ export class AdvertTokensComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(){
+        console.log("Initing shop component");
 
+        console.log(purchase.getProducts())
+
+        purchase.getProducts().then((res) => {
+            console.log("I did get a result from products.");
+            console.log(res);
+            console.log(res.length);
+            res.forEach( t => {
+                console.log(t);
+                console.log(t.localizedDescription);
+                console.log(t.priceAmount)
+            })
+        })
+        console.log("????")
         this.myProductArray = new ObservableArray(0);
         purchase.getProducts().then((res) => {
             res.forEach( t => {
+                console.log(t);
                 this.product = t; 
                 this.myProductArray.push(this.product);
-                
             })
         }).catch((e) => console.log(e));
 

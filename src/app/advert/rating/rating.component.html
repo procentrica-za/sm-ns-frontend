@@ -1,4 +1,5 @@
 <ns-action-bar [actionBarTitle]="'Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout>
 <StackLayout orientation="horizontal" class ="MessagesStack">
 </StackLayout>
 <Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutBuyerRatingdash" shadow="6" >
@@ -12,16 +13,17 @@
 </Gridlayout>
 
 <Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutPreviousBought" shadow="6" >
-    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onBuyerRatings()" textWrap="true"  ></Label>
-    <Label row="1" col="0" text="Previous Bought Ratings" class="Previous"(tap)="onBuyerRatings()" textWrap="true"  ></Label>  
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onBuyerRatings($event)" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Previous Bought Ratings" class="Previous"(tap)="onBuyerRatings($event)" textWrap="true"  ></Label>  
 </Gridlayout>
 
 <Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutPreviousSold" shadow="6" >
-    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onSellerRatings()" textWrap="true"  ></Label>
-    <Label row="1" col="0" text="Previous Sold Ratings" class="PreviousSold"(tap)="onSellerRatings()" textWrap="true"  ></Label>  
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onSellerRatings($event)" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Previous Sold Ratings" class="PreviousSold"(tap)="onSellerRatings($event)" textWrap="true"  ></Label>  
 </Gridlayout>
 
 <Gridlayout rows="2.5*,*" columns="*," class="list-group-item" class="GridLayoutOutstanding" shadow="6" >
-    <Label row="0" col="0" class="Ratingdashboard" text="&#xf0cb;" class="PreviousLabel"(tap)="onOutstandingRatings()" textWrap="true"  ></Label>
-    <Label row="1" col="0" text="Outstanding Ratings" class="Outstanding"(tap)="onOutstandingRatings()" textWrap="true"  ></Label>  
+    <Label row="0" col="0" class="Ratingdashboard" text="&#xf0cb;" class="PreviousLabel"(tap)="onOutstandingRatings($event)" textWrap="true"  ></Label>
+    <Label row="1" col="0" text="Outstanding Ratings" class="Outstanding"(tap)="onOutstandingRatings($event)" textWrap="true"  ></Label>  
 </Gridlayout>
+</StackLayout>

@@ -82,6 +82,7 @@ export class AuthService {
 
 
     constructor(private http: HttpClient){
+        console.log("Initializing app SM... Backend address: " + getString("sm-service-cred-manager-host"));
     }
 
     validateCredentials(username: string, password: string) {

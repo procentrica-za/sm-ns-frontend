@@ -15,7 +15,7 @@ import * as appSettings from "tns-core-modules/application-settings";
 import { Switch } from "tns-core-modules/ui/switch";
 import { EventData } from "tns-core-modules/data/observable";
 import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
-import { Page } from "tns-core-modules/ui/page";
+import { Page, isAndroid } from "tns-core-modules/ui/page";
 import {Observable} from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { getString, setString } from "tns-core-modules/application-settings";
@@ -45,7 +45,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     loginResultSub: Subscription;
     login: LoginResult;
 
-
+    get android() {
+        return isAndroid;
+    }
     constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
 
         setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
@@ -58,6 +60,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
+        appSettings.setBoolean("isAndroid", isAndroid);
+        console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
         appSettings.setString("clientkey", "VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh");
         appSettings.setString("basicauth", "YWRtaW46YWRtaW4=");
         //TODO: REmove before committing

@@ -346,6 +346,10 @@ export class AdvertService {
    
 
     constructor(private http: HttpClient){
+        setString("sm-service-ratings-host", "http://10.10.100.147:9957");
+        setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
+        setString("sm-service-file-manager-host", "http://10.10.100.147:9955");
+        setString("sm-service-messages-host", "http://10.10.100.147:9956");
     }
     
     initializeModuleCodeList(){

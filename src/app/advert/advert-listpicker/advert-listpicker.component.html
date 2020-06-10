@@ -56,7 +56,7 @@
         <SearchBar hint="Search..."
             [text]="textbookSearch" (submit)="onTextbookSearchSubmit($event)" (clear)="onTextbookClear($event)">
         </SearchBar>
-        <RadListView  [items]="TextbookFilterArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
+        <RadListView height="2600px" [items]="TextbookFilterArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="advertRadList">
             <ng-template tkListItemTemplate let-textbook="item" >
                 <Gridlayout rows="*,*,*,*,*,*,*,*,*,*" columns="*,2*" class="list-group-item" class="GridLayoutAdvertListStyle" shadow="6" >
                     <Label *ngIf = "textbook" row="0" col="0" colspan="2" [text]="textbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>

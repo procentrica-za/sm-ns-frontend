@@ -1,4 +1,4 @@
-<ns-action-bar [actionBarTitle]="'Register'"></ns-action-bar>
+<ns-action-bar [actionBarTitle]="'Register'" [hasMenu]=false></ns-action-bar>
 <StackLayout class="form" [formGroup]="form">
     <StackLayout class="input-field">
         <Label
@@ -127,7 +127,8 @@
         text="Register"
         (tap)="onRegisterUser()"
     ></Button>
+
+    <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+        <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
+    </FlexboxLayout>
 </StackLayout>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
-    <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
-</FlexboxLayout>
