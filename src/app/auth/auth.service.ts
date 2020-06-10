@@ -88,10 +88,12 @@ export class AuthService {
     validateCredentials(username: string, password: string) {
         appSettings.setString("username", username);
         appSettings.setString("password", password);             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login?username=" + username + "&password=" + password;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
         request ({
             url: reqUrl,
-            method: "GET",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ username: username, password: password}),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -306,12 +308,13 @@ export class AuthService {
         const scimid = appSettings.getString("scimid");  
         const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/userpassword" ;
         const accesstoken = appSettings.getString("accesstoken");
+        const username = appSettings.getString("username");
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "PUT",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
-            content: JSON.stringify({ id: id, scimid: scimid, currentpassword: currentpassword, password: password }),
+            content: JSON.stringify({ id: id, scimid: scimid, username: username, currentpassword: currentpassword, password: password }),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -622,12 +625,12 @@ export class AuthService {
     RememberMe() {
         const username = appSettings.getString("username");
         const password = appSettings.getString("password");             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/login?username=" + username + "&password=" + password;
-        const accesstoken = appSettings.getString("accesstoken");
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
         request ({
             url: reqUrl,
-            method: "GET",
-            headers: { "Authorization": "Bearer " + accesstoken},
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({ username: username, password: password}),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
