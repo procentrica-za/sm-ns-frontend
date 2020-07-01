@@ -58,6 +58,10 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-scim-manager-host", "http://192.168.1.187:9961");
         setString("sm-service-apim-host", "http://192.168.1.187:8243");
         setString("sm-service-is-host", "http://192.168.1.187:9959");
+        setString("sm-service-ratings-host", "http://10.10.100.147:9957");
+        setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
+        setString("sm-service-file-manager-host", "http://10.10.100.147:9955");
+        setString("sm-service-messages-host", "http://10.10.100.147:9956");
         console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true); 
         appSettings.setBoolean("myAdvertsSelling", true);
