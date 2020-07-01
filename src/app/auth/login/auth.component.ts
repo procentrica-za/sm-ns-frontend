@@ -56,9 +56,10 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
         setString("sm-service-messages-host", "http://192.168.1.188:9956");
         setString("sm-service-scim-manager-host", "http://192.168.1.187:9961");
+        setString("sm-service-apim-host", "http://192.168.1.187:8243");
         setString("sm-service-is-host", "http://192.168.1.187:9959");
         console.log("Constructing Auth Component");
-        appSettings.setBoolean("mainAdvertSelling", true);
+        appSettings.setBoolean("mainAdvertSelling", true); 
         appSettings.setBoolean("myAdvertsSelling", true);
         appSettings.setBoolean("isAndroid", isAndroid);
         console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));

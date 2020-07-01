@@ -556,7 +556,7 @@ export class AuthService {
     }
 
     RefreshTokens():boolean{
-        const reqUrl = getString("sm-service-cred-manager-host") +'/token';
+        const reqUrl = getString("sm-service-apim-host") +'/token';
         const refreshtoken = appSettings.getString("refreshtoken");
         const clientkey = appSettings.getString("clientkey");
         request ({
@@ -593,13 +593,13 @@ export class AuthService {
 
     GetScimID() {
         const username = appSettings.getString("username");
-        const basicauth = appSettings.getString("basicauth");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/wso2/scim/Users?filter=userName+Eq+%22"+username+"%22";
+        const clientkey = appSettings.getString("clientkey");
+        const reqUrl = getString("sm-service-scim-manager-host") + "/scim";
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
-            headers: { "Authorization": "Basic " + basicauth},
+            content: JSON.stringify({ username: username, keysecret: clientkey}),
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
