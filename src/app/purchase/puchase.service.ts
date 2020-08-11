@@ -16,7 +16,7 @@ export class PurchaseService {
 
 
     constructor(private http: HttpClient){
-        setString("sm-service-cred-manager-host", "http://10.10.100.147:9952");
+        setString("sm-service-cred-manager-host", "http://192.168.1.54:9952");
     }
 
     PurchaseAdvertisementToken(id: string, ammount: string) {

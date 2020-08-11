@@ -83,6 +83,6 @@ import { HelpComponent } from "./auth/help/help.component";
     schemas: [
         NO_ERRORS_SCHEMA
     ],
-    entryComponents: [InstitutionListPickerComponent, OtpComponent, ValidateComponent]
+    entryComponents: [InstitutionListPickerComponent, OtpComponent]
 })
 export class AppModule { }

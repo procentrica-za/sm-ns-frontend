@@ -7,7 +7,7 @@ import { AdvertService, } from "../../../app/advert/advert.service";
 import { Subscription } from "rxjs";
 import { LoginResult } from "../auth.model";
 import { TNSFancyAlert } from "nativescript-fancyalert";
-
+import { UIService } from "../../shared/ui/ui.service"
 //Import for config file
 import * as appSettings from "tns-core-modules/application-settings";
 
@@ -62,8 +62,14 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
         setString("sm-service-file-manager-host", "http://10.10.100.147:9955");
         setString("sm-service-messages-host", "http://10.10.100.147:9956");
+    constructor(private uiService : UIService ,private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
         console.log("Constructing Auth Component");
         appSettings.setBoolean("mainAdvertSelling", true); 
+        console.log("Closing SideDrawer");
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
+        appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
         appSettings.setBoolean("isAndroid", isAndroid);
         console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));

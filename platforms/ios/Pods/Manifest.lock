@@ -1,4 +1,5 @@
 PODS:
+  - IQKeyboardManager (6.2.1)
   - MaterialComponents/AnimationTiming (84.6.0)
   - MaterialComponents/Ink (84.6.0):
     - MaterialComponents/private/Math
@@ -26,6 +27,7 @@ PODS:
   - SSKeychain (1.4.1)
 
 DEPENDENCIES:
+  - IQKeyboardManager (~> 6.2.0)
   - MaterialComponents/Tabs (~> 84.4)
   - QBImagePickerController (~> 3.4.0)
   - SCLAlertView-Objective-C
@@ -33,6 +35,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - IQKeyboardManager
     - MaterialComponents
     - MDFInternationalization
     - QBImagePickerController
@@ -40,12 +43,13 @@ SPEC REPOS:
     - SSKeychain
 
 SPEC CHECKSUMS:
+  IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
   MaterialComponents: 71139af6ca6875fbde8ab8e64a275b7fd6a22d7f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   SCLAlertView-Objective-C: 2bb9be204bffaf24762a0e33fe6ca9645819b3b7
   SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
 
-PODFILE CHECKSUM: 05d8d66811fc34973fd4b21a29969f50c83028d3
+PODFILE CHECKSUM: 596dd93981baf32d7bdbd379a0251591c0328e71
 
 COCOAPODS: 1.9.1
