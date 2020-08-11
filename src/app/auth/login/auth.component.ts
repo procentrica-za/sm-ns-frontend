@@ -47,6 +47,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     get android() {
         return isAndroid;
     }
+
     constructor(private uiService : UIService ,private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
         console.log("Constructing Auth Component");
         console.log("Closing SideDrawer");
@@ -56,6 +57,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
         appSettings.setBoolean("isAndroid", isAndroid);
+
     constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
 
         setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
@@ -83,6 +85,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
         appSettings.setString("clientkey", "VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh");
         appSettings.setString("basicauth", "YWRtaW46YWRtaW4=");
+
         //TODO: REmove before committing
         //appSettings.setString("userid", this.login.loginUser.id);
        /* appSettings.setBoolean("rememberme", true);

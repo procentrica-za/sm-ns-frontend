@@ -86,7 +86,18 @@ export class UploadImage {
     ){}
 }
 
-
+export class textbookFilter {
+    constructor ( 
+        public institution : string,
+        public name : string,
+        public edition : string,
+        public author : string,
+        public quality : string,
+        public modulecode : string,
+        public isselling : boolean,
+        public price : number,
+    ){}
+}
 export class TextbookResult {
     constructor (
         public responseStatusCode : number,
@@ -125,6 +136,15 @@ export class UploadTextbookResult {
     ){}
 }
 
+export class accomodationFilter {
+    constructor ( 
+        public institution : string,
+        public type : string,
+        public distance : string,
+        public isselling : boolean,
+        public price : number,
+    ){}
+}
 export class AccomodationResult {
     constructor (
         public responseStatusCode : number,
@@ -150,7 +170,18 @@ export class AccomodationResultList {
     ){}
 }
 
-
+export class tutorFilter {
+    constructor ( 
+        public institution : string,
+        public subject : string,
+        public venue : string,
+        public terms : string,
+        public noteIncluded : string,
+        public modulecode : string,
+        public isselling : boolean,
+        public price : number,
+    ){}
+}
 export class TutorResult {
     constructor (
         public responseStatusCode : number,
@@ -179,6 +210,14 @@ export class TutorResultList {
     ){}
 }
 
+export class noteFilter {
+    constructor ( 
+        public institution : string,
+        public modulecode : string,
+        public isselling : boolean,
+        public price : number,
+    ){}
+}
 export class NoteResult {
     constructor (
         public responseStatusCode : number,
