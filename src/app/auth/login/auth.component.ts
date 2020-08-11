@@ -18,7 +18,6 @@ import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 import { Page, isAndroid } from "tns-core-modules/ui/page";
 import {Observable} from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { getString, setString } from "tns-core-modules/application-settings";
 
 
 @Component({
@@ -48,6 +47,15 @@ export class AuthComponent implements OnInit, OnDestroy {
     get android() {
         return isAndroid;
     }
+    constructor(private uiService : UIService ,private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
+        console.log("Constructing Auth Component");
+        console.log("Closing SideDrawer");
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
+        this.uiService.toggleDrawer();
+        appSettings.setBoolean("mainAdvertSelling", true);
+        appSettings.setBoolean("myAdvertsSelling", true);
+        appSettings.setBoolean("isAndroid", isAndroid);
     constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
 
         setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
@@ -78,8 +86,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
             this.advertServ.UnreadChats();
             this.advertServ.OutstandingRatings();
+            
             this.router.navigate(['/advert/home'], {clearHistory: true});
-            this.authServ.RememberMe();
         } 
     }
 

@@ -11,9 +11,7 @@ export class LoginUser {
         public id: string,
         public username: string,
         public defaultInstitution: string,
-        public loggedIn: boolean,
-        public accesstoken: string,
-        public refreshtoken: string,
+        public loggedIn: boolean
     ){}
 }
 
@@ -115,20 +113,5 @@ export class IsVerifiedResult {
     constructor(
         public responseStatusCode : number,
         public isverified : boolean
-    ){}
-}
-
-export class RefreshResult {
-    constructor (
-        public responseStatusCode: number,
-        public AccessToken: string, 
-        public RefreshToken:    string,
-    ){}
-}
-
-export class GetScimIDResult {
-    constructor (
-        public responseStatusCode: number,
-        public ScimID:      string,
     ){}
 }
