@@ -18,6 +18,7 @@ import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 import { Page, isAndroid } from "tns-core-modules/ui/page";
 import {Observable} from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
+import { getString, setString } from "tns-core-modules/application-settings";
 
 
 @Component({
@@ -47,6 +48,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     get android() {
         return isAndroid;
     }
+
     constructor(private uiService : UIService ,private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
         console.log("Constructing Auth Component");
         console.log("Closing SideDrawer");
@@ -56,6 +58,29 @@ export class AuthComponent implements OnInit, OnDestroy {
         appSettings.setBoolean("mainAdvertSelling", true);
         appSettings.setBoolean("myAdvertsSelling", true);
         appSettings.setBoolean("isAndroid", isAndroid);
+
+    constructor(private router: RouterExtensions, private authServ: AuthService, private advertServ: AdvertService) {
+
+        setString("sm-service-cred-manager-host", "http://192.168.1.187:9952");
+        setString("sm-service-ratings-host", "http://192.168.1.188:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.188:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
+        setString("sm-service-messages-host", "http://192.168.1.188:9956");
+        setString("sm-service-scim-manager-host", "http://192.168.1.187:9961");
+        setString("sm-service-apim-host", "http://192.168.1.187:8243");
+        setString("sm-service-is-host", "http://192.168.1.187:9959");
+        setString("sm-service-ratings-host", "http://10.10.100.147:9957");
+        setString("sm-service-advert-manager-host", "http://10.10.100.147:9953");
+        setString("sm-service-file-manager-host", "http://10.10.100.147:9955");
+        setString("sm-service-messages-host", "http://10.10.100.147:9956");
+        console.log("Constructing Auth Component");
+        appSettings.setBoolean("mainAdvertSelling", true); 
+        appSettings.setBoolean("myAdvertsSelling", true);
+        appSettings.setBoolean("isAndroid", isAndroid);
+        console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
+        appSettings.setString("clientkey", "VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh");
+        appSettings.setString("basicauth", "YWRtaW46YWRtaW4=");
+
         //TODO: REmove before committing
         //appSettings.setString("userid", this.login.loginUser.id);
        /* appSettings.setBoolean("rememberme", true);
@@ -65,8 +90,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         if(appSettings.getBoolean("rememberme") && appSettings.getBoolean("loggedIn")) {
             this.advertServ.UnreadChats();
             this.advertServ.OutstandingRatings();
-            
             this.router.navigate(['/advert/home'], {clearHistory: true});
+            this.authServ.RememberMe();
         } 
     }
 

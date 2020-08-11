@@ -517,6 +517,15 @@ export class GetBookResult {
     ){}
 }
 
+export class RefreshResult {
+    constructor (
+        public responseStatusCode: number,
+        public AccessToken: string, 
+        public RefreshToken:    string,
+    ){}
+}
+
+
 
 
 
