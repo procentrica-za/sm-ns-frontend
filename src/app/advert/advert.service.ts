@@ -340,10 +340,10 @@ export class AdvertService {
    
 
     constructor(private http: HttpClient){
-        setString("sm-service-ratings-host", "http://192.168.1.54:9957");
-        setString("sm-service-advert-manager-host", "http://192.168.1.54:9953");
-        setString("sm-service-file-manager-host", "http://192.168.1.54:9955");
-        setString("sm-service-messages-host", "http://192.168.1.54:9956");
+        setString("sm-service-ratings-host", "http://192.168.1.55:9957");
+        setString("sm-service-advert-manager-host", "http://192.168.1.55:9953");
+        setString("sm-service-file-manager-host", "http://192.168.1.55:9955");
+        setString("sm-service-messages-host", "http://192.168.1.55:9956");
     }
     
     initializeModuleCodeList(){
@@ -800,10 +800,10 @@ export class AdvertService {
     }
 
     initializeAdvertisements(isSelling: boolean, defaultInstitution: string){
-        this.initializeTextbooks(defaultInstitution,isSelling,9999999,"","","","","");
-        this.initializeAccomodation(defaultInstitution,isSelling, 999999, "", "", 999999);
-        this.initializeTutors(defaultInstitution,isSelling, 999999, "", "", "", "", "", "");
-        this.initializeNotes(defaultInstitution,isSelling, 999999, "");
+        this.initializeTextbooks(defaultInstitution,isSelling,9999999,"","","","","",1,5);
+        this.initializeAccomodation(defaultInstitution,isSelling, 999999, "", "", 999999,1,5);
+        this.initializeTutors(defaultInstitution,isSelling, 999999, "", "", "", "", "", "",1,5);
+        this.initializeNotes(defaultInstitution,isSelling, 999999, "",1,5);
     }
 
     initializeUserAdvertisements(userID: string, isSelling: boolean){
@@ -821,8 +821,8 @@ export class AdvertService {
     }
 
     
-    initializeTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling +
+    initializeTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string, lowerLimit: number, upperLimit: number) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter + "&institution=" + institution ;
         console.log(reqUrl);
         request ({
@@ -856,10 +856,65 @@ export class AdvertService {
         return null;
     }
 
-    initializeAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number) {
+    loadMoreTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string, lowerLimit: number, upperLimit: number) {
+        
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
+        "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter + "&institution=" + institution ;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null, null);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                let textbookList: TextbookResult[] = [];
+                const JSONTextbookList = result.textbooks;
+                this._currentTextbookList.forEach( element => {
+                    element.Textbooks.forEach( innerElement => {
+                        textbookList.push(innerElement);
+                    })
+                })
+                console.log("TextbookList Previous LENGTH: " + textbookList.length);
+                // iterate through the textbooklist and read each textbook into a textbook object and push to the list variable
+                JSONTextbookList.forEach(element => {
+                    element.responseStatusCode =200;
+                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
+                    if ( element.description != ""){
+                        textbookList.push(element) 
+                    }
+                })
+                //console.log("Textbook Length: " + textbookList.length)
+                this._currentTextbookList = new BehaviorSubject<TextbookResultList>(null);
+                //console.log(this._currentTextbookList);
+                const textbookResult = new TextbookResultList(200, textbookList);
+                
+                this._currentTextbookList.next(textbookResult)
+                
+                /*this._currentTextbookList.forEach( t=> {
+                    console.log("ADVERT SERVICE LIST LENGTH: " + t.Textbooks.length);
+                    t.Textbooks.forEach( x=> {
+                        console.log(x.description);
+                    })
+                })*/
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
+
+    initializeAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number, lowerLimit: number, upperLimit: number) {
         
         
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter +
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&acdType=" + acdTypeFilter + "&location=" + locationFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
         request ({
             url: reqUrl,
@@ -905,12 +960,58 @@ export class AdvertService {
         return null;
     }
 
-    
-    
+    loadMoreAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, distancetoCampusFilter: string, lowerLimit: number, upperLimit: number) {
+        
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
+        "&acdType=" + acdTypeFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const accomodationResultErr = new AccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                let accomodationList: AccomodationResult[] = [];
+                const JSONAccomodationList = result.accomodations;
+                this._currentAccomodationList.forEach( element => {
+                    element.Accomodations.forEach( innerElement => {
+                        accomodationList.push(innerElement);
+                    })
+                })
+                JSONAccomodationList.forEach(element => {
+                    element.responseStatusCode =200;
+                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
+                    if ( element.description != ""){
+                        accomodationList.push(element) 
+                    }
+                })
+
+                this._currentAccomodationList = new BehaviorSubject<AccomodationResultList>(null);
+
+                const accomodationResult = new AccomodationResultList(200, accomodationList);
+                
+                this._currentAccomodationList.next(accomodationResult)
+                
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
     
 
-    initializeTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string ) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter +
+
+
+    initializeTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, yearCompletedFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string, lowerLimit: number, upperLimit: number ) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&yearcompleted=" + yearCompletedFilter + "&venue=" + venueFilter + "&notes=" +
         notesincludedFilter + "&terms=" + termsFilter + "&institution=" + institution;
         console.log(reqUrl);
@@ -944,8 +1045,51 @@ export class AdvertService {
         return null;
     }
 
-    initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string) {
-        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution;
+    loadMoreTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string, lowerLimit: number, upperLimit: number ) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
+        "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&venue=" + venueFilter + "&notes=" +
+        notesincludedFilter + "&terms=" + termsFilter + "&institution=" + institution;
+        console.log(reqUrl);
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                let tutorList: TutorResult[] = [];
+                const JSONTutorList = result.tutors;
+                this._currentTutorList.forEach( element => {
+                    element.Tutors.forEach( innerElement => {
+                        tutorList.push(innerElement);
+                    })
+                })
+                JSONTutorList.forEach(element => {
+                    element.responseStatusCode =200;
+                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
+                    tutorList.push(element)
+                })
+                this._currentTutorList = new BehaviorSubject<TutorResultList>(null);
+
+                const tutorResult = new TutorResultList(200, tutorList);
+                
+                this._currentTutorList.next(tutorResult)
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
+
+    initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string, lowerLimit: number, upperLimit: number) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit;
         request ({
             url: reqUrl,
             method: "GET",
@@ -966,6 +1110,47 @@ export class AdvertService {
                 })
                 const noteResult = new NoteResultList(200, noteList);
                 this._currentNoteList.next(noteResult);
+            } else {
+                // TODO : Handle if code other than 200 or 500 has been received
+                console.log("in the else");
+            }
+        }, (e) => {
+            // TODO : Handle error
+            console.log(e);
+        });
+        return null;
+    }
+
+    loadMoreNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string, lowerLimit: number, upperLimit: number) {
+        const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit;
+        request ({
+            url: reqUrl,
+            method: "GET",
+            timeout: 5000
+        }).then((response) => {
+            const responseCode = response.statusCode;
+            if(responseCode === 500) {
+                const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
+            } else if (responseCode === 200) {
+                const result = response.content.toJSON();
+                let noteList: NoteResult[] = [];
+                const JSONNoteList = result.notes;
+                this._currentNoteList.forEach( element => {
+                    element.Notes.forEach( innerElement => {
+                        noteList.push(innerElement);
+                    })
+                })
+                JSONNoteList.forEach(element => {
+                    element.responseStatusCode =200;
+                    element.imagebytes = "data:image/png;base64," + element.imagebytes;
+                    //console.log(element.advertisementid);
+                    noteList.push(element)
+                })
+                this._currentNoteList = new BehaviorSubject<NoteResultList>(null);
+
+                const noteResult = new NoteResultList(200, noteList);
+                
+                this._currentNoteList.next(noteResult)
             } else {
                 // TODO : Handle if code other than 200 or 500 has been received
                 console.log("in the else");

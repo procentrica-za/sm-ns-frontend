@@ -11,7 +11,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TextField } from "tns-core-modules/ui/text-field/text-field";
 import { Switch } from "tns-core-modules/ui/switch/switch";
 import * as appSettings from "tns-core-modules/application-settings";
-import { TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, GetBookResult } from "../advert.model";
+import { TextbookResultList, AccomodationResultList, TutorResultList, NoteResultList, GetBookResult, textbookFilter, accomodationFilter, tutorFilter, noteFilter } from "../advert.model";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
  @Component({
     selector: 'ns-advert-filter',
@@ -33,6 +33,8 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
     public paramReceived; moduleCodeTypeBind; QualityTypeBind; acdTypeBind; instTypeBind; venueTypeBind; termTypeBind; noteTypeBind : String;
 
     public textbookFilter; accomodationFilter; tutorFilter; noteFilter; isSelling : boolean;
+
+    
 
     constructor(private modalParams: ModalDialogParams, private advertServ: AdvertService, private modalDialog: ModalDialogService, private vcRef: ViewContainerRef, private barcodeScanner: BarcodeScanner){
         this.instTypeBind = appSettings.getString("defaultInstitution");
@@ -355,18 +357,22 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                     break;
             }
 
-            this.advertServ.initializeTextbooks(instType,this.isSelling,price,code,name,edition,quality,author);
+            let tbFilter = new textbookFilter(instType,name,edition,author,quality,code,this.isSelling,price);
+
+            this.advertServ.initializeTextbooks(instType,this.isSelling,price,code,name,edition,quality,author,1,5);
             
             await this.delay(1500);
 
             this.textbookResultListSub = this.advertServ.currentTextbookList.subscribe(
                 textbookResult => {
                     if(textbookResult) {
-                        if(textbookResult.responseStatusCode === 200){
+                        //if(textbookResult.responseStatusCode === 200){
+                            if(textbookResult.Textbooks[0].responseStatusCode === 200){
                             if(textbookResult.Textbooks[0].advertisementid == ""){
                                 TNSFancyAlert.showError("No Results", "There are no advertisements that match your search query!")
                             }else{
-                                this.modalParams.closeCallback(true);
+                                //console.log("In Modal: " + tbFilter.institution)
+                                this.modalParams.closeCallback(tbFilter);
                             }
                         }
                     }else {
@@ -394,7 +400,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeTextbooks(instType,true,999999,"","","","","");
+        this.advertServ.initializeTextbooks(instType,true,999999,"","","","","",1,5);
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -447,7 +453,8 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeAccomodation(instType,this.isSelling,price,acdType,"",distance);
+        let acdFilter = new accomodationFilter(instType,acdType,distance,this.isSelling,price);
+        this.advertServ.initializeAccomodation(instType,this.isSelling,price,acdType,"",distance,1,5);
         
         await this.delay(1500);
 
@@ -459,7 +466,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                         if(accomodationResult.Accomodations[0].advertisementid == ""){
                             TNSFancyAlert.showError("No Results", "There are no advertisements that match your search query!")
                         }else{
-                            this.modalParams.closeCallback(true);
+                            this.modalParams.closeCallback(acdFilter);
                         }
                     }
                 }else {
@@ -487,7 +494,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeAccomodation(instType,true,999999,"","",999999);
+        this.advertServ.initializeAccomodation(instType,true,999999,"","",999999,1,5);
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -545,8 +552,8 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-
-        this.advertServ.initializeTutors(instType, this.isSelling,price,subject,"",venue,note,term,code);
+        let tutFilter = new tutorFilter(instType,subject,venue,term,note,code,this.isSelling,price);
+        this.advertServ.initializeTutors(instType, this.isSelling,price,subject,"",venue,note,term,code,1,5);
         
         await this.delay(1500);
 
@@ -557,7 +564,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                         if(tutorResult.Tutors[0].advertisementid == ""){
                             TNSFancyAlert.showError("No Results", "There are no advertisements that match your search query!")
                         }else{
-                            this.modalParams.closeCallback(true);
+                            this.modalParams.closeCallback(tutFilter);
                         }
                     }
                 }else {
@@ -585,7 +592,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeTutors(instType,true,999999,"","","","","","");
+        this.advertServ.initializeTutors(instType,true,999999,"","","","","","",1,5);
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
@@ -618,8 +625,9 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
+        let ntsFilter = new noteFilter(instType,code,this.isSelling,price);
 
-        this.advertServ.initializeNotes(instType,this.isSelling,price,code)
+        this.advertServ.initializeNotes(instType,this.isSelling,price,code,1,5)
         
         await this.delay(1500);
 
@@ -630,7 +638,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                         if(noteResult.Notes[0].advertisementid == ""){
                             TNSFancyAlert.showError("No Results", "There are no advertisements that match your search query!")
                         }else{
-                            this.modalParams.closeCallback(true);
+                            this.modalParams.closeCallback(ntsFilter);
                         }
                     }
                 }else {
@@ -659,7 +667,7 @@ export class AdvertFilterComponent implements OnInit, OnDestroy {
                 instType = "Johannesburg";
                 break;
         }
-        this.advertServ.initializeNotes(instType,true,999999,"");
+        this.advertServ.initializeNotes(instType,true,999999,"",1,5);
         await this.delay(1500);
         this.modalParams.closeCallback(false);
     }
