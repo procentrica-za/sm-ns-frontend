@@ -1,16 +1,18 @@
 <ns-action-bar [actionBarTitle]="'Previous Ratings'" [hasMenu]=true [showBackButton]=false></ns-action-bar>
+<StackLayout>
 <StackLayout orientation="horizontal" class ="MessagesStack">
 </StackLayout>
-    <RadListView  *ngIf="ratingsLoaded " [items]="myPreviousratingArray" class="chatsRadList">
+    <RadListView height="2600px" *ngIf="ratingsLoaded " [items]="myPreviousratingArray" class="chatsRadList">
         <ng-template tkListItemTemplate let-previousrating="item" >
             <Gridlayout rows="*,*,*" columns="10*,20*,5*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
-                <Label row="0" col="0" text="Buyer:" textWrap="true"  ></Label>
-                <Label *ngIf="previousrating" row="0" col="1" [text]="previousrating.username" textWrap="true"  ></Label>
-                <Label row="1" col="0" text="Rating:" textWrap="true"  ></Label>
-                <Label *ngIf="previousrating" row="1" col="1" [text]="previousrating.rating"  textWrap="true"  ></Label>
-                <Label row="2" col="0" text="Comment:" textWrap="true"  ></Label>
-                <Label *ngIf="previousrating" row="2" col="1" [text]="previousrating.comment" textWrap="true"  ></Label>
+                <Label row="0" col="0" text="Buyer:" textWrap="true" style="color: black;" ></Label>
+                <Label *ngIf="previousrating" row="0" col="1" [text]="previousrating.username" textWrap="true" style="color: black;" ></Label>
+                <Label row="1" col="0" text="Rating:" textWrap="true" style="color: black;" ></Label>
+                <Label *ngIf="previousrating" row="1" col="1" [text]="previousrating.rating"  textWrap="true" style="color: black;" ></Label>
+                <Label row="2" col="0" text="Comment:" textWrap="true" style="color: black;" ></Label>
+                <Label *ngIf="previousrating" row="2" col="1" [text]="previousrating.comment" textWrap="true" style="color: black;" ></Label>
             </Gridlayout>
         </ng-template>
     </RadListView>
+</StackLayout>
     

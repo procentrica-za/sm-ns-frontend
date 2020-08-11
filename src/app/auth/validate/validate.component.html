@@ -1,4 +1,4 @@
-
+<StackLayout>
 <StackLayout class="form" [formGroup]="form">
     <Button class="btn-flat" text="Resend OTP" (tap)="onRequestNewOTP()"></Button>
     <StackLayout class="input-field">
@@ -16,6 +16,7 @@
             formControlName="otp"
             keyboardType="number"
             #otpEl
+            style="color: black;"
         ></TextField>        
         <Label
             *ngIf="!otpControlIsValid"
@@ -30,8 +31,10 @@
     <TextField 
         style="border-style: hidden ; border-width: 0;border-bottom-style: groove; background-color: #ffffff;"           
         #hiddenEl
+        style="color: black;"
     ></TextField>
 </StackLayout>
-<FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+<FlexboxLayout height="100%" justifyContent="center" alignItems="center" *ngIf="isLoading">
     <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
 </FlexboxLayout>
+</StackLayout>

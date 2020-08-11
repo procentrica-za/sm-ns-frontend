@@ -20,10 +20,12 @@
             autocapitalizationType="none"
             formControlName="username"
             #usernameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
             text="Please enter a valid username."
+            style="color: black;"
         ></Label>
     </StackLayout>
     <StackLayout class="input-field">
@@ -42,15 +44,18 @@
             hint="Min 6 Characters"
             formControlName="password"
             #passwordEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!passwordControlIsValid"
             text="Please enter a valid password."
+            style="color: black;"
         ></Label>
     </StackLayout>
     <FlexboxLayout class="flexbox-rememberme">
         <Switch checked="false" (checkedChange)="onRememberMeChanged($event)"></Switch>
-        <Label class="label-switch" text="Remember Me"></Label>
+        <Label style="margin-left: 10%;" text="Remember Me" style="color: black;"></Label>
+        
     </FlexboxLayout>
     <Button
         class="btn btn-primary btn-rounded-lg"

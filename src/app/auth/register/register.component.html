@@ -1,5 +1,5 @@
 <ns-action-bar [actionBarTitle]="'Register'" [hasMenu]=false></ns-action-bar>
-<StackLayout class="form" [formGroup]="form">
+<StackLayout class="form" [formGroup]="form" *ngIf="!isLoading">
     <StackLayout class="input-field">
         <Label
             class="label"
@@ -14,6 +14,7 @@
             autocapitalizationType="none"
             formControlName="username"
             #usernameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
@@ -36,6 +37,7 @@
             hint="Min 6 Characters"
             formControlName="password"
             #passwordEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!passwordControlIsValid"
@@ -56,6 +58,7 @@
             autocapitalizationType="none"
             formControlName="name"
             #nameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!usernameControlIsValid"
@@ -76,6 +79,7 @@
             autocapitalizationType="none"
             formControlName="surname"
             #surnameEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!surnameControlIsValid"
@@ -96,6 +100,7 @@
             autocapitalizationType="none"
             formControlName="email"
             #emailEl
+            style="color: black;"
         ></TextField>
         <Label
             *ngIf="!emailControlIsValid"
@@ -119,6 +124,7 @@
         autocapitalizationType="none"
         formControlName="institutionname"
         #institutionnameEl
+        style="color: black;"
         ></TextField>
     </StackLayout>
 
@@ -128,7 +134,7 @@
         (tap)="onRegisterUser()"
     ></Button>
 
-    <FlexboxLayout justifyContent="center" alignItems="center" *ngIf="isLoading">
+    <FlexboxLayout height="100%" justifyContent="center" alignItems="center" *ngIf="isLoading">
         <ActivityIndicator [busy]="isLoading"></ActivityIndicator>
     </FlexboxLayout>
 </StackLayout>
