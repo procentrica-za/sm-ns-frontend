@@ -61,7 +61,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-cred-manager-host", "https://api.studymoney.co.za/user/v1.0");
         setString("sm-service-ratings-host", "https://api.studymoney.co.za/rating/v1.0");
         setString("sm-service-advert-manager-host", "https://api.studymoney.co.za/advert/v1.0");
-        setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
+        setString("sm-service-file-manager-host", "https://api.studymoney.co.za/file/v1.0");
         setString("sm-service-messages-host", "https://api.studymoney.co.za/messaging/v1.0");
         setString("sm-service-scim-manager-host", "https://api.studymoney.co.za/scim/v1.0");
         setString("sm-service-apim-host", "https://api.studymoney.co.za");
