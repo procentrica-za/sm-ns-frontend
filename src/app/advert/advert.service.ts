@@ -988,7 +988,7 @@ export class AdvertService {
                 const success = this.RefreshTokens();
                 
                 if(success == true) {
-                this.initializeTextbooks(institution , isSelling, priceFilter, modulecodeFilter, nameFilter, editionFilter, qualityFilter, authorFilter);
+                this.initializeTextbooks(institution , isSelling, priceFilter, modulecodeFilter, nameFilter, editionFilter, qualityFilter, authorFilter, lowerLimit, upperLimit);
                 }
                 
                 else {
@@ -1094,7 +1094,7 @@ export class AdvertService {
                 const success = this.RefreshTokens();
                 
                 if(success == true) {
-                this.initializeAccomodation(instNameFilter, isSelling, priceFilter, acdTypeFilter, locationFilter, distancetoCampusFilter);
+                this.initializeAccomodation(instNameFilter, isSelling, priceFilter, acdTypeFilter, locationFilter, distancetoCampusFilter, lowerLimit, upperLimit);
                 }
                 
                 else {
@@ -1205,7 +1205,7 @@ export class AdvertService {
                 const success = this.RefreshTokens();
                 
                 if(success == true) {
-                this.initializeTutors(institution, isSelling, priceFilter, subjectFilter, yearCompletedFilter, venueFilter, notesincludedFilter , termsFilter , moduleCodeFilter );
+                this.initializeTutors(institution, isSelling, priceFilter, subjectFilter, yearCompletedFilter, venueFilter, notesincludedFilter , termsFilter , moduleCodeFilter, lowerLimit, upperLimit );
                 }
                 
                 else {
@@ -1279,6 +1279,7 @@ export class AdvertService {
 
     initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string, lowerLimit: number, upperLimit: number) {
     const accesstoken = appSettings.getString("accesstoken"); 
+    const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution;
         request ({
             url: reqUrl,
             method: "GET",
@@ -1293,7 +1294,7 @@ export class AdvertService {
                 const success = this.RefreshTokens();
                 
                 if(success == true) {
-                this. initializeNotes(institution, isSelling, priceFilter, modulecodeFilter );
+                this. initializeNotes(institution, isSelling, priceFilter, modulecodeFilter , lowerLimit, upperLimit);
                 }
                 
                 else {

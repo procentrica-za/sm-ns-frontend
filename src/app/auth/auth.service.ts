@@ -88,7 +88,7 @@ export class AuthService {
     validateCredentials(username: string, password: string) {
         appSettings.setString("username", username);
         appSettings.setString("password", password);             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
+        const reqUrl = getString("sm-service-scim-manager-host") + "/login";
         request ({
             url: reqUrl,
             method: "POST",
@@ -132,7 +132,7 @@ export class AuthService {
 
     ResetPassword(email: string) {
         const scimid = appSettings.getString("scimid");   
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/forgotpassword?email=" + email + "&scimid=" + scimid;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/forgotpassword?email=" + email + "&scimid=" + scimid;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -174,7 +174,7 @@ export class AuthService {
 
     RegisterNewUser(username: string, password: string, name: string, surname: string, email: string, institutionname: string) {
         const clientkey = appSettings.getString("clientkey");
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/user" ;
         request ({
             url: reqUrl,
             method: "POST",
@@ -218,7 +218,7 @@ export class AuthService {
     }  
 
     GetUser(id: string) {
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/user?id="  + id;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/user?id="  + id;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -262,7 +262,7 @@ export class AuthService {
 
     UpdateUser(id: string, username: string, name: string, surname: string, email: string, institutionname: string) {
         const scimid = appSettings.getString("scimid");  
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/user" ;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/user" ;
         const accesstoken = appSettings.getString("accesstoken");
         request ({
             url: reqUrl,
@@ -306,7 +306,7 @@ export class AuthService {
 
     UpdatePassword(id: string, currentpassword: string, password: string ) {
         const scimid = appSettings.getString("scimid");  
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/userpassword" ;
+        const reqUrl = getString("sm-service-scim-manager-host") + "/userpassword" ;
         const accesstoken = appSettings.getString("accesstoken");
         const username = appSettings.getString("username");
         console.log(reqUrl);
@@ -338,7 +338,7 @@ export class AuthService {
 
     
     initializeInstitutionNameList(){
-        const reqUrl = getString("sm-service-cred-manager-host") +'/user/v1.0/institution' ;
+        const reqUrl = getString("sm-service-cred-manager-host") +'/institution' ;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl)
         request ({
@@ -384,7 +384,7 @@ export class AuthService {
     GetOtp(phonenumber: string) {
         const userid = appSettings.getString("userid");
         const accesstoken = appSettings.getString("accesstoken");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp?userid=" + userid + "&phonenumber=" + phonenumber;
         console.log(reqUrl);
         request ({
             url: reqUrl,
@@ -427,7 +427,7 @@ export class AuthService {
     GetNewOtp() {
         const userid = appSettings.getString("userid");
         const phonenumber = appSettings.getString("phonenumber");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/newotp?userid=" + userid + "&phonenumber=" + phonenumber;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -470,7 +470,7 @@ export class AuthService {
 
     ValidateOtp(otp: string) {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/otp";
+        const reqUrl = getString("sm-service-cred-manager-host") + "/otp";
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -514,7 +514,7 @@ export class AuthService {
 
     VerificationStatus() {
         const userid = appSettings.getString("userid");
-        const reqUrl = getString("sm-service-cred-manager-host") + "/user/v1.0/status?userid=" + userid;
+        const reqUrl = getString("sm-service-cred-manager-host") + "/status?userid=" + userid;
         const accesstoken = appSettings.getString("accesstoken");
         console.log(reqUrl);
         request ({
@@ -595,10 +595,10 @@ export class AuthService {
         const username = appSettings.getString("username");
         const clientkey = appSettings.getString("clientkey");
         const reqUrl = getString("sm-service-scim-manager-host") + "/scim";
-        console.log(reqUrl);
         request ({
             url: reqUrl,
-            method: "GET",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             content: JSON.stringify({ username: username, keysecret: clientkey}),
             timeout: 5000
         }).then((response) => {
@@ -625,7 +625,7 @@ export class AuthService {
     RememberMe() {
         const username = appSettings.getString("username");
         const password = appSettings.getString("password");             
-        const reqUrl = getString("sm-service-scim-manager-host") + "/scim/v1.0/login";
+        const reqUrl = getString("sm-service-scim-manager-host") + "/login";
         request ({
             url: reqUrl,
             method: "POST",
