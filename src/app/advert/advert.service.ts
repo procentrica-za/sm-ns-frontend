@@ -2436,10 +2436,11 @@ Sellingdashboard() {
 RefreshTokens():boolean{
     const reqUrl = getString("sm-service-apim-host") +'/token';
     const refreshtoken = appSettings.getString("refreshtoken");
+    const clientkey = appSettings.getString("clientkey");
     request ({
         url: reqUrl,
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic VEo4NDJjTmdMV3AzWEpKQ05hSnltNTJYYU5zYTpvSmxkakdtd1FNamZmeFRpZHdJZ1JWQm5TVzBh" },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" , "Authorization": "Basic " + clientkey },
         content: "grant_type=refresh_token&refresh_token=" + refreshtoken,
         timeout: 5000
     }).then((response) => {
