@@ -1031,6 +1031,17 @@ export class AdvertService {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null ,null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.loadMoreTextbooks(institution, isSelling, priceFilter, modulecodeFilter, nameFilter, editionFilter, qualityFilter, authorFilter, lowerLimit, upperLimit);
+                }
+                
+                else {
+                    const textbookResultErr = new TextbookResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null);
+                }
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let textbookList: TextbookResult[] = [];
@@ -1150,6 +1161,17 @@ export class AdvertService {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const accomodationResultErr = new AccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null ,null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.loadMoreAccomodation(instNameFilter, isSelling, priceFilter, acdTypeFilter, distancetoCampusFilter, lowerLimit, upperLimit);
+                }
+                
+                else {
+                    const accomodationResultErr = new AccomodationResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null);
+                }
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let accomodationList: AccomodationResult[] = [];
@@ -1247,6 +1269,18 @@ export class AdvertService {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.loadMoreTutors(institution  , isSelling, priceFilter, subjectFilter, venueFilter, notesincludedFilter , termsFilter , moduleCodeFilter, lowerLimit, upperLimit );
+                }
+                
+                else {
+                    const tutorResultErr = new TutorResult(500, null, null, null, null, null, null, null, null, null ,null ,null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let tutorList: TutorResult[] = [];
@@ -1294,7 +1328,7 @@ export class AdvertService {
                 const success = this.RefreshTokens();
                 
                 if(success == true) {
-                this. initializeNotes(institution, isSelling, priceFilter, modulecodeFilter , lowerLimit, upperLimit);
+                this.initializeNotes(institution, isSelling, priceFilter, modulecodeFilter , lowerLimit, upperLimit);
                 }
                 
                 else {
@@ -1334,6 +1368,18 @@ export class AdvertService {
             const responseCode = response.statusCode;
             if(responseCode === 500) {
                 const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
+            } else if (responseCode === 401) {
+                this.RefreshTokens();
+                const success = this.RefreshTokens();
+                
+                if(success == true) {
+                this.loadMoreNotes(institution, isSelling, priceFilter, modulecodeFilter , lowerLimit, upperLimit);
+                }
+                
+                else {
+                    const noteResultErr = new NoteResult(500, null, null, null, null, null, null, null, null, null, null);
+                }
+        
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
                 let noteList: NoteResult[] = [];
