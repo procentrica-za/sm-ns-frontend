@@ -63,7 +63,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-advert-manager-host", "https://api.studymoney.co.za/advert/v1.0");
         setString("sm-service-file-manager-host", "http://192.168.1.188:9955");
         setString("sm-service-messages-host", "https://api.studymoney.co.za/messaging/v1.0");
-        setString("sm-service-scim-manager-host", "http://192.168.1.187:9961");
+        setString("sm-service-scim-manager-host", "https://api.studymoney.co.za/scim/v1.0");
         setString("sm-service-apim-host", "https://api.studymoney.co.za");
         console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
         appSettings.setString("clientkey", "WWN4c1NsSGU5c0htOUxtMkI1MnFnUzVTN2tvYTpmVjltYlJPTzRkZzBERHNCZ1J5VU9acFZuZmNh");
