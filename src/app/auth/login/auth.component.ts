@@ -66,7 +66,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         setString("sm-service-scim-manager-host", "https://api.studymoney.co.za/scim/v1.0");
         setString("sm-service-apim-host", "https://api.studymoney.co.za");
         console.log("I am an android device: " + appSettings.getBoolean("isAndroid"));
-        appSettings.setString("clientkey", "WWN4c1NsSGU5c0htOUxtMkI1MnFnUzVTN2tvYTpmVjltYlJPTzRkZzBERHNCZ1J5VU9acFZuZmNh");
+        appSettings.setString("clientkey", "VkZQSXhncGNhc3lUaTY4QjBrYXlTQTdLQjljYTptX1Q4bF80RXhReHBrb0RZa1ZmbjVZV1RlS0Vh");
         appSettings.setString("basicauth", "YWRtaW46YWRtaW4=");
 
         //TODO: REmove before committing
