@@ -122,7 +122,7 @@ export class AuthComponent implements OnInit, OnDestroy {
                     this.login = login;
                     if(this.login.responseStatusCode === 200){
                         //Check if login details were correct
-                        if(this.login.loginUser.id != ""){
+                        if(this.login.loginUser.id != "00000000-0000-0000-0000-000000000000"){
                             //Save user details and rememberme info
                             appSettings.setString("userid", this.login.loginUser.id);
                             appSettings.setString("defaultInstitution", this.login.loginUser.defaultInstitution);
