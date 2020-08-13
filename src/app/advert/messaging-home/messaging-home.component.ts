@@ -143,6 +143,9 @@ export class MessagingHomeComponent implements OnInit, OnDestroy {
         appSettings.setString("chatid", tappedActivechatItem.chatid);
         appSettings.setString("advertisementtype", tappedActivechatItem.advertisementtype);
         appSettings.setString("advertisementid", tappedActivechatItem.advertisementid);
+        console.log("chatID: " + tappedActivechatItem.chatid);
+        console.log("chatID: " + tappedActivechatItem.advertisementtype);
+        console.log("chatID: " + tappedActivechatItem.advertisementid);
         this.router.navigate(['/messagingdetails'],
             {
                 animated: true,

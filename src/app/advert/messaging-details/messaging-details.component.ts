@@ -11,17 +11,23 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 //import for app settings
 import * as appSettings from "tns-core-modules/application-settings";
 import { TextView } from "tns-core-modules/ui/text-view";
-declare var IQKeyboardManager;
-TextView.prototype.requestLayout = function() {
-    if (
-        !arguments[0] &&
-        this.nativeViewProtected &&
-        this.nativeViewProtected.isFirstResponder
-    ) {
-        this.nativeViewProtected.setNeedsLayout();
-        IQKeyboardManager.sharedManager().reloadLayoutIfNeeded();
-    }
-};
+
+
+    declare var IQKeyboardManager;
+
+    console.log("HIT")
+    TextView.prototype.requestLayout = function() {
+        if (
+            !arguments[0] &&
+            this.nativeViewProtected &&
+            this.nativeViewProtected.isFirstResponder
+        ) {
+            this.nativeViewProtected.setNeedsLayout();
+            IQKeyboardManager.sharedManager().reloadLayoutIfNeeded();
+        }
+    };
+
+
 /*import { registerElement } from "nativescript-angular";
 registerElement("TextViewWithHint", () => require("nativescript-iqkeyboardmanager").TextViewWithHint);*/
 @Component({
@@ -43,6 +49,7 @@ export class MessagingDetailsComponent implements OnInit, OnDestroy {
     constructor(private advertServ: AdvertService, private router: RouterExtensions) {
         
     }
+    
     ngOnInit() {
         
         this.messagesLoaded = false;
