@@ -532,6 +532,7 @@ export class AdvertService {
         request ({
             url: reqUrl,
             method: "DELETE",
+            headers: { "Authorization": "Bearer " + accesstoken },
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -1019,13 +1020,14 @@ export class AdvertService {
     }
 
     loadMoreTextbooks(institution : string, isSelling: boolean, priceFilter: number, modulecodeFilter: string, nameFilter: string, editionFilter: string, qualityFilter: string, authorFilter: string, lowerLimit: number, upperLimit: number) {
-        
+        const accesstoken = appSettings.getString("accesstoken");
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TXB&selling=" + isSelling  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&name=" + nameFilter + "&edition=" + editionFilter + "&quality=" + qualityFilter + "&author=" + authorFilter + "&institution=" + institution ;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -1085,9 +1087,6 @@ export class AdvertService {
     }
 
     initializeAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, locationFilter: string, distancetoCampusFilter: number, lowerLimit: number, upperLimit: number) {
-        
-        
-
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&acdType=" + acdTypeFilter + "&location=" + locationFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
         const accesstoken = appSettings.getString("accesstoken"); 
@@ -1149,13 +1148,14 @@ export class AdvertService {
     }
 
     loadMoreAccomodation(instNameFilter: string, isSelling: boolean, priceFilter: number, acdTypeFilter: string, distancetoCampusFilter: string, lowerLimit: number, upperLimit: number) {
-        
+        const accesstoken = appSettings.getString("accesstoken");
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=ACD&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&acdType=" + acdTypeFilter + "&distance=" + distancetoCampusFilter + "&institution=" + instNameFilter;
         console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -1257,6 +1257,7 @@ export class AdvertService {
     }
 
     loadMoreTutors(institution  : string, isSelling: boolean, priceFilter: number, subjectFilter: string, venueFilter: string, notesincludedFilter : string, termsFilter : string, moduleCodeFilter: string, lowerLimit: number, upperLimit: number ) {
+        const accesstoken = appSettings.getString("accesstoken");
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=TUT&selling=" + isSelling + "&price=" + priceFilter  + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit +
         "&modulecode=" + moduleCodeFilter + "&subject=" + subjectFilter + "&venue=" + venueFilter + "&notes=" +
         notesincludedFilter + "&terms=" + termsFilter + "&institution=" + institution;
@@ -1264,6 +1265,7 @@ export class AdvertService {
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -1313,7 +1315,7 @@ export class AdvertService {
 
     initializeNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string, lowerLimit: number, upperLimit: number) {
     const accesstoken = appSettings.getString("accesstoken"); 
-    const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution;
+    const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit;
         request ({
             url: reqUrl,
             method: "GET",
@@ -1359,10 +1361,12 @@ export class AdvertService {
     }
 
     loadMoreNotes(institution: string, isSelling: boolean, priceFilter: number, modulecodeFilter : string, lowerLimit: number, upperLimit: number) {
+        const accesstoken = appSettings.getString("accesstoken"); 
         const reqUrl = getString("sm-service-advert-manager-host") + "/advertisementtype?adverttype=NTS&selling=" + isSelling + "&price=" + priceFilter + "&modulecode=" + modulecodeFilter + "&institution=" + institution + "&limit=" + upperLimit + "&lowerlimit=" + lowerLimit;
         request ({
             url: reqUrl,
             method: "GET",
+            headers: { "Authorization": "Bearer " + accesstoken},
             timeout: 5000
         }).then((response) => {
             const responseCode = response.statusCode;
@@ -2215,6 +2219,7 @@ deleteChat(chatid: string){
     request ({
         url: reqUrl,
         method: "DELETE",
+        headers: { "Authorization": "Bearer " + accesstoken },
         timeout: 5000
     }).then((response) => {
         const responseCode = response.statusCode;

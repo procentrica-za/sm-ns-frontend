@@ -187,9 +187,10 @@ export class AuthService {
                 const RegisterResultErr = new RegisterResult(500, "false", 'none', '00000000-0000-0000-0000-000000000000', 'An internal error has occured.');
                 this._currentRegister.next(RegisterResultErr);
             } else if (responseCode === 200) {
-
+                console.log("user successfully created response received from Backend\n");
                 const result = response.content.toJSON();
                 const RegistersuccessResult = new RegisterResult(200, result.usercreated, result.username, result.id, result.message);
+                console.log("userID received: " + result.id);
                 this._currentRegister.next(RegistersuccessResult);   
             }
             else if (responseCode === 401) {
