@@ -610,9 +610,9 @@ export class AuthService {
                 this._currentGetScimID.next(getuserResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const getuserResult = new GetScimIDResult(200,result);
+                const getuserResult = new GetScimIDResult(200,result.id);
                 this._currentGetScimID.next(getuserResult);
-                appSettings.setString("scimid", result);                
+                appSettings.setString("scimid", result.id);                
             }  else {
                 const getuserResult = new GetScimIDResult(responseCode, '00000000-0000-0000-0000-000000000000');
                 this._currentGetScimID.next(getuserResult); 
