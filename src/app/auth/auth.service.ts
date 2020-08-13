@@ -595,11 +595,12 @@ export class AuthService {
     GetScimID() {
         const username = appSettings.getString("username");
         const clientkey = appSettings.getString("clientkey");
+        const accesstoken = appSettings.getString("accesstoken");
         const reqUrl = getString("sm-service-scim-manager-host") + "/scim";
         request ({
             url: reqUrl,
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + accesstoken },
             content: JSON.stringify({ username: username, keysecret: clientkey}),
             timeout: 5000
         }).then((response) => {
@@ -609,9 +610,9 @@ export class AuthService {
                 this._currentGetScimID.next(getuserResultErr);
             } else if (responseCode === 200) {
                 const result = response.content.toJSON();
-                const getuserResult = new GetScimIDResult(200,result.Resources.id);
+                const getuserResult = new GetScimIDResult(200,result);
                 this._currentGetScimID.next(getuserResult);
-                appSettings.setString("scimid", result.Resources.id);                
+                appSettings.setString("scimid", result);                
             }  else {
                 const getuserResult = new GetScimIDResult(responseCode, '00000000-0000-0000-0000-000000000000');
                 this._currentGetScimID.next(getuserResult); 
