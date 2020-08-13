@@ -134,7 +134,6 @@ export class AuthService {
         const scimid = appSettings.getString("scimid");   
         const reqUrl = getString("sm-service-scim-manager-host") + "/forgotpassword?email=" + email + "&scimid=" + scimid;
         const accesstoken = appSettings.getString("accesstoken");
-        console.log(reqUrl);
         request ({
             url: reqUrl,
             method: "GET",
