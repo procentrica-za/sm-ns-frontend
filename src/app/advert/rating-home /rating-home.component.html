@@ -5,15 +5,15 @@
     <RadListView height="2600px" *ngIf="ratingsLoaded " [items]="myOutstandingratingArray" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" class="chatsRadList">
         <ng-template tkListItemTemplate let-outstandingrating="item" >
             <Gridlayout rows="*,*,*,*,*" columns="10*,20*,5*" class="list-group-item" class="GridLayoutChatListStyle" shadow="6" >
-                <Label row="0" col="0" text="Seller:" textWrap="true"  ></Label>
-                <Label *ngIf="outstandingrating" row="0" col="1" [text]="outstandingrating.username" textWrap="true"  ></Label>
-                <Label row="1" col="0" text="Item Price:" textWrap="true"  ></Label>
-                <Label *ngIf="outstandingrating" row="1" col="1" [text]="outstandingrating.price"  textWrap="true"  ></Label>
-                <Label row="2" col="0" text="Advert:" textWrap="true"  ></Label>
-                <Label *ngIf="outstandingrating" row="2" col="1" [text]="outstandingrating.title" textWrap="true"  ></Label>
-                <Label row="3" col="0" text="Description:" textWrap="true"  ></Label>
-                <Label *ngIf="outstandingrating" row="3" col="1" [text]="outstandingrating.description" textWrap="true"  ></Label>
-                <Label row="0" col="2" text="&#xf005;" class ="Ratebuyerlabel" textWrap="true"  ></Label>
+                <Label row="0" col="0" text="Seller:" textWrap="true"  style="color: black"></Label>
+                <Label *ngIf="outstandingrating" row="0" col="1" [text]="outstandingrating.username" textWrap="true" style="color: black" ></Label>
+                <Label row="1" col="0" text="Item Price:" textWrap="true" style="color: black"  ></Label>
+                <Label *ngIf="outstandingrating" row="1" col="1" [text]="outstandingrating.price"  textWrap="true" style="color: black" ></Label>
+                <Label row="2" col="0" text="Advert:" textWrap="true" style="color: black" ></Label>
+                <Label *ngIf="outstandingrating" row="2" col="1" [text]="outstandingrating.title" textWrap="true" style="color: black" ></Label>
+                <Label row="3" col="0" text="Description:" textWrap="true" style="color: black" ></Label>
+                <Label *ngIf="outstandingrating" row="3" col="1" [text]="outstandingrating.description" textWrap="true" style="color: black" ></Label>
+                <Label row="0" col="2" text="&#xf005;" class ="Ratebuyerlabel" textWrap="true" style="color: black" ></Label>
             </Gridlayout>
         </ng-template>
     </RadListView>

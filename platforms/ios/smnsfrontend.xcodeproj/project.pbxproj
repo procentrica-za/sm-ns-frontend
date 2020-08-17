@@ -10,9 +10,9 @@
 		03E4ED16FE2C463A8EE59C09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 152B5BCE494F427693AC83D5 /* LaunchScreen.storyboard */; };
 		25891FE4B69548FEB3663E0A /* TNSListView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9668B070C34544A4E33BE5 /* TNSListView.framework */; };
 		3C521EACBF894E099B1D5C56 /* BarcodeScannerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9340FDDD5BF74D56A7B53841 /* BarcodeScannerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3F16520F07FE4F528E18F956 /* NativeScriptEmbedder.m in Sources */ = {isa = PBXBuildFile; fileRef = B5AF00F8F9E843E084CAB5F8 /* NativeScriptEmbedder.m */; };
 		469E865AB1684D33B6882650 /* TNSListView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA9668B070C34544A4E33BE5 /* TNSListView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5D47C3BC6D3B45DEAD9394E2 /* TNSWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2121DC7354D44E2A0F11D44 /* TNSWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6E24AC0F3C064CA9AA148F85 /* NativeScriptEmbedder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0533D8F4D33E41AF9468DBA2 /* NativeScriptEmbedder.m */; };
 		6FF153D2274E40BA8AE4A907 /* TNSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A460A578E34420FA766FF16 /* TNSCore.framework */; };
 		858B842D18CA22B800AB12DE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 858B833A18CA111C00AB12DE /* InfoPlist.strings */; };
 		9A2866066112543520F0D11D /* Pods_smnsfrontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B5B18FDEEEEFF0638A59CA /* Pods_smnsfrontend.framework */; };
@@ -46,9 +46,11 @@
 
 /* Begin PBXFileReference section */
 		0193E50549CD433AB8362BF2 /* Assets.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = smnsfrontend/Resources/Assets.xcassets; sourceTree = "<group>"; };
+		0533D8F4D33E41AF9468DBA2 /* NativeScriptEmbedder.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = NativeScriptEmbedder.m; path = "../../node_modules/tns-core-modules/platforms/ios/src/NativeScriptEmbedder.m"; sourceTree = "<group>"; };
 		0B4A4125E40FBD60FF599988 /* Pods-smnsfrontend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-smnsfrontend.debug.xcconfig"; path = "Target Support Files/Pods-smnsfrontend/Pods-smnsfrontend.debug.xcconfig"; sourceTree = "<group>"; };
 		152B5BCE494F427693AC83D5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = LaunchScreen.storyboard; path = smnsfrontend/Resources/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A460A578E34420FA766FF16 /* TNSCore.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TNSCore.framework; path = "$(SRCROOT)/../../node_modules/nativescript-ui-core/platforms/ios/TNSCore.framework"; sourceTree = "<group>"; };
+		1E00302DB3634435810EBDD0 /* NativeScriptEmbedder.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = NativeScriptEmbedder.h; path = "../../node_modules/tns-core-modules/platforms/ios/src/NativeScriptEmbedder.h"; sourceTree = "<group>"; };
 		391174B321F1CBD300BA2583 /* TNSDebugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TNSDebugging.h; path = internal/TNSDebugging.h; sourceTree = SOURCE_ROOT; };
 		391174B421F1CBD300BA2583 /* TNSExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TNSExceptionHandler.h; path = internal/TNSExceptionHandler.h; sourceTree = SOURCE_ROOT; };
 		391174B521F1D7BF00BA2583 /* nativescript-build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "nativescript-build.xcconfig"; path = "internal/nativescript-build.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -56,8 +58,7 @@
 		391174B821F1D99900BA2583 /* plugins-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "plugins-debug.xcconfig"; sourceTree = SOURCE_ROOT; };
 		55B5B18FDEEEEFF0638A59CA /* Pods_smnsfrontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_smnsfrontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		621CD58CBD7A5035994E7E37 /* Pods-smnsfrontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-smnsfrontend.release.xcconfig"; path = "Target Support Files/Pods-smnsfrontend/Pods-smnsfrontend.release.xcconfig"; sourceTree = "<group>"; };
-		75D02AC4C54C4B6DBE3C067F /* NativeScriptEmbedder.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = NativeScriptEmbedder.h; path = "../../node_modules/tns-core-modules/platforms/ios/src/NativeScriptEmbedder.h"; sourceTree = "<group>"; };
-		7BAA5442EAB04E66819984E8 /* module.modulemap */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = "../../node_modules/tns-core-modules/platforms/ios/src/module.modulemap"; sourceTree = "<group>"; };
+		85831E54CFAE44F99CE37FE2 /* module.modulemap */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = "../../node_modules/tns-core-modules/platforms/ios/src/module.modulemap"; sourceTree = "<group>"; };
 		858B832E18CA111C00AB12DE /* smnsfrontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = smnsfrontend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		858B833918CA111C00AB12DE /* smnsfrontend-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "smnsfrontend-Info.plist"; sourceTree = "<group>"; };
 		858B833B18CA111C00AB12DE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -67,7 +68,6 @@
 		91984D6485194C05A6DAD795 /* TNSSideDrawer.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TNSSideDrawer.framework; path = "$(SRCROOT)/../../node_modules/nativescript-ui-sidedrawer/platforms/ios/TNSSideDrawer.framework"; sourceTree = "<group>"; };
 		930F05DB22671AE300D269DC /* Swift-ObjC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Swift-ObjC-Bridging-Header.h"; path = "internal/Swift-ObjC-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		9340FDDD5BF74D56A7B53841 /* BarcodeScannerFramework.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = BarcodeScannerFramework.framework; path = "$(SRCROOT)/../../node_modules/nativescript-barcodescanner/platforms/ios/BarcodeScannerFramework.framework"; sourceTree = "<group>"; };
-		B5AF00F8F9E843E084CAB5F8 /* NativeScriptEmbedder.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = NativeScriptEmbedder.m; path = "../../node_modules/tns-core-modules/platforms/ios/src/NativeScriptEmbedder.m"; sourceTree = "<group>"; };
 		CD45EE7A18DC2D5800FB50C0 /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
 		CD62955C1BB2678900AE3A93 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = internal/main.m; sourceTree = SOURCE_ROOT; };
 		CDD59A261BB43B5D00EC2671 /* build-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "build-debug.xcconfig"; sourceTree = "<group>"; };
@@ -94,70 +94,74 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		094D1E3C0C2A44B6A80C54C1 /* nativescript-ng-shadow */ = {
+		0023CB3671CE45ECAB01D124 /* nativescript-imagepicker */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "nativescript-ng-shadow";
+			name = "nativescript-imagepicker";
 			sourceTree = "<group>";
 		};
-		1A48B3E754264B59BDF6310E /* nativescript-iqkeyboardmanager */ = {
+		038E1691CB6A4407AF6F40D7 /* nativescript-fancyalert */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "nativescript-iqkeyboardmanager";
+			name = "nativescript-fancyalert";
 			sourceTree = "<group>";
 		};
-		32BABCB6F9164831AAB01AA9 /* tns-core-modules */ = {
-			isa = PBXGroup;
-			children = (
-				75D02AC4C54C4B6DBE3C067F /* NativeScriptEmbedder.h */,
-				B5AF00F8F9E843E084CAB5F8 /* NativeScriptEmbedder.m */,
-				7BAA5442EAB04E66819984E8 /* module.modulemap */,
-			);
-			name = "tns-core-modules";
-			sourceTree = "<group>";
-		};
-		3BB4326825C54CCB9BC65D11 /* nativescript-ui-listview */ = {
+		31DA91CD6FB042E29A4EF78A /* tns-core-modules-widgets */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "nativescript-ui-listview";
+			name = "tns-core-modules-widgets";
 			sourceTree = "<group>";
 		};
-		400A2F86219E4F9886F588C3 /* nativescript-ui-sidedrawer */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "nativescript-ui-sidedrawer";
-			sourceTree = "<group>";
-		};
-		64C218552B39483A8F0BBC93 /* nativescript-camera */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "nativescript-camera";
-			sourceTree = "<group>";
-		};
-		68DC94BF6D164EBAAC7EDDEC /* nativescript-uuid */ = {
+		3865B83AEC4041D4ACA987BF /* nativescript-uuid */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "nativescript-uuid";
 			sourceTree = "<group>";
 		};
-		77A9A2926F2144AFA8293F85 /* nativescript-barcodescanner */ = {
+		38E356C800DB4AE782634370 /* nativescript-ui-sidedrawer */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "nativescript-barcodescanner";
+			name = "nativescript-ui-sidedrawer";
 			sourceTree = "<group>";
 		};
-		80E891B8E6F241618FECB1CB /* nativescript-ui-core */ = {
+		3C54AADFE3B64E3E84CB4D85 /* nativescript-iqkeyboardmanager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "nativescript-iqkeyboardmanager";
+			sourceTree = "<group>";
+		};
+		6D8C53A6D2C34AB0A4EF70C2 /* nativescript-ui-core */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "nativescript-ui-core";
+			sourceTree = "<group>";
+		};
+		75E66109E44C442BB49FDC06 /* nativescript-ng-shadow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "nativescript-ng-shadow";
+			sourceTree = "<group>";
+		};
+		75F7482E84DC4B088E6D89B2 /* TNSNativeSource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = TNSNativeSource;
+			sourceTree = "<group>";
+		};
+		7D3AB6867CB34D5E859D7A48 /* nativescript-ui-listview */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "nativescript-ui-listview";
 			sourceTree = "<group>";
 		};
 		858B832518CA111C00AB12DE = {
@@ -167,20 +171,20 @@
 				858B833718CA111C00AB12DE /* smnsfrontend */,
 				858B833018CA111C00AB12DE /* Frameworks */,
 				858B832F18CA111C00AB12DE /* Products */,
-				77A9A2926F2144AFA8293F85 /* nativescript-barcodescanner */,
-				64C218552B39483A8F0BBC93 /* nativescript-camera */,
-				B89E129883E2427EAE8A2557 /* nativescript-fancyalert */,
-				ECBD1030516B4F53A45B7265 /* nativescript-imagepicker */,
-				094D1E3C0C2A44B6A80C54C1 /* nativescript-ng-shadow */,
-				3BB4326825C54CCB9BC65D11 /* nativescript-ui-listview */,
-				400A2F86219E4F9886F588C3 /* nativescript-ui-sidedrawer */,
-				68DC94BF6D164EBAAC7EDDEC /* nativescript-uuid */,
-				32BABCB6F9164831AAB01AA9 /* tns-core-modules */,
-				80E891B8E6F241618FECB1CB /* nativescript-ui-core */,
-				A7806381B2324E87A7AAAC49 /* tns-core-modules-widgets */,
 				A172235CE1886AACE4D1D34B /* Pods */,
-				1A48B3E754264B59BDF6310E /* nativescript-iqkeyboardmanager */,
-				2A85654AD042462CBAA2DE61 /* TNSNativeSource */,
+				9B301C9E287E405EB99EF531 /* nativescript-barcodescanner */,
+				E2992B806A8F442E8F3CC95E /* nativescript-camera */,
+				038E1691CB6A4407AF6F40D7 /* nativescript-fancyalert */,
+				0023CB3671CE45ECAB01D124 /* nativescript-imagepicker */,
+				3C54AADFE3B64E3E84CB4D85 /* nativescript-iqkeyboardmanager */,
+				75E66109E44C442BB49FDC06 /* nativescript-ng-shadow */,
+				7D3AB6867CB34D5E859D7A48 /* nativescript-ui-listview */,
+				38E356C800DB4AE782634370 /* nativescript-ui-sidedrawer */,
+				3865B83AEC4041D4ACA987BF /* nativescript-uuid */,
+				914C414CA63846C9B1A570D7 /* tns-core-modules */,
+				6D8C53A6D2C34AB0A4EF70C2 /* nativescript-ui-core */,
+				31DA91CD6FB042E29A4EF78A /* tns-core-modules-widgets */,
+				75F7482E84DC4B088E6D89B2 /* TNSNativeSource */,
 			);
 			sourceTree = "<group>";
 		};
@@ -235,6 +239,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		914C414CA63846C9B1A570D7 /* tns-core-modules */ = {
+			isa = PBXGroup;
+			children = (
+				1E00302DB3634435810EBDD0 /* NativeScriptEmbedder.h */,
+				0533D8F4D33E41AF9468DBA2 /* NativeScriptEmbedder.m */,
+				85831E54CFAE44F99CE37FE2 /* module.modulemap */,
+			);
+			name = "tns-core-modules";
+			sourceTree = "<group>";
+		};
+		9B301C9E287E405EB99EF531 /* nativescript-barcodescanner */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "nativescript-barcodescanner";
+			sourceTree = "<group>";
+		};
 		A172235CE1886AACE4D1D34B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,20 +263,6 @@
 				621CD58CBD7A5035994E7E37 /* Pods-smnsfrontend.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		A7806381B2324E87A7AAAC49 /* tns-core-modules-widgets */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "tns-core-modules-widgets";
-			sourceTree = "<group>";
-		};
-		B89E129883E2427EAE8A2557 /* nativescript-fancyalert */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "nativescript-fancyalert";
 			sourceTree = "<group>";
 		};
 		E070579D1B39A9D000214BF1 /* Resources */ = {
@@ -268,18 +275,11 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		ECBD1030516B4F53A45B7265 /* nativescript-imagepicker */ = {
+		E2992B806A8F442E8F3CC95E /* nativescript-camera */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = "nativescript-imagepicker";
-			sourceTree = "<group>";
-		};
-		2A85654AD042462CBAA2DE61 /* TNSNativeSource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = TNSNativeSource;
+			name = "nativescript-camera";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,6 +320,7 @@
 				TargetAttributes = {
 					858B83EF18CA22B800AB12DE = {
 						DevelopmentTeam = G2Z6N8ZQ8Z;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -459,7 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD62955D1BB2678900AE3A93 /* main.m in Sources */,
-				3F16520F07FE4F528E18F956 /* NativeScriptEmbedder.m in Sources */,
+				6E24AC0F3C064CA9AA148F85 /* NativeScriptEmbedder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,7 +583,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A261BB43B5D00EC2671 /* build-debug.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 18;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -628,11 +630,25 @@
 					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-barcodescanner/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-camera/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-fancyalert/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-imagepicker/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ng-shadow/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-listview/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-sidedrawer/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-uuid/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/tns-core-modules/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-core/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/tns-core-modules-widgets/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
+				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -643,7 +659,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDD59A271BB43B5D00EC2671 /* build-release.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 18;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = G2Z6N8ZQ8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -685,11 +702,25 @@
 					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-barcodescanner/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-camera/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-fancyalert/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-imagepicker/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-iqkeyboardmanager/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ng-shadow/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-listview/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-sidedrawer/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-uuid/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/tns-core-modules/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/nativescript-ui-core/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../node_modules/tns-core-modules-widgets/platforms/ios/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
+					"\"$(SRCROOT)/../../App_Resources/iOS/src\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/smnsfrontend/smnsfrontend-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = "coza.smupload4";
+				PRODUCT_BUNDLE_IDENTIFIER = coza.smupload4;
 				PRODUCT_NAME = smnsfrontend;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

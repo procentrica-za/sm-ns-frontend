@@ -52,6 +52,7 @@ export class UpdateuserComponent implements OnInit {
     @ViewChild('surnameEl', {static:false}) surnameEl: ElementRef<TextField>;
     @ViewChild('emailEl', {static:false}) emailEl: ElementRef<TextField>;
     @ViewChild('institutionnameEl', {static:false}) institutionnameEl: ElementRef<TextField>;
+    @ViewChild('adsremainingEl', {static:false}) adsremainingEl: ElementRef<TextField>;
 
 
     constructor(private authServ: AuthService, private router: RouterExtensions,  private modalDialog: ModalDialogService,  private vcRef: ViewContainerRef) {
@@ -107,6 +108,15 @@ this.authServ.GetUser(id);
                     ]
                    
                 }
+            ),
+            adsremaining: new FormControl(
+                null,
+                {
+                    updateOn: 'blur',
+                    validators: [
+                       Validators.required 
+                    ]
+                }
             )
         });
         this.form.get('username').statusChanges.subscribe(status => {
@@ -121,6 +131,7 @@ this.authServ.GetUser(id);
         this.form.get('email').statusChanges.subscribe(status => {
             this.emailControlIsValid = status === 'VALID';
         });
+        
 
 
         //find User from app settings
@@ -193,21 +204,25 @@ this.authServ.GetUser(id);
 
     }
 
+
     onUpdateUser() {
+        
         this.usernameEl.nativeElement.focus();
         this.nameEl.nativeElement.focus();
         this.surnameEl.nativeElement.focus();
         this.emailEl.nativeElement.focus();
+        this.emailEl.nativeElement.dismissSoftInput();
         this.institutionnameEl.nativeElement.focus();
+        this.adsremainingEl.nativeElement.focus();
+        //console.log(this.institutionnameEl.nativeElement.);
         this.institutionnameEl.nativeElement.dismissSoftInput();
-        if(!this.form.valid){
-            return;
-        }
+        
         const id = appSettings.getString("userid");
         const username = this.form.get('username').value;
         const name = this.form.get('name').value;
         const surname = this.form.get('surname').value;
         const email = this.form.get('email').value;
+        console.log(email);
          //institutions
          const institutionname = this.form.get('institutionname').value;
 

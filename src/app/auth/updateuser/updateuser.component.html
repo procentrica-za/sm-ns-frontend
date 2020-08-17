@@ -7,8 +7,7 @@
             text="Username"
             [ngClass]="{ invalid: !usernameControlIsValid }"
         ></Label>
-        <TextField
-            editable= "false" 
+        <TextField 
             class="input"
             returnKeyType="next"
             required
@@ -97,16 +96,15 @@
         (tap)="onInstitutionNameTap()"
         ></Label>
         <TextField
-        editable= "false" 
         [text]="institutionNameBind" *ngIf="userFound"
         [text]="getuser.Institutionname"
         (tap)="onInstitutionNameTap()"
         class="input"
         returnKeyType="done"
-        required
         [autocorrect]="false"
         autocapitalizationType="none"
         formControlName="institutionname"
+        required
         #institutionnameEl
         style="color: black;"
         ></TextField>
@@ -120,17 +118,18 @@
         editable= "false" 
         [text]="getuser.AdsRemaining" *ngIf="userFound"
             class="input"
-            returnKeyType="next"
-            required
             [autocorrect]="false"
             autocapitalizationType="none"
             style="color: black;"
+            #adsremainingEl
+            required
+            formControlName="adsremaining"
         ></TextField>
     </StackLayout>
     <Button
         class="btn btn-primary btn-rounded-lg"
         text="Update Details"
-        (tap)="onUpdateUser()"
+        (tap)="onUpdateUser($event)"
     ></Button>
     <Button class="btn-flat" *ngIf="isVerified" text="Validate Account" (tap)="onOTP()"></Button>
     <Button class="btn-flat" text="Change Password" (tap)="onPassword()"></Button>

@@ -9,7 +9,7 @@
         text="Image"
         ></Label>
         <Image *ngIf="myImg" src="{{myImg}}" class="thumb-img-circle" shadow="4" style="height: 25%; width: 25%;"></Image>
-        <Label text="&#xf093;" class="UploadPictureLabel" (tap)="uploadPic()"></Label>
+        <Label text="&#xf093;" class="UploadPictureLabel" (tap)="uploadPic($event)"></Label>
         
         <!--<Button
         class="btn btn-primary btn-rounded-lg"
@@ -31,6 +31,7 @@
             autocapitalizationType="none"
             formControlName="description"
             #descriptionEl
+            style="color: black"
         ></TextView>
     </StackLayout>
     <StackLayout class="input-field">
@@ -47,6 +48,7 @@
             formControlName="price"
             #priceEl
             keyboardType="number"
+            style="color: black"
         ></TextField>
     </StackLayout>
 
@@ -85,16 +87,16 @@
                 <Label *ngIf = "addTextbook" row="0" col="0" colspan="2" [text]="addTextbook.name" textWrap="true" class="GridLayoutLabelHeading" ></Label>
                 <StackLayout row="1" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
                 <Label *ngIf = "addTextbook" row="2" col="0" text="Author: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "addTextbook" row="2" col="1" [text]="addTextbook.author" textWrap="true" class="GridLayoutLabels" ></Label>
+                <Label *ngIf = "addTextbook" row="2" col="1" [text]="addTextbook.author" textWrap="true" class="GridLayoutLabels" style="color: black" ></Label>
                 <StackLayout row="3" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
                 <Label *ngIf = "addTextbook" row="4" col="0" text="Edition: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "addTextbook" row="4" col="1" [text]="addTextbook.edition" textWrap="true" class="GridLayoutLabels" ></Label>
+                <Label *ngIf = "addTextbook" row="4" col="1" [text]="addTextbook.edition" textWrap="true" class="GridLayoutLabels" style="color: black" ></Label>
                 <StackLayout row="5" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
                 <Label *ngIf = "addTextbook" row="6" col="0" text="Quality: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "addTextbook" row="6" col="1" [text]="addTextbook.quality" textWrap="true" class="GridLayoutLabels" ></Label>
+                <Label *ngIf = "addTextbook" row="6" col="1" [text]="addTextbook.quality" textWrap="true" class="GridLayoutLabels" style="color: black"></Label>
                 <StackLayout row="7" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
                 <Label *ngIf = "addTextbook" row="8" col="0" text="For Module: " textWrap="true" class="GridLayoutStaticLabels"></Label>
-                <Label *ngIf = "addTextbook" row="8" col="1" [text]="addTextbook.modulecode" textWrap="true" class="GridLayoutLabels" ></Label>
+                <Label *ngIf = "addTextbook" row="8" col="1" [text]="addTextbook.modulecode" textWrap="true" class="GridLayoutLabels" style="color: black" ></Label>
                 <StackLayout row="9" col="0" colspan="2" class="StackLayoutDividers"></StackLayout>
             </Gridlayout>
         </StackLayout>
@@ -121,6 +123,7 @@
         autocapitalizationType="none"
         formControlName="location"
         #locationEl
+        style="color: black"
     ></TextField>
 
     <Label
@@ -136,6 +139,7 @@
         formControlName="distance"
         #distanceEl
         keyboardType="number"
+        style="color: black"
     ></TextField >
 
     <Label
@@ -153,6 +157,7 @@
     autocapitalizationType="none"
     formControlName="acdType"
     #acdTypeEl
+    style="color: black"
     ></TextField>
 
     <Label
@@ -170,6 +175,7 @@
     autocapitalizationType="none"
     formControlName="instType"
     #instTypeEl
+    style="color: black"
     ></TextField>
     
     <StackLayout>
@@ -201,6 +207,7 @@
             autocapitalizationType="none"
             formControlName="subject"
             #subjectEl
+            style="color: black"
         ></TextField>
 
         <Label
@@ -223,6 +230,7 @@
             [autocorrect]="false"
             autocapitalizationType="none"
             formControlName="yearType"
+            style="color: black"
             #yearTypeEl
         ></TextField>        
 
@@ -246,6 +254,7 @@
             autocapitalizationType="none"
             formControlName="venueType"
             #venueTypeEl
+            style="color: black"
         ></TextField>
 
         <Label
@@ -268,6 +277,7 @@
             autocapitalizationType="none"
             formControlName="termType"
             #termTypeEl
+            style="color: black"
         ></TextField>
         <Button
             row="6"
@@ -299,6 +309,7 @@
             autocapitalizationType="none"
             formControlName="noteType"
             #noteTypeEl
+            style="color: black"
         ></TextField>
         <Button
             row="8"
@@ -330,6 +341,7 @@
             autocapitalizationType="none"
             formControlName="moduleCodeTutorType"
             #moduleCodeTutorTypeEl
+            style="color: black"
         ></TextField>
        
         <StackLayout 
@@ -361,6 +373,7 @@
         autocapitalizationType="none"
         formControlName="moduleCodeNoteType"
         #moduleCodeNoteTypeEl
+        style="color: black"
         ></TextField>
 
         <StackLayout>

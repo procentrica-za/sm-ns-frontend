@@ -8,13 +8,13 @@
         <Label left="240%" top="25%" width="44%" height="10%" class="Ratingdashboard" [text]="sellingaverage.average" *ngIf="sellingFound" textWrap="true" ></Label>
         <Label left="219%" top="100%" width="40%" height="10%" text="Average From Selling" class="BuyingAverage" textWrap="true" ></Label>
         <Label style="margin-top: 10%" text="" left="15%" top="142%" width="44%" height="25%" backgroundColor="white"></Label>
-        <Label style="margin-top: 10%" left="67%" top="160%" width="20%" height="10%" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onBuyerRatings()" textWrap="true" ></Label>
-        <Label style="margin-top: 10%" left="22%" top="228%" width="40%" height="10%" text="Previous Bought Ratings" class="Previous"(tap)="onBuyerRatings()" textWrap="true" ></Label>
+        <Label style="margin-top: 10%" left="67%" top="160%" width="20%" height="10%" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onBuyerRatings($event)" textWrap="true" ></Label>
+        <Label style="margin-top: 10%" left="22%" top="228%" width="40%" height="10%" text="Previous Bought Ratings" class="Previous"(tap)="onBuyerRatings($event)" textWrap="true" ></Label>
         <Label style="margin-top: 10%" text="" left="200%" top="142%" width="44%" height="25%" backgroundColor="white"></Label>
-        <Label style="margin-top: 10%" left="252%" top="160%" width="20%" height="10%" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onSellerRatings()" textWrap="true" ></Label>
-        <Label style="margin-top: 10%" left="215%" top="228%" width="40%" height="10%" text="Previous Sold Ratings" class="PreviousSold"(tap)="onSellerRatings()" textWrap="true" ></Label>
+        <Label style="margin-top: 10%" left="252%" top="160%" width="20%" height="10%" class="Ratingdashboard" text="&#xf27a;" class="PreviousLabel"(tap)="onSellerRatings($event)" textWrap="true" ></Label>
+        <Label style="margin-top: 10%" left="215%" top="228%" width="40%" height="10%" text="Previous Sold Ratings" class="PreviousSold"(tap)="onSellerRatings($event)" textWrap="true" ></Label>
         <Label style="margin-top: 20%" text="" left="100%" top="268%" width="44%" height="25%" backgroundColor="white"></Label>
-        <Label style="margin-top: 20%" left="152%" top="290%" width="20%" height="10%" class="Ratingdashboard" text="&#xf0cb;" class="PreviousLabel"(tap)="onOutstandingRatings()" textWrap="true" ></Label>
-        <Label style="margin-top: 20%" left="120%" top="358%" width="40%" height="10%" text="Outstanding Ratings" class="Outstanding"(tap)="onOutstandingRatings()" textWrap="true" ></Label>
+        <Label style="margin-top: 20%" left="152%" top="290%" width="20%" height="10%" class="Ratingdashboard" text="&#xf0cb;" class="PreviousLabel"(tap)="onOutstandingRatings($event)" textWrap="true" ></Label>
+        <Label style="margin-top: 20%" left="120%" top="358%" width="40%" height="10%" text="Outstanding Ratings" class="Outstanding"(tap)="onOutstandingRatings($event)" textWrap="true" ></Label>
  </AbsoluteLayout>
 </StackLayout>

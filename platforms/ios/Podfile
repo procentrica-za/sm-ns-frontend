@@ -29,4 +29,29 @@ pod 'MaterialComponents/Tabs', '~> 84.4'
 pod 'IQKeyboardManager', '~> 6.2.0'
 
 # End Podfile
+
+# Begin Podfile - /Users/j-master/Desktop/FreshClone_16August/sm-ns-frontend/node_modules/nativescript-fancyalert/platforms/ios/Podfile
+pod 'SCLAlertView-Objective-C'
+# End Podfile
+
+# Begin Podfile - /Users/j-master/Desktop/FreshClone_16August/sm-ns-frontend/node_modules/nativescript-imagepicker/platforms/ios/Podfile
+pod 'QBImagePickerController', '~> 3.4.0'
+# End Podfile
+
+# Begin Podfile - /Users/j-master/Desktop/FreshClone_16August/sm-ns-frontend/node_modules/nativescript-iqkeyboardmanager/platforms/ios/Podfile
+pod 'IQKeyboardManager', '~> 6.2.0'
+
+# End Podfile
+
+# Begin Podfile - /Users/j-master/Desktop/FreshClone_16August/sm-ns-frontend/node_modules/nativescript-uuid/platforms/ios/Podfile
+pod 'SSKeychain'
+
+# End Podfile
+
+# Begin Podfile - /Users/j-master/Desktop/FreshClone_16August/sm-ns-frontend/node_modules/tns-core-modules/platforms/ios/Podfile
+# platform :ios, '9.0'
+use_frameworks!
+
+pod 'MaterialComponents/Tabs', '~> 84.4'
+# End Podfile
 end

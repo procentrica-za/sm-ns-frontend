@@ -16,6 +16,7 @@
            autocapitalizationType="none"
            formControlName="buyerrating"
            #buyerratingEl
+           style="color : black"
        ></TextField>
         <Slider value="1" minValue="1" maxValue="5"
         (valueChange)="onSliderValueChange($event)">
@@ -39,6 +40,7 @@
              autocapitalizationType="none"
              formControlName="buyercomments"
              #buyercommentsEl
+             style="color : black"
         ></TextView>
         <Label
             *ngIf="!buyercommentsControlIsValid"
